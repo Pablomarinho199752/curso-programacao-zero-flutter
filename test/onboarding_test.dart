@@ -84,7 +84,7 @@ void main() {
       await tester.pumpAndSettle();
     }
     await tester.scrollUntilVisible(
-      finder.first,
+      finder,
       300,
       scrollable: find.byType(Scrollable).first,
       maxScrolls: 50,
