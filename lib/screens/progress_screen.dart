@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../models/course_models.dart';
 import '../services/progress_store.dart';
 import '../widgets/status_chip.dart';
+import 'lesson_screen.dart';
 
 class ProgressScreen extends StatelessWidget {
   const ProgressScreen({
@@ -20,14 +21,31 @@ class ProgressScreen extends StatelessWidget {
     return ListView(
       padding: const EdgeInsets.all(20),
       children: [
-        Text('Seu progresso', style: Theme.of(context).textTheme.headlineMedium),
+        Text(
+          'Seu progresso',
+          style: Theme.of(context).textTheme.headlineMedium,
+        ),
         const SizedBox(height: 8),
-        const Text('A cor muda conforme você demonstra domínio nas atividades.'),
+        const Text(
+          'As oito etapas registram o percurso. O desafio tem autoavaliação; revise sua compreensão com o ChatGPT.',
+        ),
         const SizedBox(height: 20),
         ...lessons.map(
           (lesson) => Card(
             child: ListTile(
               title: Text('Aula ${lesson.number} — ${lesson.title}'),
+              trailing: Text(
+                '${progressStore.forLesson(lesson.id).completed.length}/8',
+              ),
+              onTap: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => LessonScreen(
+                    lesson: lesson,
+                    progressStore: progressStore,
+                  ),
+                ),
+              ),
               subtitle: Padding(
                 padding: const EdgeInsets.only(top: 8),
                 child: Align(

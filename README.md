@@ -1,57 +1,31 @@
 # Curso de Programação do Zero
 
-Aplicativo educacional multiplataforma construído com **Flutter + Dart** para acompanhar um curso de programação do absoluto zero, com foco inicial em **Python**.
+Aplicativo Flutter para Android e Windows. Conteúdo introdutório em Python, para quem nunca programou.
 
-## Objetivo
+## Módulo 0 em revisão
 
-O projeto foi desenhado para funcionar como a “escola” do curso:
+Uma aula guiada com oito etapas:
+**explicação curta → videoaula → exemplo → prática → desafio → correção → mini projeto → revisão**.
 
-- Android (APK)
-- Windows (aplicativo + instalador `.exe`)
-- aulas organizadas por módulos
-- videoaulas
-- prática e desafios
-- progresso por habilidade: 🟢 Domina, 🟡 Em desenvolvimento, 🔴 Ainda não domina
-- conteúdo expansível módulo por módulo
+Inclui retomada da etapa, rascunhos e tentativas salvos no aparelho; pistas antes da solução; laboratório offline limitado a `print`; algoritmo com autoavaliação; cartão de apresentação; três perguntas e relatório copiável para revisão no ChatGPT. Vídeo externo com alternativa textual offline. Progresso por etapas, sem confundir conclusão com domínio. Nenhum conteúdo de Módulo 1.
 
-## Método de estudo
+- [Conteúdo completo para revisar no ChatGPT](docs/MODULO_0.md)
+- [Decisões e aprovação pedagógica](docs/REVISAO_PEDAGOGICA_MODULO_0.md)
+- [Checklist Android/Windows e limites dos builds](docs/TESTES_MODULO_0.md)
+- [Arquitetura](ARCHITECTURE.md)
 
-Explicação curta → videoaula → exemplo → prática → desafio → correção → mini projeto → revisão.
+## Desenvolvimento
 
-O progresso deve ser baseado no domínio real do aluno, e não apenas em aulas concluídas.
-
-## Primeira versão
-
-A v0.1.0 contém a fundação do app e o Módulo 0 como demonstração inicial.
-
-## Builds
-
-Os workflows em `.github/workflows/` foram preparados para:
-
-- validar o projeto Flutter
-- gerar APK Android
-- gerar build Windows
-- empacotar a versão Windows em instalador `.exe`
-- criar releases automáticas por tag
-
-## Desenvolvimento local
-
-1. Instale o Flutter.
-2. Rode `flutter pub get`.
-3. Rode `flutter run`.
-
-Para preparar os diretórios de plataforma caso ainda não existam:
+Use Flutter **3.35.7**. Na raiz do repositório:
 
 ```bash
-flutter create . --platforms=android,windows
+bash scripts/bootstrap.sh
 ```
 
-## Estrutura
+No PowerShell: `./scripts/bootstrap.ps1`. Os scripts geram os diretórios Android/Windows, resolvem dependências e executam análise e testes. Depois use `flutter run -d windows` em Windows com ferramentas de compilação instaladas, ou `flutter run` com Android conectado.
 
-- `lib/`: aplicativo Flutter
-- `assets/content/`: conteúdo estruturado do curso
-- `docs/`: mapa mestre e planejamento pedagógico
-- `installer/`: configuração do instalador Windows
-- `.github/workflows/`: CI e releases
+## Artefatos para avaliação
 
-O curso será expandido gradualmente conforme o aluno avançar.
+O workflow **Build Android e Windows**, executado em PRs para `main`, gera APK e instalador Windows x64 em **Actions → execução → Artifacts**. Baixe e extraia o ZIP; no Windows use o instalador completo, não apenas o executável isolado.
+
+Não criar tag de versão antes da revisão pedagógica e dos testes em aparelhos reais. O workflow de release continua reservado a tags `v*`. Os artefatos do PR são builds para avaliação: assinatura Android persistente e assinatura Windows ainda precisam ser preparadas antes de distribuição/atualizações estáveis.

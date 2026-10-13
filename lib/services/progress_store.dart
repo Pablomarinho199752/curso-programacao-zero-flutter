@@ -1,35 +1,112 @@
+import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import '../models/course_models.dart';
 
+class LessonProgress {
+  int step = 0;
+  final Set<int> completed = {};
+  final Map<String, String> drafts = {};
+  final Set<String> checks = {};
+  final Map<String, int> attempts = {};
+  final Map<String, int> answers = {};
+
+  Map<String, dynamic> toJson() => {
+    'step': step,
+    'completed': completed.toList(),
+    'drafts': drafts,
+    'checks': checks.toList(),
+    'attempts': attempts,
+    'answers': answers,
+  };
+
+  factory LessonProgress.fromJson(Map<String, dynamic> json) {
+    final p = LessonProgress();
+    p.step = (json['step'] as int).clamp(0, 7);
+    p.completed.addAll(
+      (json['completed'] as List).cast<int>().where((n) => n >= 0 && n < 8),
+    );
+    p.drafts.addAll((json['drafts'] as Map).cast<String, String>());
+    p.checks.addAll((json['checks'] as List).cast<String>());
+    p.attempts.addAll((json['attempts'] as Map).cast<String, int>());
+    p.answers.addAll((json['answers'] as Map).cast<String, int>());
+    return p;
+  }
+  LessonProgress();
+}
+
 class ProgressStore extends ChangeNotifier {
-  final Map<String, SkillStatus> _statuses = {};
+  final Map<String, LessonProgress> _lessons = {};
   SharedPreferences? _prefs;
+  Future<void> _pending = Future.value();
+  String? saveError;
+  bool recoveredData = false;
 
   Future<void> initialize() async {
-    _prefs = await SharedPreferences.getInstance();
+    try {
+      _prefs = await SharedPreferences.getInstance();
+      final raw = _prefs!.getString('onboarding_v1');
+      if (raw != null) {
+        final decoded = (jsonDecode(raw) as Map).cast<String, dynamic>();
+        for (final entry in decoded.entries) {
+          try {
+            _lessons[entry.key] = LessonProgress.fromJson(
+              (entry.value as Map).cast<String, dynamic>(),
+            );
+          } catch (_) {
+            recoveredData = true;
+          }
+        }
+      }
+    } catch (_) {
+      recoveredData = true;
+      saveError =
+          'Não foi possível recuperar o progresso. Você pode estudar e tentar salvar novamente.';
+    }
     notifyListeners();
   }
 
-  SkillStatus statusFor(String lessonId) {
-    if (_statuses.containsKey(lessonId)) return _statuses[lessonId]!;
-    final persisted = _prefs?.getString('lesson_status_$lessonId');
-    final status = SkillStatusX.fromStorage(persisted);
-    _statuses[lessonId] = status;
-    return status;
-  }
+  LessonProgress forLesson(String id) =>
+      _lessons.putIfAbsent(id, LessonProgress.new);
 
-  Future<void> setStatus(String lessonId, SkillStatus status) async {
-    _statuses[lessonId] = status;
-    await _prefs?.setString('lesson_status_$lessonId', status.storageValue);
+  Future<void> update(String id, void Function(LessonProgress) change) {
+    change(forLesson(id));
     notifyListeners();
+    return save();
   }
 
-  double completionFor(Iterable<String> lessonIds) {
-    final ids = lessonIds.toList();
-    if (ids.isEmpty) return 0;
-    final mastered = ids.where((id) => statusFor(id) == SkillStatus.mastered).length;
-    return mastered / ids.length;
+  Future<void> save() {
+    final snapshot = jsonEncode(
+      _lessons.map((key, value) => MapEntry(key, value.toJson())),
+    );
+    _pending = _pending.then((_) async {
+      try {
+        _prefs ??= await SharedPreferences.getInstance();
+        if (!await _prefs!.setString('onboarding_v1', snapshot)) {
+          throw StateError('save failed');
+        }
+        saveError = null;
+      } catch (_) {
+        saveError =
+            'Não foi possível salvar no aparelho. Mantenha o app aberto e tente novamente.';
+      }
+      notifyListeners();
+    });
+    return _pending;
+  }
+
+  SkillStatus statusFor(String id) {
+    final p = forLesson(id);
+    if (p.completed.length == 8) return SkillStatus.mastered;
+    return p.completed.isNotEmpty || p.drafts.isNotEmpty || p.checks.isNotEmpty
+        ? SkillStatus.inProgress
+        : SkillStatus.notStarted;
+  }
+
+  double completionFor(Iterable<String> ids) {
+    final all = ids.toList();
+    if (all.isEmpty) return 0;
+    return all.fold<int>(0, (sum, id) => sum + forLesson(id).completed.length) /
+        (all.length * 8);
   }
 }

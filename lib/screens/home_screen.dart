@@ -20,31 +20,47 @@ class HomeScreen extends StatelessWidget {
     final lessons = modules.expand((m) => m.lessons).toList();
     final progress = progressStore.completionFor(lessons.map((l) => l.id));
     final nextLesson = lessons.cast<CourseLesson?>().firstWhere(
-          (lesson) => lesson != null && progressStore.statusFor(lesson.id) != SkillStatus.mastered,
-          orElse: () => lessons.isEmpty ? null : lessons.last,
-        );
+      (lesson) =>
+          lesson != null &&
+          progressStore.statusFor(lesson.id) != SkillStatus.mastered,
+      orElse: () => lessons.isEmpty ? null : lessons.last,
+    );
 
     return ListView(
       padding: const EdgeInsets.all(20),
       children: [
-        Text('Curso de Programação do Zero', style: Theme.of(context).textTheme.headlineMedium),
+        Text(
+          'Curso de Programação do Zero',
+          style: Theme.of(context).textTheme.headlineMedium,
+        ),
         const SizedBox(height: 6),
         Text(
-          'Aprenda Python praticando, errando, corrigindo e construindo projetos.',
+          'Comece sem instalar ferramentas. Um percurso curto para planejar, testar, errar e corrigir.',
           style: Theme.of(context).textTheme.bodyLarge,
         ),
         const SizedBox(height: 24),
+        if (progressStore.recoveredData)
+          const Text(
+            'Parte do progresso anterior não pôde ser recuperada. Revise as etapas e suas respostas.',
+          ),
+        if (progressStore.saveError != null) Text(progressStore.saveError!),
         Card(
           child: Padding(
             padding: const EdgeInsets.all(20),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Seu progresso', style: Theme.of(context).textTheme.titleLarge),
+                Text(
+                  'Seu progresso',
+                  style: Theme.of(context).textTheme.titleLarge,
+                ),
                 const SizedBox(height: 12),
                 LinearProgressIndicator(value: progress, minHeight: 10),
                 const SizedBox(height: 8),
-                Text('${(progress * 100).round()}% concluído'),
+                Text('${(progress * 100).round()}% das etapas concluídas'),
+                const Text(
+                  'Progresso salvo neste aparelho. Conclusão não é uma certificação de domínio.',
+                ),
               ],
             ),
           ),
@@ -57,7 +73,12 @@ class HomeScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Continuar estudando', style: Theme.of(context).textTheme.titleLarge),
+                  Text(
+                    progress == 1
+                        ? 'Revisar Módulo 0'
+                        : 'Continuar de onde parei',
+                    style: Theme.of(context).textTheme.titleLarge,
+                  ),
                   const SizedBox(height: 10),
                   Text('Aula ${nextLesson.number} — ${nextLesson.title}'),
                   const SizedBox(height: 10),
@@ -73,14 +94,21 @@ class HomeScreen extends StatelessWidget {
                       ),
                     ),
                     icon: const Icon(Icons.play_arrow),
-                    label: const Text('Abrir aula'),
+                    label: Text(
+                      progress == 1
+                          ? 'Revisar percurso'
+                          : 'Começar / continuar',
+                    ),
                   ),
                 ],
               ),
             ),
           ),
         const SizedBox(height: 16),
-        Text('Como vamos aprender', style: Theme.of(context).textTheme.titleLarge),
+        Text(
+          'Como vamos aprender',
+          style: Theme.of(context).textTheme.titleLarge,
+        ),
         const SizedBox(height: 10),
         const Wrap(
           spacing: 8,

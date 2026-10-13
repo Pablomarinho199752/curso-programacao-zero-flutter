@@ -23,10 +23,7 @@ class SectionCard extends StatelessWidget {
           children: [
             Row(
               children: [
-                if (icon != null) ...[
-                  Icon(icon),
-                  const SizedBox(width: 10),
-                ],
+                if (icon != null) ...[Icon(icon), const SizedBox(width: 10)],
                 Expanded(
                   child: Text(
                     title,

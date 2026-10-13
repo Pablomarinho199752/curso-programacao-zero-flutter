@@ -16,6 +16,7 @@ jobs:
       - uses: subosito/flutter-action@v2
         with:
           channel: stable
+          flutter-version: 3.35.7
           cache: true
       - run: flutter create --platforms=android,windows --project-name curso_programacao_zero --org br.com.cursozero .
       - run: flutter pub get
@@ -36,6 +37,7 @@ jobs:
       - uses: subosito/flutter-action@v2
         with:
           channel: stable
+          flutter-version: 3.35.7
           cache: true
       - run: flutter create --platforms=android,windows --project-name curso_programacao_zero --org br.com.cursozero .
       - run: flutter pub get
