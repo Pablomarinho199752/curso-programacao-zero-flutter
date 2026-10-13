@@ -60,13 +60,21 @@ class _LessonScreenState extends State<LessonScreen> {
     });
   }
 
+  void _selectAnswer(int questionIndex, int optionIndex) {
+    setState(() {
+      _answers[questionIndex] = optionIndex;
+      _quizChecked = false;
+    });
+  }
+
   void _checkQuiz() {
     setState(() => _quizChecked = true);
     final allAnswered = _answers.every((answer) => answer != null);
-    final allCorrect = allAnswered && List.generate(
-      widget.lesson.quiz.length,
-      (index) => _answers[index] == widget.lesson.quiz[index].correctIndex,
-    ).every((e) => e);
+    final allCorrect = allAnswered &&
+        List.generate(
+          widget.lesson.quiz.length,
+          (index) => _answers[index] == widget.lesson.quiz[index].correctIndex,
+        ).every((e) => e);
 
     if (allCorrect) {
       widget.progressStore.setStatus(widget.lesson.id, SkillStatus.mastered);
@@ -175,16 +183,37 @@ class _LessonScreenState extends State<LessonScreen> {
                           style: Theme.of(context).textTheme.titleMedium,
                         ),
                       ),
-                      const SizedBox(height: 6),
+                      const SizedBox(height: 8),
                       for (var option = 0; option < lesson.quiz[i].options.length; option++)
-                        RadioListTile<int>(
-                          value: option,
-                          groupValue: _answers[i],
-                          title: Text(lesson.quiz[i].options[option]),
-                          onChanged: (value) => setState(() {
-                            _answers[i] = value;
-                            _quizChecked = false;
-                          }),
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 8),
+                          child: Material(
+                            color: _answers[i] == option
+                                ? Theme.of(context).colorScheme.primaryContainer
+                                : Theme.of(context).colorScheme.surfaceContainerLow,
+                            borderRadius: BorderRadius.circular(12),
+                            child: InkWell(
+                              borderRadius: BorderRadius.circular(12),
+                              onTap: () => _selectAnswer(i, option),
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 14,
+                                  vertical: 12,
+                                ),
+                                child: Row(
+                                  children: [
+                                    Icon(
+                                      _answers[i] == option
+                                          ? Icons.radio_button_checked
+                                          : Icons.radio_button_unchecked,
+                                    ),
+                                    const SizedBox(width: 12),
+                                    Expanded(child: Text(lesson.quiz[i].options[option])),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
                         ),
                       if (_quizChecked && _answers[i] != null)
                         Align(
