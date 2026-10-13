@@ -16,7 +16,7 @@ Inclui retomada da etapa, rascunhos e tentativas salvos no aparelho; pistas ante
 
 ## Desenvolvimento
 
-Use Flutter **3.35.7**. Na raiz do repositório:
+Use Flutter **3.47.7**. Na raiz do repositório:
 
 ```bash
 bash scripts/bootstrap.sh
