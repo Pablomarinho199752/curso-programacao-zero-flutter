@@ -1,0 +1,70 @@
+name: Publicar versão
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  android:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+      - run: flutter create --platforms=android,windows --project-name curso_programacao_zero --org br.com.cursozero .
+      - run: flutter pub get
+      - run: flutter test
+      - run: flutter build apk --release
+      - run: |
+          mkdir -p dist
+          cp build/app/outputs/flutter-apk/app-release.apk dist/CursoProgramacao-Android.apk
+      - uses: actions/upload-artifact@v4
+        with:
+          name: android-release
+          path: dist/CursoProgramacao-Android.apk
+
+  windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+      - run: flutter create --platforms=android,windows --project-name curso_programacao_zero --org br.com.cursozero .
+      - run: flutter pub get
+      - run: flutter test
+      - run: flutter build windows --release
+      - name: Instalar Inno Setup
+        shell: powershell
+        run: choco install innosetup --no-progress -y
+      - name: Gerar instalador
+        shell: powershell
+        run: |
+          New-Item -ItemType Directory -Force -Path dist | Out-Null
+          & "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" "installer\CursoProgramacao.iss"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: windows-release
+          path: dist/CursoProgramacao-Windows-Setup.exe
+
+  release:
+    needs: [android, windows]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: release-files
+          merge-multiple: true
+      - uses: softprops/action-gh-release@v2
+        with:
+          generate_release_notes: true
+          files: |
+            release-files/CursoProgramacao-Android.apk
+            release-files/CursoProgramacao-Windows-Setup.exe

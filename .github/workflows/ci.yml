@@ -1,0 +1,66 @@
+name: Build Android e Windows
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  android:
+    name: Android APK
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+      - name: Gerar arquivos de plataforma
+        run: flutter create --platforms=android,windows --project-name curso_programacao_zero --org br.com.cursozero .
+      - run: flutter pub get
+      - run: flutter analyze
+      - run: flutter test
+      - run: flutter build apk --release
+      - name: Preparar artefato
+        run: |
+          mkdir -p dist
+          cp build/app/outputs/flutter-apk/app-release.apk dist/CursoProgramacao-Android.apk
+      - uses: actions/upload-artifact@v4
+        with:
+          name: CursoProgramacao-Android
+          path: dist/CursoProgramacao-Android.apk
+          if-no-files-found: error
+
+  windows:
+    name: Windows EXE
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+      - name: Gerar arquivos de plataforma
+        run: flutter create --platforms=android,windows --project-name curso_programacao_zero --org br.com.cursozero .
+      - run: flutter pub get
+      - run: flutter analyze
+      - run: flutter test
+      - run: flutter build windows --release
+      - name: Instalar Inno Setup
+        shell: powershell
+        run: choco install innosetup --no-progress -y
+      - name: Gerar instalador
+        shell: powershell
+        run: |
+          New-Item -ItemType Directory -Force -Path dist | Out-Null
+          & "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" "installer\CursoProgramacao.iss"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: CursoProgramacao-Windows
+          path: dist/CursoProgramacao-Windows-Setup.exe
+          if-no-files-found: error
