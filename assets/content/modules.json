@@ -1,0 +1,54 @@
+{
+  "modules": [
+    {
+      "id": "module_0",
+      "number": 0,
+      "title": "Começando do absoluto zero",
+      "description": "Entenda o que é programar antes de decorar qualquer comando.",
+      "lessons": [
+        {
+          "id": "lesson_0_1",
+          "number": "0.1",
+          "title": "O que é programar?",
+          "objective": "Entender algoritmo, código, programa e o primeiro uso do print sem misturar assuntos mais avançados.",
+          "theory": [
+            "Programar é transformar uma tarefa em instruções claras que o computador consiga seguir.",
+            "Uma sequência de passos para resolver um problema é chamada de algoritmo. Quando escrevemos essas instruções em uma linguagem de programação, criamos código.",
+            "Neste curso vamos começar com Python. Por enquanto, você só precisa entender que print pede ao Python para mostrar algo na tela."
+          ],
+          "code": "print(\"Olá, mundo!\")",
+          "practicePrompt": "Sem executar o código, qual resultado aparece ao rodar: print(\"Estou aprendendo Python\") ?",
+          "practiceAnswer": "Estou aprendendo Python",
+          "challenge": "Imagine um robô que só entende instruções exatas. Escreva em português, em 4 a 6 passos, um algoritmo para ele pegar um copo de água. Ainda não precisa escrever Python.",
+          "review": [
+            "Algoritmo é uma sequência de passos para resolver uma tarefa.",
+            "Código é a forma de escrever instruções em uma linguagem que o computador executa.",
+            "print mostra uma informação na tela.",
+            "Errar, testar e corrigir faz parte da programação."
+          ],
+          "videoUrl": "https://share.descript.com/view/zboVy82eLM0",
+          "quiz": [
+            {
+              "question": "Um algoritmo precisa necessariamente estar escrito em Python?",
+              "options": ["Sim, todo algoritmo é código Python", "Não, ele pode ser uma sequência de passos antes de virar código", "Somente quando o computador estiver conectado à internet"],
+              "correctIndex": 1,
+              "explanation": "O algoritmo é a lógica ou sequência de passos; só depois ele pode ser traduzido para código."
+            },
+            {
+              "question": "O que melhor descreve print nesta primeira aula?",
+              "options": ["Cria uma variável", "Repete uma tarefa", "Mostra algo na tela"],
+              "correctIndex": 2,
+              "explanation": "Nesta etapa, pense em print como 'mostre isto na tela'."
+            },
+            {
+              "question": "Se o programa contém print(\"Bom dia\"), qual é a previsão mais correta?",
+              "options": ["O computador mostra Bom dia", "O computador mostra as aspas junto", "Nada acontece porque falta uma variável"],
+              "correctIndex": 0,
+              "explanation": "O texto dentro das aspas é o conteúdo mostrado por print; as aspas fazem parte da escrita do código, não da saída."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
