@@ -2,7 +2,7 @@
 
 ## Automatizada
 
-SDK fixado em Flutter 3.35.7 nos workflows. `flutter analyze` e `flutter test` precedem os builds Android e Windows. CI produz APK e instalador Windows x64 como artefatos do PR, sem publicar uma release. O runtime nativo é gerado pelo bootstrap como na arquitetura original.
+SDK fixado em Flutter 3.47.7 nos workflows. `flutter analyze` e `flutter test` precedem os builds Android e Windows. CI produz APK e instalador Windows x64 como artefatos do PR, sem publicar uma release. O runtime nativo é gerado pelo bootstrap como na arquitetura original.
 
 Testes cobrem: contrato do conteúdo, simulador e seus limites, dados inválidos, persistência/retomada, não herdar o antigo status de domínio, percurso completo com erro e pista, mini projeto, três perguntas, revisão, invalidação após edição, atualização do progresso e navegação desktop.
 
