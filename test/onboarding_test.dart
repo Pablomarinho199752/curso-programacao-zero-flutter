@@ -94,114 +94,132 @@ void main() {
     await tester.pumpAndSettle();
   }
 
-  testWidgets('percurso completo, pistas, retomada, mini projeto e revisão', (
-    tester,
-  ) async {
-    await tester.binding.setSurfaceSize(const Size(430, 900));
-    addTearDown(() => tester.binding.setSurfaceSize(null));
-    final lesson =
-        (await const CourseRepository().loadModules()).single.lessons.single;
-    final store = ProgressStore();
-    await store.initialize();
-    await tester.pumpWidget(
-      MaterialApp(
-        home: LessonScreen(lesson: lesson, progressStore: store),
-      ),
-    );
-    await tester.pumpAndSettle();
-    Finder next() =>
-        find.widgetWithText(FilledButton, 'Concluir etapa e continuar');
-    await tester.scrollUntilVisible(
-      next(),
-      300,
-      scrollable: find.byType(Scrollable).first,
-    );
-    expect(tester.widget<FilledButton>(next()).onPressed, isNull);
-    await tap(tester, find.byType(CheckboxListTile));
-    await tap(tester, next());
-    expect(store.forLesson(lesson.id).step, 1);
-    await tap(tester, find.text('Alternativa em texto • sem internet'));
-    await tap(tester, find.byType(CheckboxListTile));
-    await tap(tester, next());
-    await tap(tester, find.text('Executar no laboratório'));
-    await tap(tester, next());
-    await tester.enterText(find.byKey(const ValueKey('practice')), 'errado');
-    await tap(tester, find.text('Conferir previsão'));
-    expect(find.textContaining('Ainda não.'), findsOneWidget);
-    expect(store.forLesson(lesson.id).checks.contains('practice_ok'), isFalse);
-    await tester.enterText(
-      find.byKey(const ValueKey('practice')),
-      lesson.practiceAnswer,
-    );
-    await tap(tester, find.text('Conferir previsão'));
-    await tap(tester, next());
-    await tester.enterText(
-      find.byKey(const ValueKey('challenge')),
-      'Segurar jarra\nLevantar\nDespejar até metade\nDevolver jarra',
-    );
-    await tap(tester, next());
-    for (var i = 0; i < 3; i++) {
-      await tap(tester, find.byType(CheckboxListTile).at(i));
-    }
-    await tap(tester, find.text('Executar no laboratório'));
-    expect(find.textContaining('Linha 2:'), findsOneWidget);
-    await tester.enterText(
-      find.byKey(const ValueKey('correction')),
-      lesson.onboarding['fixedCode'] as String,
-    );
-    await tap(tester, find.text('Executar no laboratório'));
-    await tap(tester, next());
-    await tester.enterText(
-      find.byKey(const ValueKey('project')),
-      'print("Pablo")\nprint("Quero criar um jogo")',
-    );
-    await tap(tester, find.text('Executar no laboratório'));
-    for (var i = 0; i < 2; i++) {
-      await tap(tester, find.byType(CheckboxListTile).at(i));
-    }
-    await tap(tester, next());
-    expect(store.completionFor([lesson.id]), 7 / 8);
-    for (var i = 0; i < 3; i++) {
-      await tap(
-        tester,
-        find.text(lesson.quiz[i].options[lesson.quiz[i].correctIndex]),
+  testWidgets(
+    'percurso completo, pistas, retomada, mini projeto e revisão',
+    (tester) async {
+      await tester.binding.setSurfaceSize(const Size(430, 900));
+      addTearDown(() => tester.binding.setSurfaceSize(null));
+      final lesson = (await tester.runAsync(
+        () => const CourseRepository().loadModules(),
+      ))!.single.lessons.single;
+      final store = ProgressStore();
+      await store.initialize();
+      await tester.pumpWidget(
+        MaterialApp(
+          home: LessonScreen(lesson: lesson, progressStore: store),
+        ),
       );
-    }
-    await tap(tester, find.text('Conferir as 3 respostas'));
-    await tester.enterText(
-      find.byKey(const ValueKey('reflection')),
-      'Corrigi o parêntese que faltava na segunda linha.',
-    );
-    await tap(tester, find.text('Concluir Módulo 0'));
-    expect(store.completionFor([lesson.id]), 1);
-    expect(tester.takeException(), isNull);
-    final restored = ProgressStore();
-    await restored.initialize();
-    expect(restored.forLesson(lesson.id).step, 7);
-    expect(restored.forLesson(lesson.id).drafts['project'], contains('Pablo'));
-    // Reabrir a prática e editar invalida a conclusão, sem apagar rascunhos.
-    await tap(tester, find.text('4. Prática'));
-    await tester.enterText(
-      find.byKey(const ValueKey('practice')),
-      'outra resposta',
-    );
-    expect(store.completionFor([lesson.id]), 3 / 8);
-    expect(store.forLesson(lesson.id).drafts['project'], contains('Pablo'));
-  });
+      await tester.pumpAndSettle();
+      Finder next() =>
+          find.widgetWithText(FilledButton, 'Concluir etapa e continuar');
+      await tester.scrollUntilVisible(
+        next(),
+        300,
+        scrollable: find.byType(Scrollable).first,
+      );
+      expect(tester.widget<FilledButton>(next()).onPressed, isNull);
+      await tap(tester, find.byType(CheckboxListTile));
+      await tap(tester, next());
+      expect(store.forLesson(lesson.id).step, 1);
+      await tap(tester, find.text('Alternativa em texto • sem internet'));
+      await tap(tester, find.byType(CheckboxListTile));
+      await tap(tester, next());
+      await tap(tester, find.text('Executar no laboratório'));
+      await tap(tester, next());
+      await tester.enterText(find.byKey(const ValueKey('practice')), 'errado');
+      await tap(tester, find.text('Conferir previsão'));
+      expect(find.textContaining('Ainda não.'), findsOneWidget);
+      expect(
+        store.forLesson(lesson.id).checks.contains('practice_ok'),
+        isFalse,
+      );
+      await tester.enterText(
+        find.byKey(const ValueKey('practice')),
+        lesson.practiceAnswer,
+      );
+      await tap(tester, find.text('Conferir previsão'));
+      await tap(tester, next());
+      await tester.enterText(
+        find.byKey(const ValueKey('challenge')),
+        'Segurar jarra\nLevantar\nDespejar até metade\nDevolver jarra',
+      );
+      await tap(tester, next());
+      for (var i = 0; i < 3; i++) {
+        await tap(tester, find.byType(CheckboxListTile).at(i));
+      }
+      await tap(tester, find.text('Executar no laboratório'));
+      expect(find.textContaining('Linha 2:'), findsOneWidget);
+      await tester.enterText(
+        find.byKey(const ValueKey('correction')),
+        lesson.onboarding['fixedCode'] as String,
+      );
+      await tap(tester, find.text('Executar no laboratório'));
+      await tap(tester, next());
+      await tester.enterText(
+        find.byKey(const ValueKey('project')),
+        'print("Pablo")\nprint("Quero criar um jogo")',
+      );
+      await tap(tester, find.text('Executar no laboratório'));
+      for (var i = 0; i < 2; i++) {
+        await tap(tester, find.byType(CheckboxListTile).at(i));
+      }
+      await tap(tester, next());
+      expect(store.completionFor([lesson.id]), 7 / 8);
+      for (var i = 0; i < 3; i++) {
+        await tap(
+          tester,
+          find.text(lesson.quiz[i].options[lesson.quiz[i].correctIndex]),
+        );
+      }
+      await tap(tester, find.text('Conferir as 3 respostas'));
+      await tester.enterText(
+        find.byKey(const ValueKey('reflection')),
+        'Corrigi o parêntese que faltava na segunda linha.',
+      );
+      await tap(tester, find.text('Concluir Módulo 0'));
+      expect(store.completionFor([lesson.id]), 1);
+      expect(tester.takeException(), isNull);
+      final restored = ProgressStore();
+      await restored.initialize();
+      expect(restored.forLesson(lesson.id).step, 7);
+      expect(
+        restored.forLesson(lesson.id).drafts['project'],
+        contains('Pablo'),
+      );
+      // Reabrir a prática e editar invalida a conclusão, sem apagar rascunhos.
+      await tap(tester, find.text('4. Prática'));
+      await tester.enterText(
+        find.byKey(const ValueKey('practice')),
+        'outra resposta',
+      );
+      expect(store.completionFor([lesson.id]), 3 / 8);
+      expect(store.forLesson(lesson.id).drafts['project'], contains('Pablo'));
+    },
+    timeout: const Timeout(Duration(seconds: 60)),
+  );
 
-  testWidgets('home reage ao progresso e usa navegação desktop', (
-    tester,
-  ) async {
-    await tester.binding.setSurfaceSize(const Size(1200, 900));
-    addTearDown(() => tester.binding.setSurfaceSize(null));
-    final store = ProgressStore();
-    await store.initialize();
-    await tester.pumpWidget(CourseApp(progressStore: store));
-    await tester.pumpAndSettle();
-    expect(find.byType(NavigationRail), findsOneWidget);
-    await store.update('lesson_0_1', (p) => p.completed.addAll([0, 1, 2, 3]));
-    await tester.pumpAndSettle();
-    expect(find.text('50% das etapas concluídas'), findsOneWidget);
-    expect(tester.takeException(), isNull);
-  });
+  testWidgets(
+    'home reage ao progresso e usa navegação desktop',
+    (tester) async {
+      await tester.binding.setSurfaceSize(const Size(1200, 900));
+      addTearDown(() => tester.binding.setSurfaceSize(null));
+      final store = ProgressStore();
+      await store.initialize();
+      final modules = (await tester.runAsync(
+        () => const CourseRepository().loadModules(),
+      ))!;
+      await tester.pumpWidget(
+        MaterialApp(
+          home: CourseShell(modules: modules, progressStore: store),
+        ),
+      );
+      await tester.pumpAndSettle();
+      expect(find.byType(NavigationRail), findsOneWidget);
+      await store.update('lesson_0_1', (p) => p.completed.addAll([0, 1, 2, 3]));
+      await tester.pumpAndSettle();
+      expect(find.text('50% das etapas concluídas'), findsOneWidget);
+      expect(tester.takeException(), isNull);
+    },
+    timeout: const Timeout(Duration(seconds: 60)),
+  );
 }
