@@ -143,9 +143,10 @@ class _LessonScreenState extends State<LessonScreen> {
     if (key == 'correction' && valid) {
       valid =
           result.output.join('\n') == 'Consegui começar\nVou testar de novo';
-      if (!valid)
+      if (!valid) {
         taskHint =
             'Mantenha os dois textos originais; corrija apenas a escrita que impede a execução.';
+      }
     }
     if (key == 'project' && valid) {
       valid =
@@ -153,9 +154,10 @@ class _LessonScreenState extends State<LessonScreen> {
           result.output.every((line) => line.trim().isNotEmpty) &&
           result.output[0].trim() != 'Meu apelido' &&
           result.output[1].trim() != 'Quero criar...';
-      if (!valid)
+      if (!valid) {
         taskHint =
             'Use duas linhas de saída com textos seus. Troque os dois textos do modelo.';
+      }
     }
     _feedback[key] = [
       if (result.output.isNotEmpty) 'Saída:\n${result.output.join('\n')}',
@@ -230,7 +232,7 @@ class _LessonScreenState extends State<LessonScreen> {
       );
       if (!ok) throw StateError('video');
     } catch (_) {
-      if (mounted)
+      if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text(
@@ -238,6 +240,7 @@ class _LessonScreenState extends State<LessonScreen> {
             ),
           ),
         );
+      }
     }
   }
 
@@ -517,19 +520,21 @@ class _LessonScreenState extends State<LessonScreen> {
         'Revise minha compreensão. Dê pistas antes de soluções e não avance para o Módulo 1.';
     try {
       await Clipboard.setData(ClipboardData(text: report));
-      if (mounted)
+      if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text('Revisão copiada. Cole na conversa do ChatGPT.'),
           ),
         );
+      }
     } catch (_) {
-      if (mounted)
+      if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text('Não foi possível copiar. Tente novamente.'),
           ),
         );
+      }
     }
   }
 

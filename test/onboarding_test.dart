@@ -79,7 +79,16 @@ void main() {
   });
 
   Future<void> tap(WidgetTester tester, Finder finder) async {
-    await tester.ensureVisible(finder.first);
+    if (finder.evaluate().isEmpty) {
+      await tester.drag(find.byType(ListView).first, const Offset(0, 10000));
+      await tester.pumpAndSettle();
+    }
+    await tester.scrollUntilVisible(
+      finder.first,
+      300,
+      scrollable: find.byType(Scrollable).first,
+      maxScrolls: 50,
+    );
     await tester.pumpAndSettle();
     await tester.tap(finder.first);
     await tester.pumpAndSettle();
@@ -102,6 +111,11 @@ void main() {
     await tester.pumpAndSettle();
     Finder next() =>
         find.widgetWithText(FilledButton, 'Concluir etapa e continuar');
+    await tester.scrollUntilVisible(
+      next(),
+      300,
+      scrollable: find.byType(Scrollable).first,
+    );
     expect(tester.widget<FilledButton>(next()).onPressed, isNull);
     await tap(tester, find.byType(CheckboxListTile));
     await tap(tester, next());
