@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../models/course_models.dart';
 import '../services/progress_store.dart';
 import '../widgets/status_chip.dart';
-import 'lesson_screen.dart';
+import 'lesson_destination.dart';
 
 class ModulesScreen extends StatelessWidget {
   const ModulesScreen({
@@ -180,8 +180,10 @@ class ModulesScreen extends StatelessWidget {
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Icon(Icons.lock_clock_rounded,
-                              color: scheme.onSurfaceVariant),
+                          Icon(
+                            Icons.lock_clock_rounded,
+                            color: scheme.onSurfaceVariant,
+                          ),
                           const SizedBox(width: 12),
                           Expanded(
                             child: Text(
@@ -206,93 +208,94 @@ class ModulesScreen extends StatelessWidget {
                       ),
                     ),
                   ],
-                  if (unlocked) ...module.lessons.map((lesson) {
-                    final status = progressStore.statusFor(lesson.id);
-                    final done = progressStore.forLesson(lesson.id).completed.length;
-                    return Padding(
-                      padding: const EdgeInsets.only(top: 10),
-                      child: Material(
-                        color: const Color(0xFFF8F9FD),
-                        borderRadius: BorderRadius.circular(20),
-                        clipBehavior: Clip.antiAlias,
-                        child: InkWell(
-                          onTap: () => Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (_) => LessonScreen(
-                                lesson: lesson,
-                                progressStore: progressStore,
+                  if (unlocked)
+                    ...module.lessons.map((lesson) {
+                      final status = progressStore.statusFor(lesson.id);
+                      final done = progressStore.forLesson(lesson.id).completed.length;
+                      return Padding(
+                        padding: const EdgeInsets.only(top: 10),
+                        child: Material(
+                          color: const Color(0xFFF8F9FD),
+                          borderRadius: BorderRadius.circular(20),
+                          clipBehavior: Clip.antiAlias,
+                          child: InkWell(
+                            onTap: () => Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (_) => lessonDestination(
+                                  lesson: lesson,
+                                  progressStore: progressStore,
+                                ),
+                              ),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.all(16),
+                              child: Row(
+                                children: [
+                                  Container(
+                                    width: 44,
+                                    height: 44,
+                                    decoration: BoxDecoration(
+                                      color: scheme.primaryContainer,
+                                      borderRadius: BorderRadius.circular(14),
+                                    ),
+                                    child: Icon(
+                                      Icons.school_rounded,
+                                      color: scheme.primary,
+                                    ),
+                                  ),
+                                  const SizedBox(width: 14),
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          'Aula ${lesson.number}',
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .labelLarge
+                                              ?.copyWith(
+                                                color: scheme.primary,
+                                                fontWeight: FontWeight.w800,
+                                              ),
+                                        ),
+                                        const SizedBox(height: 3),
+                                        Text(
+                                          lesson.title,
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .titleMedium
+                                              ?.copyWith(
+                                                fontWeight: FontWeight.w800,
+                                              ),
+                                        ),
+                                        const SizedBox(height: 9),
+                                        StatusChip(status: status),
+                                      ],
+                                    ),
+                                  ),
+                                  const SizedBox(width: 10),
+                                  Column(
+                                    children: [
+                                      Text(
+                                        '$done/8',
+                                        style: const TextStyle(
+                                          fontWeight: FontWeight.w900,
+                                        ),
+                                      ),
+                                      const SizedBox(height: 4),
+                                      Icon(
+                                        Icons.chevron_right_rounded,
+                                        color: scheme.onSurfaceVariant,
+                                      ),
+                                    ],
+                                  ),
+                                ],
                               ),
                             ),
                           ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(16),
-                            child: Row(
-                              children: [
-                                Container(
-                                  width: 44,
-                                  height: 44,
-                                  decoration: BoxDecoration(
-                                    color: scheme.primaryContainer,
-                                    borderRadius: BorderRadius.circular(14),
-                                  ),
-                                  child: Icon(
-                                    Icons.school_rounded,
-                                    color: scheme.primary,
-                                  ),
-                                ),
-                                const SizedBox(width: 14),
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        'Aula ${lesson.number}',
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .labelLarge
-                                            ?.copyWith(
-                                              color: scheme.primary,
-                                              fontWeight: FontWeight.w800,
-                                            ),
-                                      ),
-                                      const SizedBox(height: 3),
-                                      Text(
-                                        lesson.title,
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .titleMedium
-                                            ?.copyWith(
-                                              fontWeight: FontWeight.w800,
-                                            ),
-                                      ),
-                                      const SizedBox(height: 9),
-                                      StatusChip(status: status),
-                                    ],
-                                  ),
-                                ),
-                                const SizedBox(width: 10),
-                                Column(
-                                  children: [
-                                    Text(
-                                      '$done/8',
-                                      style: const TextStyle(
-                                        fontWeight: FontWeight.w900,
-                                      ),
-                                    ),
-                                    const SizedBox(height: 4),
-                                    Icon(
-                                      Icons.chevron_right_rounded,
-                                      color: scheme.onSurfaceVariant,
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
                         ),
-                      ),
-                    );
-                  }),
+                      );
+                    }),
                 ],
               ),
             ),
