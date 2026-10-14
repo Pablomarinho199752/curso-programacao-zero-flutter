@@ -27,15 +27,39 @@ void main() {
     expect(runPrintLab(' print ( "Olá, mundo!" ) ').output, ['Olá, mundo!']);
   });
 
-  test('conteúdo mantém um módulo, uma aula e três perguntas', () async {
+  test('conteúdo mostra a trilha completa sem liberar módulos futuros', () async {
     final modules = await const CourseRepository().loadModules();
-    expect(modules.length, 1);
-    expect(modules.single.number, 0);
-    final lesson = modules.single.lessons.single;
+    expect(modules.length, 13);
+    expect(modules.first.number, 0);
+    expect(modules.last.number, 12);
+    expect(modules.skip(1).every((module) => module.lessons.isEmpty), isTrue);
+    expect(modules.every((module) => module.project.isNotEmpty), isTrue);
+
+    final lesson = modules.first.lessons.single;
     expect(lesson.quiz.length, 3);
     expect(runPrintLab(lesson.code).ok, isTrue);
     expect(runPrintLab(lesson.onboarding['brokenCode'] as String).ok, isFalse);
     expect(runPrintLab(lesson.onboarding['fixedCode'] as String).ok, isTrue);
+  });
+
+  test('cadeado depende de domínio comprovado e persiste no aparelho', () async {
+    final modules = await const CourseRepository().loadModules();
+    final store = ProgressStore();
+    await store.initialize();
+
+    expect(store.isModuleUnlocked(modules, 0), isTrue);
+    expect(store.isModuleUnlocked(modules, 1), isFalse);
+    expect(store.isModuleMastered('module_0'), isFalse);
+
+    await store.setModuleMastered('module_0', true);
+    expect(store.isModuleMastered('module_0'), isTrue);
+    expect(store.isModuleUnlocked(modules, 1), isTrue);
+    expect(store.isModuleUnlocked(modules, 2), isFalse);
+
+    final restored = ProgressStore();
+    await restored.initialize();
+    expect(restored.isModuleMastered('module_0'), isTrue);
+    expect(restored.isModuleUnlocked(modules, 1), isTrue);
   });
 
   test(
@@ -47,6 +71,7 @@ void main() {
       final store = ProgressStore();
       await store.initialize();
       expect(store.completionFor(['lesson_0_1']), 0);
+      expect(store.isModuleMastered('module_0'), isFalse);
       await store.update('lesson_0_1', (p) {
         p.step = 3;
         p.completed.addAll([0, 1, 2]);
@@ -101,7 +126,7 @@ void main() {
       addTearDown(() => tester.binding.setSurfaceSize(null));
       final lesson = (await tester.runAsync(
         () => const CourseRepository().loadModules(),
-      ))!.single.lessons.single;
+      ))!.first.lessons.single;
       final store = ProgressStore();
       await store.initialize();
       await tester.pumpWidget(
@@ -178,6 +203,7 @@ void main() {
       );
       await tap(tester, find.text('Concluir Módulo 0'));
       expect(store.completionFor([lesson.id]), 1);
+      expect(store.isModuleMastered('module_0'), isFalse);
       expect(tester.takeException(), isNull);
       final restored = ProgressStore();
       await restored.initialize();
