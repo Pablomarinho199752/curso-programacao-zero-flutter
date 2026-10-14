@@ -32,6 +32,7 @@ class CourseModule {
     required this.number,
     required this.title,
     required this.description,
+    required this.project,
     required this.lessons,
   });
 
@@ -39,6 +40,7 @@ class CourseModule {
   final int number;
   final String title;
   final String description;
+  final String project;
   final List<CourseLesson> lessons;
 
   factory CourseModule.fromJson(Map<String, dynamic> json) => CourseModule(
@@ -46,6 +48,7 @@ class CourseModule {
     number: json['number'] as int,
     title: json['title'] as String,
     description: json['description'] as String,
+    project: (json['project'] as String?) ?? '',
     lessons: (json['lessons'] as List<dynamic>)
         .map((e) => CourseLesson.fromJson(e as Map<String, dynamic>))
         .toList(),
