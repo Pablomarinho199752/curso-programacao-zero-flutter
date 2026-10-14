@@ -1,10 +1,12 @@
 import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:curso_programacao_zero/data/course_repository.dart';
 import 'package:curso_programacao_zero/main.dart';
 import 'package:curso_programacao_zero/screens/lesson_screen.dart';
+import 'package:curso_programacao_zero/services/basics_lab.dart';
 import 'package:curso_programacao_zero/services/print_lab.dart';
 import 'package:curso_programacao_zero/services/progress_store.dart';
 
@@ -12,7 +14,7 @@ void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
   setUp(() => SharedPreferences.setMockInitialValues({}));
 
-  test('laboratório preserva ordem e rejeita código fora do escopo', () {
+  test('laboratório inicial preserva ordem e rejeita código fora do escopo', () {
     expect(runPrintLab('print("Segundo")\nprint(\'Primeiro\')').output, [
       'Segundo',
       'Primeiro',
@@ -27,19 +29,41 @@ void main() {
     expect(runPrintLab(' print ( "Olá, mundo!" ) ').output, ['Olá, mundo!']);
   });
 
-  test('conteúdo mostra a trilha completa sem liberar módulos futuros', () async {
+  test('laboratório do Módulo 1 executa variáveis sem aceitar Python arbitrário', () {
+    final result = runBasicsLab(
+      'apelido = "Pythonista"\nprojetos = 2\nmeta = 7.5\n'
+      'print(apelido)\nprint(projetos)\nprint(meta)',
+    );
+    expect(result.ok, isTrue);
+    expect(result.output, ['Pythonista', '2', '7.5']);
+    expect(result.variables.length, 3);
+    expect(runBasicsLab('import os').ok, isFalse);
+    expect(runBasicsLab('print(nao_existe)').error, contains('Linha 1'));
+    expect(runBasicsLab('x = 1 + 2').ok, isFalse);
+  });
+
+  test('conteúdo mostra trilha completa e inicia o Módulo 1 sem abrir o cadeado', () async {
     final modules = await const CourseRepository().loadModules();
     expect(modules.length, 13);
     expect(modules.first.number, 0);
     expect(modules.last.number, 12);
-    expect(modules.skip(1).every((module) => module.lessons.isEmpty), isTrue);
+    expect(modules.first.lessons.length, 1);
+    expect(modules[1].lessons.length, 1);
+    expect(modules.skip(2).every((module) => module.lessons.isEmpty), isTrue);
     expect(modules.every((module) => module.project.isNotEmpty), isTrue);
 
-    final lesson = modules.first.lessons.single;
-    expect(lesson.quiz.length, 3);
-    expect(runPrintLab(lesson.code).ok, isTrue);
-    expect(runPrintLab(lesson.onboarding['brokenCode'] as String).ok, isFalse);
-    expect(runPrintLab(lesson.onboarding['fixedCode'] as String).ok, isTrue);
+    final lesson0 = modules.first.lessons.single;
+    expect(lesson0.quiz.length, 3);
+    expect(runPrintLab(lesson0.code).ok, isTrue);
+    expect(runPrintLab(lesson0.onboarding['brokenCode'] as String).ok, isFalse);
+    expect(runPrintLab(lesson0.onboarding['fixedCode'] as String).ok, isTrue);
+
+    final lesson1 = modules[1].lessons.single;
+    expect(lesson1.number, '1.1');
+    expect(lesson1.quiz.length, 3);
+    expect(runBasicsLab(lesson1.code).ok, isTrue);
+    expect(runBasicsLab(lesson1.onboarding['brokenCode'] as String).ok, isFalse);
+    expect(runBasicsLab(lesson1.onboarding['fixedCode'] as String).ok, isTrue);
   });
 
   test('cadeado depende de domínio comprovado e persiste no aparelho', () async {
@@ -126,7 +150,10 @@ void main() {
       addTearDown(() => tester.binding.setSurfaceSize(null));
       final lesson = (await tester.runAsync(
         () => const CourseRepository().loadModules(),
-      ))!.first.lessons.single;
+      ))!
+          .first
+          .lessons
+          .single;
       final store = ProgressStore();
       await store.initialize();
       await tester.pumpWidget(
@@ -212,7 +239,6 @@ void main() {
         restored.forLesson(lesson.id).drafts['project'],
         contains('Pablo'),
       );
-      // Reabrir a prática e editar invalida a conclusão, sem apagar rascunhos.
       await tap(tester, find.text('4. Prática'));
       await tester.enterText(
         find.byKey(const ValueKey('practice')),
@@ -241,9 +267,12 @@ void main() {
       );
       await tester.pumpAndSettle();
       expect(find.byType(NavigationRail), findsOneWidget);
-      await store.update('lesson_0_1', (p) => p.completed.addAll([0, 1, 2, 3]));
+      await store.update(
+        'lesson_0_1',
+        (p) => p.completed.addAll([0, 1, 2, 3]),
+      );
       await tester.pumpAndSettle();
-      expect(find.text('50% das etapas concluídas'), findsOneWidget);
+      expect(find.text('25% das etapas concluídas'), findsOneWidget);
       expect(tester.takeException(), isNull);
     },
     timeout: const Timeout(Duration(seconds: 60)),
