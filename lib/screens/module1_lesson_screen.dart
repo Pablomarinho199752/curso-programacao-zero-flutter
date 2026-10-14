@@ -47,7 +47,13 @@ class _Module1LessonScreenState extends State<Module1LessonScreen> {
   @override
   void initState() {
     super.initState();
-    for (final key in ['practice', 'challenge', 'correction', 'project', 'reflection']) {
+    for (final key in [
+      'practice',
+      'challenge',
+      'correction',
+      'project',
+      'reflection',
+    ]) {
       final fallback = switch (key) {
         'correction' => text('brokenCode'),
         'project' => text('projectStarter'),
@@ -87,7 +93,8 @@ class _Module1LessonScreenState extends State<Module1LessonScreen> {
         ),
       );
 
-  Widget field(String key, String label, int step, {int lines = 5}) => TextField(
+  Widget codeField(String key, String label, int step, {int lines = 5}) =>
+      TextField(
         key: ValueKey(key),
         controller: _controllers[key],
         minLines: lines,
@@ -95,7 +102,7 @@ class _Module1LessonScreenState extends State<Module1LessonScreen> {
         maxLength: 3000,
         autocorrect: false,
         enableSuggestions: false,
-        style: key == 'reflection' ? null : const TextStyle(fontFamily: 'monospace'),
+        style: const TextStyle(fontFamily: 'monospace'),
         decoration: InputDecoration(labelText: label, alignLabelWithHint: true),
         onChanged: (value) {
           setState(() => _feedback.remove(key));
@@ -124,13 +131,18 @@ class _Module1LessonScreenState extends State<Module1LessonScreen> {
     );
   }
 
-  Future<void> runCode(String key, int step, {required bool Function(BasicsLabResult) accept}) async {
+  Future<void> runCode(
+    String key,
+    int step, {
+    required bool Function(BasicsLabResult) accept,
+  }) async {
     final source = _controllers[key]!.text;
     final result = runBasicsLab(source);
+    final accepted = result.ok && accept(result);
     await update((progress) {
       progress.drafts[key] = source;
       progress.attempts[key] = (progress.attempts[key] ?? 0) + 1;
-      if (result.ok && accept(result)) {
+      if (accepted) {
         progress.checks.add('${key}_ok');
       } else {
         progress.checks.remove('${key}_ok');
@@ -141,21 +153,16 @@ class _Module1LessonScreenState extends State<Module1LessonScreen> {
     setState(() {
       if (!result.ok) {
         _feedback[key] = result.error ?? 'Ainda há algo para ajustar.';
-      } else if (accept(result)) {
-        final visible = result.output.isEmpty ? 'Código executado sem saída.' : result.output.join('\n');
+      } else if (accepted) {
+        final visible = result.output.isEmpty
+            ? 'Código executado sem saída.'
+            : result.output.join('\n');
         _feedback[key] = 'Funcionou. Saída:\n$visible';
       } else {
-        _feedback[key] = 'O código executou, mas ainda não atende ao objetivo desta etapa. Confira o pedido e tente outra vez.';
+        _feedback[key] =
+            'O código executou, mas ainda não atende ao objetivo desta etapa. Confira o pedido e tente outra vez.';
       }
     });
-  }
-
-  Future<void> complete(int step) async {
-    await update((progress) {
-      progress.completed.add(step);
-      if (step < 7) progress.step = step + 1;
-    });
-    if (mounted) setState(() {});
   }
 
   bool canComplete(int step) => switch (step) {
@@ -170,13 +177,31 @@ class _Module1LessonScreenState extends State<Module1LessonScreen> {
         _ => false,
       };
 
+  Future<void> finishStep(int step) async {
+    await update((progress) {
+      progress.completed.add(step);
+      if (step < 7) progress.step = step + 1;
+    });
+    if (!mounted) return;
+    setState(() {});
+    if (step == 7) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(
+            'Aula 1.1 concluída. Isso ainda não marca o Módulo 1 como dominado.',
+          ),
+        ),
+      );
+    }
+  }
+
   Widget simpleCheck(String key, String label, int step) => CheckboxListTile(
         value: p.checks.contains(key),
         contentPadding: EdgeInsets.zero,
         controlAffinity: ListTileControlAffinity.leading,
         title: Text(label),
-        onChanged: (value) => update((progress) {
-          if (value == true) {
+        onChanged: (checked) => update((progress) {
+          if (checked == true) {
             progress.checks.add(key);
           } else {
             progress.checks.remove(key);
@@ -198,10 +223,12 @@ class _Module1LessonScreenState extends State<Module1LessonScreen> {
             children: [
               Text(lesson.objective),
               const SizedBox(height: 14),
-              ...lesson.theory.map((item) => Padding(
-                    padding: const EdgeInsets.only(bottom: 10),
-                    child: Text(item),
-                  )),
+              ...lesson.theory.map(
+                (item) => Padding(
+                  padding: const EdgeInsets.only(bottom: 10),
+                  child: Text(item),
+                ),
+              ),
               codeBox(lesson.code),
               simpleCheck(
                 'concept_ready',
@@ -225,7 +252,9 @@ class _Module1LessonScreenState extends State<Module1LessonScreen> {
                   label: const Text('Abrir videoaula'),
                   onPressed: () async {
                     final uri = Uri.tryParse(lesson.videoUrl);
-                    if (uri != null) await launchUrl(uri, mode: LaunchMode.externalApplication);
+                    if (uri != null) {
+                      await launchUrl(uri, mode: LaunchMode.externalApplication);
+                    }
                   },
                 )
               else
@@ -235,20 +264,31 @@ class _Module1LessonScreenState extends State<Module1LessonScreen> {
                     color: scheme.surfaceContainerHighest,
                     borderRadius: BorderRadius.circular(16),
                   ),
-                  child: const Text('A videoaula está sendo produzida. A alternativa em texto já permite continuar sem perder o conteúdo.'),
+                  child: const Text(
+                    'A videoaula está sendo produzida. A alternativa em texto já permite continuar sem perder o conteúdo.',
+                  ),
                 ),
               const SizedBox(height: 14),
               ExpansionTile(
                 tilePadding: EdgeInsets.zero,
                 title: const Text('Alternativa em texto • sem internet'),
                 children: texts('videoFallback')
-                    .map((item) => Padding(
-                          padding: const EdgeInsets.only(bottom: 10),
-                          child: Align(alignment: Alignment.centerLeft, child: Text(item)),
-                        ))
+                    .map(
+                      (item) => Padding(
+                        padding: const EdgeInsets.only(bottom: 10),
+                        child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(item),
+                        ),
+                      ),
+                    )
                     .toList(),
               ),
-              simpleCheck('video_ready', 'Entendi a ideia principal e consigo seguir para o exemplo.', 1),
+              simpleCheck(
+                'video_ready',
+                'Entendi a ideia principal e consigo seguir para o exemplo.',
+                1,
+              ),
             ],
           ),
         );
@@ -259,16 +299,24 @@ class _Module1LessonScreenState extends State<Module1LessonScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text('Antes de olhar a saída, leia de cima para baixo e descubra o que cada nome guarda.'),
+              const Text(
+                'Antes de olhar a saída, leia de cima para baixo e descubra o que cada nome guarda.',
+              ),
               codeBox(lesson.code),
               OutlinedButton.icon(
-                onPressed: () => update((progress) => progress.checks.add('example_ok')),
+                onPressed: () => update(
+                  (progress) => progress.checks.add('example_ok'),
+                ),
                 icon: const Icon(Icons.play_arrow_rounded),
                 label: const Text('Executar exemplo'),
               ),
               if (p.checks.contains('example_ok')) ...[
                 const SizedBox(height: 10),
-                Text(result.ok ? 'Saída:\n${result.output.join('\n')}' : result.error ?? ''),
+                Text(
+                  result.ok
+                      ? 'Saída:\n${result.output.join('\n')}'
+                      : result.error ?? '',
+                ),
               ],
             ],
           ),
@@ -295,19 +343,22 @@ class _Module1LessonScreenState extends State<Module1LessonScreen> {
               FilledButton(
                 onPressed: () async {
                   final answer = _controllers['practice']!.text.trim();
+                  final correct = answer == lesson.practiceAnswer.trim();
                   await update((progress) {
-                    progress.attempts['practice'] = (progress.attempts['practice'] ?? 0) + 1;
-                    if (answer == lesson.practiceAnswer.trim()) {
+                    progress.attempts['practice'] =
+                        (progress.attempts['practice'] ?? 0) + 1;
+                    if (correct) {
                       progress.checks.add('practice_ok');
                     } else {
                       progress.checks.remove('practice_ok');
                     }
                   });
                   if (!mounted) return;
-                  setState(() => _feedback['practice'] =
-                      answer == lesson.practiceAnswer.trim()
-                          ? 'Certo. Você acompanhou o valor da variável até a saída.'
-                          : 'Ainda não. Siga o nome da variável: qual valor foi guardado nela antes do print?');
+                  setState(() {
+                    _feedback['practice'] = correct
+                        ? 'Certo. Você acompanhou o valor da variável até a saída.'
+                        : 'Ainda não. Siga o nome da variável: qual valor foi guardado nela antes do print?';
+                  });
                 },
                 child: const Text('Conferir previsão'),
               ),
@@ -327,12 +378,13 @@ class _Module1LessonScreenState extends State<Module1LessonScreen> {
             children: [
               Text(lesson.challenge),
               const SizedBox(height: 12),
-              field('challenge', 'Seu código', 4, lines: 6),
+              codeField('challenge', 'Seu código', 4, lines: 6),
               FilledButton.icon(
                 onPressed: () => runCode(
                   'challenge',
                   4,
-                  accept: (result) => result.variables.length >= 3 && result.output.length >= 2,
+                  accept: (result) =>
+                      result.variables.length >= 3 && result.output.length >= 2,
                 ),
                 icon: const Icon(Icons.play_arrow_rounded),
                 label: const Text('Executar desafio'),
@@ -351,14 +403,17 @@ class _Module1LessonScreenState extends State<Module1LessonScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text('Este programa tem um erro. Execute, leia a mensagem e corrija só o necessário.'),
+              const Text(
+                'Este programa tem um erro. Execute, leia a mensagem e corrija só o necessário.',
+              ),
               const SizedBox(height: 12),
-              field('correction', 'Código para corrigir', 5, lines: 5),
+              codeField('correction', 'Código para corrigir', 5, lines: 5),
               FilledButton.icon(
                 onPressed: () => runCode(
                   'correction',
                   5,
-                  accept: (result) => result.output.join('\n') == text('fixedOutput'),
+                  accept: (result) =>
+                      result.output.join('\n') == text('fixedOutput'),
                 ),
                 icon: const Icon(Icons.bug_report_rounded),
                 label: const Text('Executar correção'),
@@ -379,7 +434,7 @@ class _Module1LessonScreenState extends State<Module1LessonScreen> {
             children: [
               Text(text('projectPrompt')),
               const SizedBox(height: 12),
-              field('project', 'Seu mini projeto', 6, lines: 7),
+              codeField('project', 'Seu mini projeto', 6, lines: 7),
               FilledButton.icon(
                 onPressed: () => runCode(
                   'project',
@@ -399,86 +454,110 @@ class _Module1LessonScreenState extends State<Module1LessonScreen> {
           ),
         );
       default:
-        return SectionCard(
-          title: 'Revisão da Aula 1.1',
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              ...lesson.review.map((item) => Padding(
-                    padding: const EdgeInsets.only(bottom: 8),
-                    child: Text('• $item'),
-                  )),
-              const SizedBox(height: 12),
-              ...lesson.quiz.asMap().entries.map((entry) {
-                final index = entry.key;
-                final question = entry.value;
-                return Padding(
-                  padding: const EdgeInsets.only(bottom: 18),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text('${index + 1}. ${question.question}', style: const TextStyle(fontWeight: FontWeight.w800)),
-                      ...question.options.asMap().entries.map((option) => RadioListTile<int>(
-                            value: option.key,
-                            groupValue: p.answers['$index'],
-                            contentPadding: EdgeInsets.zero,
-                            title: Text(option.value),
-                            onChanged: (value) => update((progress) {
-                              if (value != null) progress.answers['$index'] = value;
-                              progress.checks.remove('quiz_ok');
-                              invalidate(progress, 7);
-                            }),
-                          )),
-                    ],
-                  ),
-                );
-              }),
-              FilledButton(
-                onPressed: () async {
-                  final correct = widget.lesson.quiz.asMap().entries.every(
-                        (entry) => p.answers['${entry.key}'] == entry.value.correctIndex,
-                      );
-                  await update((progress) {
-                    if (correct) {
-                      progress.checks.add('quiz_ok');
-                    } else {
-                      progress.checks.remove('quiz_ok');
-                    }
-                  });
-                  if (mounted) setState(() {});
-                },
-                child: const Text('Conferir as 3 respostas'),
-              ),
-              const SizedBox(height: 18),
-              const Text('Explique com suas palavras: qual é a diferença entre o nome de uma variável e o valor guardado nela?'),
-              const SizedBox(height: 10),
-              TextField(
-                key: const ValueKey('reflection'),
-                controller: _controllers['reflection'],
-                minLines: 3,
-                maxLines: 6,
-                decoration: const InputDecoration(labelText: 'Sua explicação'),
-                onChanged: (value) => update((progress) {
-                  progress.drafts['reflection'] = value;
-                  final words = value.trim().split(RegExp(r'\s+')).where((word) => word.isNotEmpty).length;
-                  if (words >= 8) {
-                    progress.checks.add('reflection_ok');
-                  } else {
-                    progress.checks.remove('reflection_ok');
-                  }
-                  invalidate(progress, 7);
-                }),
-              ),
-              const SizedBox(height: 10),
-              Text(
-                p.checks.contains('quiz_ok')
-                    ? 'Quiz correto. A explicação escrita ainda faz parte da evidência.'
-                    : 'A revisão só fecha com as três respostas corretas e uma explicação sua.',
-              ),
-            ],
-          ),
-        );
+        return _reviewStage();
     }
+  }
+
+  Widget _reviewStage() {
+    final lesson = widget.lesson;
+    return SectionCard(
+      title: 'Revisão da Aula 1.1',
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          ...lesson.review.map(
+            (item) => Padding(
+              padding: const EdgeInsets.only(bottom: 8),
+              child: Text('• $item'),
+            ),
+          ),
+          const SizedBox(height: 12),
+          ...lesson.quiz.asMap().entries.map((entry) {
+            final questionIndex = entry.key;
+            final question = entry.value;
+            return Padding(
+              padding: const EdgeInsets.only(bottom: 20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    '${questionIndex + 1}. ${question.question}',
+                    style: const TextStyle(fontWeight: FontWeight.w800),
+                  ),
+                  const SizedBox(height: 8),
+                  Wrap(
+                    spacing: 8,
+                    runSpacing: 8,
+                    children: question.options.asMap().entries.map((option) {
+                      final selected =
+                          p.answers['$questionIndex'] == option.key;
+                      return ChoiceChip(
+                        label: Text(option.value),
+                        selected: selected,
+                        onSelected: (_) => update((progress) {
+                          progress.answers['$questionIndex'] = option.key;
+                          progress.checks.remove('quiz_ok');
+                          invalidate(progress, 7);
+                        }),
+                      );
+                    }).toList(),
+                  ),
+                ],
+              ),
+            );
+          }),
+          FilledButton(
+            onPressed: () async {
+              final correct = lesson.quiz.asMap().entries.every(
+                    (entry) =>
+                        p.answers['${entry.key}'] == entry.value.correctIndex,
+                  );
+              await update((progress) {
+                if (correct) {
+                  progress.checks.add('quiz_ok');
+                } else {
+                  progress.checks.remove('quiz_ok');
+                }
+              });
+              if (mounted) setState(() {});
+            },
+            child: const Text('Conferir as 3 respostas'),
+          ),
+          const SizedBox(height: 18),
+          const Text(
+            'Explique com suas palavras: qual é a diferença entre o nome de uma variável e o valor guardado nela?',
+          ),
+          const SizedBox(height: 10),
+          TextField(
+            key: const ValueKey('reflection'),
+            controller: _controllers['reflection'],
+            minLines: 3,
+            maxLines: 6,
+            decoration: const InputDecoration(labelText: 'Sua explicação'),
+            onChanged: (value) => update((progress) {
+              progress.drafts['reflection'] = value;
+              final words = value
+                  .trim()
+                  .split(RegExp(r'\s+'))
+                  .where((word) => word.isNotEmpty)
+                  .length;
+              if (words >= 8) {
+                progress.checks.add('reflection_ok');
+              } else {
+                progress.checks.remove('reflection_ok');
+              }
+              invalidate(progress, 7);
+            }),
+          ),
+          const SizedBox(height: 10),
+          Text(
+            p.checks.contains('quiz_ok')
+                ? 'Quiz correto. A explicação escrita ainda faz parte da evidência.'
+                : 'A revisão só fecha com as três respostas corretas e uma explicação sua.',
+          ),
+        ],
+      ),
+    );
   }
 
   @override
@@ -486,13 +565,17 @@ class _Module1LessonScreenState extends State<Module1LessonScreen> {
     final step = p.step.clamp(0, 7);
     final done = p.completed.length;
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Módulo 1 • Aula ${widget.lesson.number}'),
-      ),
+      appBar: AppBar(title: Text('Módulo 1 • Aula ${widget.lesson.number}')),
       body: ListView(
         padding: const EdgeInsets.fromLTRB(18, 12, 18, 32),
         children: [
-          Text(widget.lesson.title, style: Theme.of(context).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.w900)),
+          Text(
+            widget.lesson.title,
+            style: Theme.of(context)
+                .textTheme
+                .headlineSmall
+                ?.copyWith(fontWeight: FontWeight.w900),
+          ),
           const SizedBox(height: 8),
           Text('$done de 8 etapas concluídas'),
           const SizedBox(height: 10),
@@ -502,14 +585,19 @@ class _Module1LessonScreenState extends State<Module1LessonScreen> {
             spacing: 8,
             runSpacing: 8,
             children: _steps.asMap().entries.map((entry) {
-              final reached = entry.key <= p.step || p.completed.contains(entry.key);
+              final reached =
+                  entry.key <= p.step || p.completed.contains(entry.key);
               return ActionChip(
                 avatar: Icon(
-                  p.completed.contains(entry.key) ? Icons.check_circle_rounded : Icons.circle_outlined,
+                  p.completed.contains(entry.key)
+                      ? Icons.check_circle_rounded
+                      : Icons.circle_outlined,
                   size: 17,
                 ),
                 label: Text('${entry.key + 1}. ${entry.value}'),
-                onPressed: reached ? () => setState(() => p.step = entry.key) : null,
+                onPressed: reached
+                    ? () => update((progress) => progress.step = entry.key)
+                    : null,
               );
             }).toList(),
           ),
@@ -519,24 +607,23 @@ class _Module1LessonScreenState extends State<Module1LessonScreen> {
           SizedBox(
             width: double.infinity,
             child: FilledButton.icon(
-              onPressed: canComplete(step)
-                  ? () async {
-                      await complete(step);
-                      if (!mounted) return;
-                      if (step == 7) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('Aula 1.1 concluída. Isso ainda não marca o Módulo 1 como dominado.')),
-                        );
-                      }
-                    }
-                  : null,
-              icon: Icon(step == 7 ? Icons.flag_rounded : Icons.arrow_forward_rounded),
-              label: Text(step == 7 ? 'Concluir Aula 1.1' : 'Concluir etapa e continuar'),
+              onPressed: canComplete(step) ? () => finishStep(step) : null,
+              icon: Icon(
+                step == 7 ? Icons.flag_rounded : Icons.arrow_forward_rounded,
+              ),
+              label: Text(
+                step == 7
+                    ? 'Concluir Aula 1.1'
+                    : 'Concluir etapa e continuar',
+              ),
             ),
           ),
           if (step < 7 && !canComplete(step)) ...[
             const SizedBox(height: 8),
-            const Text('Faça a ação pedida nesta etapa para continuar.', textAlign: TextAlign.center),
+            const Text(
+              'Faça a ação pedida nesta etapa para continuar.',
+              textAlign: TextAlign.center,
+            ),
           ],
         ],
       ),
