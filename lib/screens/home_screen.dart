@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../models/course_models.dart';
 import '../services/progress_store.dart';
 import '../widgets/status_chip.dart';
-import 'lesson_screen.dart';
+import 'lesson_destination.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({
@@ -18,8 +18,12 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
-    final lessons = modules.expand((m) => m.lessons).toList();
-    final progress = progressStore.completionFor(lessons.map((l) => l.id));
+    final unlockedModules = modules.asMap().entries
+        .where((entry) => progressStore.isModuleUnlocked(modules, entry.key))
+        .map((entry) => entry.value)
+        .toList();
+    final lessons = unlockedModules.expand((module) => module.lessons).toList();
+    final progress = progressStore.completionFor(lessons.map((lesson) => lesson.id));
     final nextLesson = lessons.cast<CourseLesson?>().firstWhere(
       (lesson) =>
           lesson != null &&
@@ -28,7 +32,8 @@ class HomeScreen extends StatelessWidget {
     );
     final completedSteps = lessons.fold<int>(
       0,
-      (total, lesson) => total + progressStore.forLesson(lesson.id).completed.length,
+      (total, lesson) =>
+          total + progressStore.forLesson(lesson.id).completed.length,
     );
     final totalSteps = lessons.length * 8;
 
@@ -41,7 +46,11 @@ class HomeScreen extends StatelessWidget {
             gradient: const LinearGradient(
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
-              colors: [Color(0xFF312E81), Color(0xFF4F46E5), Color(0xFF7C3AED)],
+              colors: [
+                Color(0xFF312E81),
+                Color(0xFF4F46E5),
+                Color(0xFF7C3AED),
+              ],
             ),
             borderRadius: BorderRadius.circular(28),
             boxShadow: [
@@ -59,7 +68,10 @@ class HomeScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 11, vertical: 7),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 11,
+                      vertical: 7,
+                    ),
                     decoration: BoxDecoration(
                       color: Colors.white.withValues(alpha: 0.14),
                       borderRadius: BorderRadius.circular(999),
@@ -86,7 +98,11 @@ class HomeScreen extends StatelessWidget {
                   const SizedBox(height: 12),
                   const Text(
                     'Um passo por vez: entender, testar, errar, corrigir e construir.',
-                    style: TextStyle(color: Color(0xFFE8E7FF), fontSize: 16, height: 1.45),
+                    style: TextStyle(
+                      color: Color(0xFFE8E7FF),
+                      fontSize: 16,
+                      height: 1.45,
+                    ),
                   ),
                 ],
               );
@@ -96,7 +112,9 @@ class HomeScreen extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: Colors.white.withValues(alpha: 0.13),
                   borderRadius: BorderRadius.circular(22),
-                  border: Border.all(color: Colors.white.withValues(alpha: 0.16)),
+                  border: Border.all(
+                    color: Colors.white.withValues(alpha: 0.16),
+                  ),
                 ),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
@@ -110,7 +128,8 @@ class HomeScreen extends StatelessWidget {
                           CircularProgressIndicator(
                             value: progress,
                             strokeWidth: 7,
-                            backgroundColor: Colors.white.withValues(alpha: 0.17),
+                            backgroundColor:
+                                Colors.white.withValues(alpha: 0.17),
                             color: Colors.white,
                           ),
                           Text(
@@ -129,8 +148,11 @@ class HomeScreen extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const Text(
-                          'Progresso geral',
-                          style: TextStyle(color: Colors.white, fontWeight: FontWeight.w800),
+                          'Progresso disponível',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w800,
+                          ),
                         ),
                         const SizedBox(height: 4),
                         Text(
@@ -155,7 +177,11 @@ class HomeScreen extends StatelessWidget {
               }
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: [intro, const SizedBox(height: 22), progressBadge],
+                children: [
+                  intro,
+                  const SizedBox(height: 22),
+                  progressBadge,
+                ],
               );
             },
           ),
@@ -206,7 +232,7 @@ class HomeScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 6),
                   Text(
-                    'Seu progresso fica salvo neste aparelho. Concluir o percurso não significa dominar sozinho.',
+                    'O cálculo usa somente os módulos já desbloqueados. Concluir o percurso não significa dominar sozinho.',
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                           color: scheme.onSurfaceVariant,
                         ),
@@ -217,7 +243,7 @@ class HomeScreen extends StatelessWidget {
 
             final continueCard = _InfoCard(
               icon: Icons.play_circle_fill_rounded,
-              title: progress == 1 ? 'Revisar Módulo 0' : 'Continuar estudando',
+              title: progress == 1 ? 'Revisar módulo atual' : 'Continuar estudando',
               accent: true,
               child: nextLesson == null
                   ? const Text('Nenhuma aula disponível.')
@@ -246,14 +272,22 @@ class HomeScreen extends StatelessWidget {
                           child: FilledButton.icon(
                             onPressed: () => Navigator.of(context).push(
                               MaterialPageRoute(
-                                builder: (_) => LessonScreen(
+                                builder: (_) => lessonDestination(
                                   lesson: nextLesson,
                                   progressStore: progressStore,
                                 ),
                               ),
                             ),
-                            icon: Icon(progress == 1 ? Icons.replay_rounded : Icons.play_arrow_rounded),
-                            label: Text(progress == 1 ? 'Revisar percurso' : 'Continuar agora'),
+                            icon: Icon(
+                              progress == 1
+                                  ? Icons.replay_rounded
+                                  : Icons.play_arrow_rounded,
+                            ),
+                            label: Text(
+                              progress == 1
+                                  ? 'Revisar percurso'
+                                  : 'Continuar agora',
+                            ),
                           ),
                         ),
                       ],
@@ -271,19 +305,29 @@ class HomeScreen extends StatelessWidget {
               );
             }
             return Column(
-              children: [continueCard, const SizedBox(height: 18), progressCard],
+              children: [
+                continueCard,
+                const SizedBox(height: 18),
+                progressCard,
+              ],
             );
           },
         ),
         const SizedBox(height: 28),
         Text(
           'Como você vai aprender',
-          style: Theme.of(context).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.w900),
+          style: Theme.of(context)
+              .textTheme
+              .headlineSmall
+              ?.copyWith(fontWeight: FontWeight.w900),
         ),
         const SizedBox(height: 6),
         Text(
           'O curso não é só leitura: cada etapa exige uma ação diferente.',
-          style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: scheme.onSurfaceVariant),
+          style: Theme.of(context)
+              .textTheme
+              .bodyLarge
+              ?.copyWith(color: scheme.onSurfaceVariant),
         ),
         const SizedBox(height: 16),
         Wrap(
@@ -327,7 +371,9 @@ class _InfoCard extends StatelessWidget {
         color: Colors.white,
         borderRadius: BorderRadius.circular(24),
         border: Border.all(
-          color: accent ? scheme.primary.withValues(alpha: 0.18) : Colors.black.withValues(alpha: 0.06),
+          color: accent
+              ? scheme.primary.withValues(alpha: 0.18)
+              : Colors.black.withValues(alpha: 0.06),
         ),
         boxShadow: [
           BoxShadow(
@@ -355,7 +401,10 @@ class _InfoCard extends StatelessWidget {
               Expanded(
                 child: Text(
                   title,
-                  style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w900),
+                  style: Theme.of(context)
+                      .textTheme
+                      .titleLarge
+                      ?.copyWith(fontWeight: FontWeight.w900),
                 ),
               ),
             ],
