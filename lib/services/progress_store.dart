@@ -37,6 +37,7 @@ class LessonProgress {
 
 class ProgressStore extends ChangeNotifier {
   final Map<String, LessonProgress> _lessons = {};
+  final Set<String> _masteredModules = {};
   SharedPreferences? _prefs;
   Future<void> _pending = Future.value();
   String? saveError;
@@ -57,6 +58,10 @@ class ProgressStore extends ChangeNotifier {
             recoveredData = true;
           }
         }
+      }
+      final masteryRaw = _prefs!.getStringList('module_mastery_v1');
+      if (masteryRaw != null) {
+        _masteredModules.addAll(masteryRaw.where((id) => id.startsWith('module_')));
       }
     } catch (_) {
       recoveredData = true;
@@ -83,6 +88,37 @@ class ProgressStore extends ChangeNotifier {
       try {
         _prefs ??= await SharedPreferences.getInstance();
         if (!await _prefs!.setString('onboarding_v1', snapshot)) {
+          throw StateError('save failed');
+        }
+        saveError = null;
+      } catch (_) {
+        saveError =
+            'Não foi possível salvar no aparelho. Mantenha o app aberto e tente novamente.';
+      }
+      notifyListeners();
+    });
+    return _pending;
+  }
+
+  bool isModuleMastered(String moduleId) => _masteredModules.contains(moduleId);
+
+  bool isModuleUnlocked(List<CourseModule> modules, int index) {
+    if (index <= 0) return true;
+    return isModuleMastered(modules[index - 1].id);
+  }
+
+  Future<void> setModuleMastered(String moduleId, bool mastered) {
+    if (mastered) {
+      _masteredModules.add(moduleId);
+    } else {
+      _masteredModules.remove(moduleId);
+    }
+    notifyListeners();
+    final masterySnapshot = _masteredModules.toList()..sort();
+    _pending = _pending.then((_) async {
+      try {
+        _prefs ??= await SharedPreferences.getInstance();
+        if (!await _prefs!.setStringList('module_mastery_v1', masterySnapshot)) {
           throw StateError('save failed');
         }
         saveError = null;
