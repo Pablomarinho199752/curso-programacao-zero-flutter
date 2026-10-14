@@ -272,7 +272,7 @@ void main() {
         (p) => p.completed.addAll([0, 1, 2, 3]),
       );
       await tester.pumpAndSettle();
-      expect(find.text('25% das etapas concluídas'), findsOneWidget);
+      expect(find.text('50% das etapas concluídas'), findsOneWidget);
       expect(tester.takeException(), isNull);
     },
     timeout: const Timeout(Duration(seconds: 60)),
