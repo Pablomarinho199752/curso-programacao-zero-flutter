@@ -76,6 +76,7 @@ class CloudSyncService extends ChangeNotifier {
       'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=$_apiKey',
       email,
       password,
+      successStatus: 'Conta criada e progresso sincronizado.',
     );
   }
 
@@ -84,10 +85,50 @@ class CloudSyncService extends ChangeNotifier {
       'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=$_apiKey',
       email,
       password,
+      successStatus: 'Conta conectada e progresso sincronizado.',
     );
   }
 
-  Future<void> _authenticate(String url, String email, String password) async {
+  Future<void> sendPasswordReset(String email) async {
+    final normalizedEmail = email.trim();
+    if (normalizedEmail.isEmpty || !normalizedEmail.contains('@')) {
+      throw StateError('Digite o e-mail da sua conta para recuperar a senha.');
+    }
+    busy = true;
+    error = null;
+    status = 'Enviando recuperação de senha...';
+    notifyListeners();
+    try {
+      final response = await _client
+          .post(
+            Uri.parse(
+              'https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key=$_apiKey',
+            ),
+            headers: const {'Content-Type': 'application/json'},
+            body: jsonEncode({
+              'requestType': 'PASSWORD_RESET',
+              'email': normalizedEmail,
+            }),
+          )
+          .timeout(_networkTimeout);
+      _decodeResponse(response);
+      status = 'E-mail de recuperação enviado. Confira sua caixa de entrada.';
+    } catch (e) {
+      error = _friendlyError(e);
+      status = 'Não foi possível enviar a recuperação de senha.';
+      rethrow;
+    } finally {
+      busy = false;
+      notifyListeners();
+    }
+  }
+
+  Future<void> _authenticate(
+    String url,
+    String email,
+    String password, {
+    required String successStatus,
+  }) async {
     if (email.trim().isEmpty || password.length < 6) {
       throw StateError('Digite um e-mail válido e uma senha com pelo menos 6 caracteres.');
     }
@@ -112,6 +153,7 @@ class CloudSyncService extends ChangeNotifier {
       await _guardLocalOwner(_userId!);
       await _persistSession();
       await syncNow();
+      if (error == null) status = successStatus;
     } catch (e) {
       error = _friendlyError(e);
       status = 'Não foi possível entrar. O progresso local não foi perdido.';
