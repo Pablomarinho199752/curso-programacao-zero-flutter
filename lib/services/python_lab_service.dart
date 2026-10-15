@@ -56,12 +56,13 @@ class PythonLabService {
         return;
       }
 
-      unawaited(
-        SeriousPython.run().catchError((Object _) {
+      final runner = SeriousPython.run().then<void>(
+        (_) {},
+        onError: (Object _, StackTrace __) {
           _ready = false;
-          return null;
-        }),
+        },
       );
+      unawaited(runner);
 
       for (var attempt = 0; attempt < 80; attempt++) {
         if (await _checkHealth()) {
