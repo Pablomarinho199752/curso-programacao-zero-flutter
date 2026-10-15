@@ -19,7 +19,9 @@ jobs:
           flutter-version: 3.47.7
           cache: true
       - run: flutter create --platforms=android,windows --project-name curso_programacao_zero --org br.com.cursozero .
+      - run: python scripts/prepare_native_platforms.py
       - run: flutter pub get
+      - run: flutter analyze
       - run: flutter test --timeout 60s --reporter expanded
       - run: flutter build apk --release
       - run: |
@@ -40,7 +42,9 @@ jobs:
           flutter-version: 3.47.7
           cache: true
       - run: flutter create --platforms=android,windows --project-name curso_programacao_zero --org br.com.cursozero .
+      - run: python scripts/prepare_native_platforms.py
       - run: flutter pub get
+      - run: flutter analyze
       - run: flutter test --timeout 60s --reporter expanded
       - run: flutter build windows --release
       - name: Instalar Inno Setup
