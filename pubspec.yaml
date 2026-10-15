@@ -24,3 +24,4 @@ flutter:
     - assets/content/modules.json
     - assets/content/module_1_lessons.json
     - assets/content/module_2_12_lessons.json
+    - assets/content/video_urls.json
