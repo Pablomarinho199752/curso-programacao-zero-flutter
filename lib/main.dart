@@ -6,8 +6,10 @@ import 'screens/cloud_account_screen.dart';
 import 'screens/home_screen.dart';
 import 'screens/modules_screen.dart';
 import 'screens/progress_screen.dart';
+import 'screens/python_lab_screen.dart';
 import 'services/cloud_sync_service.dart';
 import 'services/progress_store.dart';
+import 'services/python_lab_service.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -191,6 +193,7 @@ class CourseShell extends StatefulWidget {
 
 class _CourseShellState extends State<CourseShell> {
   int _index = 0;
+  final PythonLabService _pythonLab = PythonLabService();
 
   @override
   Widget build(BuildContext context) {
@@ -207,6 +210,7 @@ class _CourseShellState extends State<CourseShell> {
               modules: widget.modules,
               progressStore: widget.progressStore,
             ),
+            PythonLabScreen(lab: _pythonLab),
             ProgressScreen(
               modules: widget.modules,
               progressStore: widget.progressStore,
@@ -221,7 +225,7 @@ class _CourseShellState extends State<CourseShell> {
               body: Row(
                 children: [
                   Container(
-                    width: 220,
+                    width: 230,
                     decoration: BoxDecoration(
                       color: Colors.white,
                       border: Border(
@@ -278,6 +282,10 @@ class _CourseShellState extends State<CourseShell> {
                           label: Text('Módulos'),
                         ),
                         NavigationRailDestination(
+                          icon: Icon(Icons.terminal_rounded),
+                          label: Text('Laboratório'),
+                        ),
+                        NavigationRailDestination(
                           icon: Icon(Icons.insights_rounded),
                           label: Text('Progresso'),
                         ),
@@ -317,6 +325,11 @@ class _CourseShellState extends State<CourseShell> {
                   icon: Icon(Icons.view_agenda_outlined),
                   selectedIcon: Icon(Icons.view_agenda_rounded),
                   label: 'Módulos',
+                ),
+                NavigationDestination(
+                  icon: Icon(Icons.terminal_outlined),
+                  selectedIcon: Icon(Icons.terminal_rounded),
+                  label: 'Lab',
                 ),
                 NavigationDestination(
                   icon: Icon(Icons.insights_outlined),
