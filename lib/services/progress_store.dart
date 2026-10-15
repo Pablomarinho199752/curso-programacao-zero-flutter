@@ -5,6 +5,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/course_models.dart';
 
+int _clampStep(num value) => value.toInt().clamp(0, 7) as int;
+
 class LessonProgress {
   int step = 0;
   int updatedAtMs = 0;
@@ -27,7 +29,7 @@ class LessonProgress {
   factory LessonProgress.fromJson(Map<String, dynamic> json) {
     final progress = LessonProgress();
     final rawStep = json['step'];
-    progress.step = rawStep is num ? rawStep.toInt().clamp(0, 7) : 0;
+    progress.step = rawStep is num ? _clampStep(rawStep) : 0;
     final rawUpdatedAt = json['updatedAtMs'];
     progress.updatedAtMs = rawUpdatedAt is num ? rawUpdatedAt.toInt() : 0;
 
@@ -135,7 +137,7 @@ class ProgressStore extends ChangeNotifier {
             _lastLessonId = lessonId;
           }
           final step = meta['lastStep'];
-          _lastStep = step is num ? step.toInt().clamp(0, 7) : 0;
+          _lastStep = step is num ? _clampStep(step) : 0;
           final updated = meta['updatedAtMs'];
           _updatedAtMs = updated is num ? updated.toInt() : 0;
         }
@@ -157,7 +159,7 @@ class ProgressStore extends ChangeNotifier {
     change(progress);
     progress.updatedAtMs = now;
     _lastLessonId = id;
-    _lastStep = progress.step.clamp(0, 7);
+    _lastStep = _clampStep(progress.step);
     _updatedAtMs = now;
     notifyListeners();
     return save();
@@ -166,7 +168,7 @@ class ProgressStore extends ChangeNotifier {
   Future<void> markVisited(String lessonId, int step) {
     final now = DateTime.now().millisecondsSinceEpoch;
     _lastLessonId = lessonId;
-    _lastStep = step.clamp(0, 7);
+    _lastStep = _clampStep(step);
     _updatedAtMs = now;
     notifyListeners();
     return save();
@@ -241,7 +243,7 @@ class ProgressStore extends ChangeNotifier {
       }
       final remoteStep = remote['lastStep'];
       if (remoteStep is num) {
-        _lastStep = remoteStep.toInt().clamp(0, 7);
+        _lastStep = _clampStep(remoteStep);
       }
       _updatedAtMs = remoteUpdatedAtMs;
     }
