@@ -2,22 +2,33 @@ import 'package:flutter/material.dart';
 
 import 'data/course_repository.dart';
 import 'models/course_models.dart';
+import 'screens/cloud_account_screen.dart';
 import 'screens/home_screen.dart';
 import 'screens/modules_screen.dart';
 import 'screens/progress_screen.dart';
+import 'screens/python_lab_screen.dart';
+import 'services/cloud_sync_service.dart';
 import 'services/progress_store.dart';
+import 'services/python_lab_service.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final progressStore = ProgressStore();
   await progressStore.initialize();
-  runApp(CourseApp(progressStore: progressStore));
+  final cloudSync = CloudSyncService(progressStore);
+  await cloudSync.initialize();
+  runApp(CourseApp(progressStore: progressStore, cloudSync: cloudSync));
 }
 
 class CourseApp extends StatelessWidget {
-  const CourseApp({super.key, required this.progressStore});
+  const CourseApp({
+    super.key,
+    required this.progressStore,
+    required this.cloudSync,
+  });
 
   final ProgressStore progressStore;
+  final CloudSyncService cloudSync;
 
   @override
   Widget build(BuildContext context) {
@@ -65,7 +76,9 @@ class CourseApp extends StatelessWidget {
             final selected = states.contains(WidgetState.selected);
             return TextStyle(
               fontWeight: selected ? FontWeight.w700 : FontWeight.w500,
-              color: selected ? colorScheme.primary : colorScheme.onSurfaceVariant,
+              color: selected
+                  ? colorScheme.primary
+                  : colorScheme.onSurfaceVariant,
             );
           }),
         ),
@@ -86,22 +99,31 @@ class CourseApp extends StatelessWidget {
           ),
         ),
       ),
-      home: CourseLoader(progressStore: progressStore),
+      home: CourseLoader(
+        progressStore: progressStore,
+        cloudSync: cloudSync,
+      ),
     );
   }
 }
 
 class CourseLoader extends StatefulWidget {
-  const CourseLoader({super.key, required this.progressStore});
+  const CourseLoader({
+    super.key,
+    required this.progressStore,
+    required this.cloudSync,
+  });
 
   final ProgressStore progressStore;
+  final CloudSyncService cloudSync;
 
   @override
   State<CourseLoader> createState() => _CourseLoaderState();
 }
 
 class _CourseLoaderState extends State<CourseLoader> {
-  late Future<List<CourseModule>> _modules = const CourseRepository().loadModules();
+  late Future<List<CourseModule>> _modules =
+      const CourseRepository().loadModules();
 
   @override
   Widget build(BuildContext context) {
@@ -109,9 +131,13 @@ class _CourseLoaderState extends State<CourseLoader> {
       future: _modules,
       builder: (context, snapshot) {
         if (snapshot.connectionState != ConnectionState.done) {
-          return const Scaffold(body: Center(child: CircularProgressIndicator()));
+          return const Scaffold(
+            body: Center(child: CircularProgressIndicator()),
+          );
         }
-        if (snapshot.hasError || snapshot.data == null || snapshot.data!.isEmpty) {
+        if (snapshot.hasError ||
+            snapshot.data == null ||
+            snapshot.data!.isEmpty) {
           return Scaffold(
             body: Center(
               child: Padding(
@@ -128,7 +154,8 @@ class _CourseLoaderState extends State<CourseLoader> {
                     const SizedBox(height: 14),
                     FilledButton(
                       onPressed: () => setState(
-                        () => _modules = const CourseRepository().loadModules(),
+                        () => _modules =
+                            const CourseRepository().loadModules(),
                       ),
                       child: const Text('Tentar novamente'),
                     ),
@@ -141,6 +168,7 @@ class _CourseLoaderState extends State<CourseLoader> {
         return CourseShell(
           modules: snapshot.data!,
           progressStore: widget.progressStore,
+          cloudSync: widget.cloudSync,
         );
       },
     );
@@ -152,10 +180,12 @@ class CourseShell extends StatefulWidget {
     super.key,
     required this.modules,
     required this.progressStore,
+    this.cloudSync,
   });
 
   final List<CourseModule> modules;
   final ProgressStore progressStore;
+  final CloudSyncService? cloudSync;
 
   @override
   State<CourseShell> createState() => _CourseShellState();
@@ -163,6 +193,7 @@ class CourseShell extends StatefulWidget {
 
 class _CourseShellState extends State<CourseShell> {
   int _index = 0;
+  final PythonLabService _pythonLab = PythonLabService();
 
   @override
   Widget build(BuildContext context) {
@@ -171,9 +202,22 @@ class _CourseShellState extends State<CourseShell> {
       builder: (context, _) => LayoutBuilder(
         builder: (context, constraints) {
           final pages = [
-            HomeScreen(modules: widget.modules, progressStore: widget.progressStore),
-            ModulesScreen(modules: widget.modules, progressStore: widget.progressStore),
-            ProgressScreen(modules: widget.modules, progressStore: widget.progressStore),
+            HomeScreen(
+              modules: widget.modules,
+              progressStore: widget.progressStore,
+            ),
+            ModulesScreen(
+              modules: widget.modules,
+              progressStore: widget.progressStore,
+            ),
+            PythonLabScreen(lab: _pythonLab),
+            ProgressScreen(
+              modules: widget.modules,
+              progressStore: widget.progressStore,
+            ),
+            widget.cloudSync == null
+                ? const Center(child: Text('Sincronização indisponível neste teste.'))
+                : CloudAccountScreen(cloudSync: widget.cloudSync!),
           ];
           final desktop = constraints.maxWidth >= 850;
 
@@ -183,18 +227,21 @@ class _CourseShellState extends State<CourseShell> {
               body: Row(
                 children: [
                   Container(
-                    width: 220,
+                    width: 230,
                     decoration: BoxDecoration(
                       color: Colors.white,
                       border: Border(
-                        right: BorderSide(color: Colors.black.withValues(alpha: 0.06)),
+                        right: BorderSide(
+                          color: Colors.black.withValues(alpha: 0.06),
+                        ),
                       ),
                     ),
                     child: NavigationRail(
                       extended: true,
                       selectedIndex: _index,
                       backgroundColor: Colors.transparent,
-                      onDestinationSelected: (value) => setState(() => _index = value),
+                      onDestinationSelected: (value) =>
+                          setState(() => _index = value),
                       labelType: NavigationRailLabelType.none,
                       indicatorColor: scheme.primaryContainer,
                       leading: Padding(
@@ -209,13 +256,19 @@ class _CourseShellState extends State<CourseShell> {
                                 borderRadius: BorderRadius.circular(14),
                               ),
                               alignment: Alignment.center,
-                              child: const Text('🐍', style: TextStyle(fontSize: 22)),
+                              child: const Text(
+                                '🐍',
+                                style: TextStyle(fontSize: 22),
+                              ),
                             ),
                             const SizedBox(width: 12),
                             const Expanded(
                               child: Text(
                                 'Código Zero',
-                                style: TextStyle(fontWeight: FontWeight.w800, fontSize: 17),
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w800,
+                                  fontSize: 17,
+                                ),
                               ),
                             ),
                           ],
@@ -231,8 +284,16 @@ class _CourseShellState extends State<CourseShell> {
                           label: Text('Módulos'),
                         ),
                         NavigationRailDestination(
+                          icon: Icon(Icons.terminal_rounded),
+                          label: Text('Laboratório'),
+                        ),
+                        NavigationRailDestination(
                           icon: Icon(Icons.insights_rounded),
                           label: Text('Progresso'),
+                        ),
+                        NavigationRailDestination(
+                          icon: Icon(Icons.cloud_rounded),
+                          label: Text('Conta'),
                         ),
                       ],
                     ),
@@ -254,7 +315,8 @@ class _CourseShellState extends State<CourseShell> {
             body: SafeArea(child: pages[_index]),
             bottomNavigationBar: NavigationBar(
               selectedIndex: _index,
-              onDestinationSelected: (value) => setState(() => _index = value),
+              onDestinationSelected: (value) =>
+                  setState(() => _index = value),
               destinations: const [
                 NavigationDestination(
                   icon: Icon(Icons.home_outlined),
@@ -267,9 +329,19 @@ class _CourseShellState extends State<CourseShell> {
                   label: 'Módulos',
                 ),
                 NavigationDestination(
+                  icon: Icon(Icons.terminal_outlined),
+                  selectedIcon: Icon(Icons.terminal_rounded),
+                  label: 'Lab',
+                ),
+                NavigationDestination(
                   icon: Icon(Icons.insights_outlined),
                   selectedIcon: Icon(Icons.insights_rounded),
                   label: 'Progresso',
+                ),
+                NavigationDestination(
+                  icon: Icon(Icons.cloud_outlined),
+                  selectedIcon: Icon(Icons.cloud_rounded),
+                  label: 'Conta',
                 ),
               ],
             ),
