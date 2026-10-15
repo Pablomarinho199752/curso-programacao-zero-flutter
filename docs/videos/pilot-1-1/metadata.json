@@ -6,7 +6,7 @@
   "language": "pt-BR",
   "resolution": "1920x1080",
   "fps": 24,
-  "status": "rendered_awaiting_user_approval",
+  "status": "approved_integrated_in_pr",
   "videoUrl": "https://d2ol7oe51mr4n9.cloudfront.net/user_3Ke119x65sh4FYjNFHHZNJMSh6l/3625e808-0782-4707-8583-f32a9ec65657.mp4",
   "sourcesUrl": "https://d2ol7oe51mr4n9.cloudfront.net/user_3Ke119x65sh4FYjNFHHZNJMSh6l/16458efd-0bc7-420c-b110-a757a73f0276.zip",
   "oldVideoUrl": "https://share.descript.com/view/LYmNVlmGLyW",
@@ -40,7 +40,6 @@
     "Cursor e realce de código; comparação ampliada produto/Produto.",
     "Pergunta final sem revelar resposta.",
     "Legendas gravadas no vídeo.",
-    "Revisão humana completa de voz, ritmo e estilo ainda pendente.",
     "Revisão 2 solicitada pelo usuário: voz feminina mais jovem; roteiro e identidade visual preservados."
   ],
   "limits": [
@@ -49,8 +48,13 @@
     "Runway: narração concluída; 68 créditos consumidos na geração registrada.",
     "Nenhum bloqueio impede a entrega deste piloto."
   ],
-  "integration": "Nenhum link do app substituído; aguarda aprovação.",
+  "integration": "Override lesson_1_1 adicionado em assets/content/video_urls.json; link original preservado no conteúdo e nestes metadados; reprodução em dispositivos ainda não testada.",
   "revision": 2,
   "previousVideoUrl": "https://d2ol7oe51mr4n9.cloudfront.net/user_3Ke119x65sh4FYjNFHHZNJMSh6l/704de7de-edc4-45f5-a2e0-3c6785fb31c2.mp4",
-  "previousSourcesUrl": "https://d2ol7oe51mr4n9.cloudfront.net/user_3Ke119x65sh4FYjNFHHZNJMSh6l/3ed97a53-0b89-4868-8271-183f2ed40c2a.zip"
+  "previousSourcesUrl": "https://d2ol7oe51mr4n9.cloudfront.net/user_3Ke119x65sh4FYjNFHHZNJMSh6l/3ed97a53-0b89-4868-8271-183f2ed40c2a.zip",
+  "approval": {
+    "date": "2026-10-15",
+    "voice": "Maya",
+    "evidence": "Usuário aprovou a voz e pediu para continuar."
+  }
 }
