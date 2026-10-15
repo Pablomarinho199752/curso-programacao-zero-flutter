@@ -4,7 +4,6 @@ import contextlib
 import io
 import json
 import sys
-import threading
 import time
 import traceback
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
@@ -62,10 +61,7 @@ def validate_source(source: str) -> ast.AST:
             f"O laboratório aceita até {MAX_CODE_SIZE} caracteres por execução."
         )
 
-    try:
-        tree = ast.parse(source, mode="exec")
-    except SyntaxError:
-        raise
+    tree = ast.parse(source, mode="exec")
 
     for node in ast.walk(tree):
         if isinstance(node, (ast.Import, ast.ImportFrom)):
@@ -170,7 +166,6 @@ def safe_builtins(input_values):
 
 
 def execute_code(source: str, stdin_text: str):
-    tree = validate_source(source)
     stdout = io.StringIO()
     stderr = io.StringIO()
     inputs = stdin_text.splitlines()
@@ -193,6 +188,7 @@ def execute_code(source: str, stdin_text: str):
     error_line = None
 
     try:
+        tree = validate_source(source)
         compiled = compile(tree, "<laboratorio>", "exec")
         sys.settrace(trace)
         with contextlib.redirect_stdout(stdout), contextlib.redirect_stderr(stderr):
@@ -201,6 +197,9 @@ def execute_code(source: str, stdin_text: str):
         error_type = "SyntaxError"
         error_line = exc.lineno
         error = exc.msg
+    except LabValidationError as exc:
+        error_type = "ValidationError"
+        error = str(exc)
     except LabTimeoutError as exc:
         error_type = "TimeoutError"
         error = str(exc)
