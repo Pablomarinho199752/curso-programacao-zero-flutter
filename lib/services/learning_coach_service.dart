@@ -110,7 +110,7 @@ class LearningCoachService {
 
   int reviewIntervalDays(LessonProgress progress) {
     final count = reviewCount(progress);
-    final index = count.clamp(0, _reviewIntervalsDays.length - 1);
+    final index = count.clamp(0, _reviewIntervalsDays.length - 1).toInt();
     return _reviewIntervalsDays[index];
   }
 
@@ -125,7 +125,8 @@ class LearningCoachService {
     final now = nowMs ?? DateTime.now().millisecondsSinceEpoch;
     final target = progress.updatedAtMs +
         Duration(days: reviewIntervalDays(progress)).inMilliseconds;
-    return Duration(milliseconds: (target - now).clamp(0, 1 << 62));
+    final remaining = (target - now).clamp(0, 1 << 62).toInt();
+    return Duration(milliseconds: remaining);
   }
 
   int moduleNumber(CourseLesson lesson) {
