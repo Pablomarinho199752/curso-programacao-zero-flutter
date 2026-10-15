@@ -33,12 +33,16 @@ class StatusChip extends StatelessWidget {
         children: [
           Text(status.emoji, style: const TextStyle(fontSize: 13)),
           const SizedBox(width: 7),
-          Text(
-            status.label,
-            style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                  color: foreground,
-                  fontWeight: FontWeight.w700,
-                ),
+          Flexible(
+            child: Text(
+              status.label,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+              style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                    color: foreground,
+                    fontWeight: FontWeight.w700,
+                  ),
+            ),
           ),
           if (status == SkillStatus.mastered) ...[
             const SizedBox(width: 6),
