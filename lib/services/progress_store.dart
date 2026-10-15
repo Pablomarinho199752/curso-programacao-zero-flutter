@@ -5,7 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/course_models.dart';
 
-int _clampStep(num value) => value.toInt().clamp(0, 7) as int;
+int _clampStep(num value) => value.toInt().clamp(0, 7);
 
 class LessonProgress {
   int step = 0;
