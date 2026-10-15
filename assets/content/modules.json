@@ -5,50 +5,195 @@
       "number": 0,
       "title": "Começando do absoluto zero",
       "description": "Entenda o que é programar antes de decorar qualquer comando.",
+      "project": "Primeiro programa interativo: um cartão de apresentação em Python.",
       "lessons": [
         {
           "id": "lesson_0_1",
           "number": "0.1",
-          "title": "O que é programar?",
-          "objective": "Entender algoritmo, código, programa e o primeiro uso do print sem misturar assuntos mais avançados.",
+          "title": "Primeiros passos: pensar, testar e corrigir",
+          "objective": "Ao final, você terá planejado uma tarefa, previsto uma saída, corrigido um erro e criado um pequeno cartão de apresentação. Faça em blocos de 10 minutos; não precisa instalar Python agora.",
           "theory": [
-            "Programar é transformar uma tarefa em instruções claras que o computador consiga seguir.",
-            "Uma sequência de passos para resolver um problema é chamada de algoritmo. Quando escrevemos essas instruções em uma linguagem de programação, criamos código.",
-            "Neste curso vamos começar com Python. Por enquanto, você só precisa entender que print pede ao Python para mostrar algo na tela."
+            "Programar é escrever instruções claras para realizar uma tarefa. O computador segue o que foi escrito; ele não adivinha o que você queria.",
+            "Algoritmo é a sequência de passos para resolver uma tarefa. Código é essa ideia escrita em uma linguagem, como Python. Um programa reúne instruções que podem ser executadas.",
+            "Neste primeiro contato, print(\"Olá!\") pede ao Python para mostrar Olá! na saída. As aspas delimitam o texto; elas não aparecem na saída. Os parênteses envolvem o que será mostrado."
           ],
-          "code": "print(\"Olá, mundo!\")",
-          "practicePrompt": "Sem executar o código, qual resultado aparece ao rodar: print(\"Estou aprendendo Python\") ?",
+          "code": "print(\"Olá, mundo!\")\nprint(\"Um passo de cada vez\")",
+          "practicePrompt": "Antes de executar, escreva a saída de print(\"Estou aprendendo Python\"). Diferencie o código do texto que ele mostra.",
           "practiceAnswer": "Estou aprendendo Python",
-          "challenge": "Imagine um robô que só entende instruções exatas. Escreva em português, em 4 a 6 passos, um algoritmo para ele pegar um copo de água. Ainda não precisa escrever Python.",
+          "challenge": "Um robô está diante de uma mesa. Há um copo vazio e uma jarra aberta com água ao alcance dele. Escreva de 4 a 6 passos para colocar água no copo e deixar a jarra na mesa. Seja específico: o robô não adivinha objetos nem quando parar.",
           "review": [
-            "Algoritmo é uma sequência de passos para resolver uma tarefa.",
-            "Código é a forma de escrever instruções em uma linguagem que o computador executa.",
-            "print mostra uma informação na tela.",
-            "Errar, testar e corrigir faz parte da programação."
+            "Algoritmo é o plano; código é o plano escrito em uma linguagem; programa é um conjunto de instruções executável.",
+            "print mostra texto na saída. Duas instruções são executadas na ordem em que aparecem.",
+            "Preveja, execute e compare. Se houver erro, procure a linha indicada, confira a escrita e altere uma coisa de cada vez.",
+            "Concluir o percurso não comprova domínio sozinho. Explique suas escolhas e refaça depois sem consultar o exemplo."
           ],
           "videoUrl": "https://share.descript.com/view/zboVy82eLM0",
           "quiz": [
             {
-              "question": "Um algoritmo precisa necessariamente estar escrito em Python?",
-              "options": ["Sim, todo algoritmo é código Python", "Não, ele pode ser uma sequência de passos antes de virar código", "Somente quando o computador estiver conectado à internet"],
+              "question": "Lia escreveu no papel os passos de uma tarefa e depois os traduziu para Python. O que mudou nessa tradução?",
+              "options": [
+                "O plano deixou de ter ordem porque virou programa.",
+                "A ideia passou a ser expressa em código; o plano já era um algoritmo.",
+                "O algoritmo só passou a existir quando ela abriu o aplicativo."
+              ],
               "correctIndex": 1,
-              "explanation": "O algoritmo é a lógica ou sequência de passos; só depois ele pode ser traduzido para código."
+              "explanation": "A sequência planejada já era um algoritmo. Escrever essa sequência em Python produz código."
             },
             {
-              "question": "O que melhor descreve print nesta primeira aula?",
-              "options": ["Cria uma variável", "Repete uma tarefa", "Mostra algo na tela"],
+              "question": "Um programa tem print(\"Segundo\") na primeira linha e print(\"Primeiro\") na segunda. Qual saída você prevê?",
+              "options": [
+                "Primeiro, depois Segundo, porque as palavras definem a ordem.",
+                "As duas palavras na mesma linha, entre aspas.",
+                "Segundo na primeira linha da saída e Primeiro na próxima."
+              ],
               "correctIndex": 2,
-              "explanation": "Nesta etapa, pense em print como 'mostre isto na tela'."
+              "explanation": "A ordem das instruções determina a saída. O significado das palavras não troca essa ordem."
             },
             {
-              "question": "Se o programa contém print(\"Bom dia\"), qual é a previsão mais correta?",
-              "options": ["O computador mostra Bom dia", "O computador mostra as aspas junto", "Nada acontece porque falta uma variável"],
+              "question": "O laboratório indica um problema na linha 2 de um programa que você acabou de modificar. Qual é o melhor próximo passo?",
+              "options": [
+                "Comparar a linha 2 com a estrutura do exemplo, ajustar um detalhe e testar de novo.",
+                "Apagar tudo e copiar outro programa sem verificar o que mudou.",
+                "Repetir a execução sem alterar nada até funcionar."
+              ],
               "correctIndex": 0,
-              "explanation": "O texto dentro das aspas é o conteúdo mostrado por print; as aspas fazem parte da escrita do código, não da saída."
+              "explanation": "Investigar a linha indicada e testar uma mudança pequena ajuda a entender a causa do erro."
             }
-          ]
+          ],
+          "onboarding": {
+            "videoTitle": "Introdução — o que é programar?",
+            "videoGuide": "Assista à introdução já usada no curso. Procure uma ideia: por que o computador precisa de instruções claras? Depois volte ao app. Abrir o vídeo não marca a etapa como concluída.",
+            "videoFallback": [
+              "Sem internet ou com dificuldade no vídeo? Use esta alternativa em texto, com o mesmo objetivo introdutório. Não é uma transcrição do vídeo.",
+              "Imagine pedir a um robô: “resolva isso”. Ele precisa saber o que fazer e em qual ordem. Primeiro organizamos o plano (algoritmo); depois escrevemos instruções (código).",
+              "No exemplo print(\"Olá!\"), print pede para mostrar o texto. A saída é Olá!, sem aspas. Execute, compare com o que esperava e ajuste se necessário."
+            ],
+            "practiceHints": [
+              "Leia apenas o conteúdo entre as aspas. O nome print não faz parte da saída.",
+              "A saída começa com Estou e termina com Python. Não inclua aspas nem parênteses."
+            ],
+            "challengeChecks": [
+              "Meus passos identificam os objetos e seguem uma ordem possível.",
+              "Expliquei como colocar a água e quando parar de despejar.",
+              "Terminei deixando a jarra na mesa e o copo com água."
+            ],
+            "challengeExample": "Uma solução possível: 1. Segure a alça da jarra. 2. Levante a jarra e posicione o bico sobre o copo. 3. Incline a jarra até começar a sair água. 4. Quando a água atingir a metade do copo, volte a jarra à posição vertical. 5. Coloque a jarra na mesa e solte a alça. Existem outras sequências válidas.",
+            "brokenCode": "print(\"Consegui começar\")\nprint(\"Vou testar de novo\"",
+            "correctionHints": [
+              "Veja a segunda linha: o parêntese que foi aberto também foi fechado?",
+              "Compare o final das duas linhas. Depois das aspas finais, a segunda precisa de um parêntese de fechamento."
+            ],
+            "fixedCode": "print(\"Consegui começar\")\nprint(\"Vou testar de novo\")",
+            "projectPrompt": "Crie um cartão de apresentação com duas linhas: na primeira, um apelido; na segunda, algo que você quer criar com programação. Use dois print com textos seus. Não precisa informar seu nome real. Execute e confira a ordem.",
+            "projectStarter": "print(\"Meu apelido\")\nprint(\"Quero criar...\")",
+            "projectChecks": [
+              "Usei dois textos meus, em duas instruções print.",
+              "Comparei a saída com meu plano e confirmei a ordem."
+            ],
+            "quizHints": [
+              "Pense na diferença entre planejar a tarefa e escrever esse plano em uma linguagem.",
+              "Leia uma instrução de cada vez, de cima para baixo. As aspas delimitam o texto.",
+              "Antes de trocar todo o programa, examine a linha indicada e confira os sinais."
+            ]
+          }
         }
       ]
+    },
+    {
+      "id": "module_1",
+      "number": 1,
+      "title": "Valores, variáveis e entrada de dados",
+      "description": "Aprenda a guardar informações, receber dados do usuário, converter tipos e fazer contas.",
+      "project": "Calculadora interativa que recebe dados e apresenta resultados úteis.",
+      "lessons": []
+    },
+    {
+      "id": "module_2",
+      "number": 2,
+      "title": "Decisões com if, elif e else",
+      "description": "Faça o programa analisar situações e escolher caminhos diferentes.",
+      "project": "Sistema de aprovação e cadastro que toma decisões com regras claras.",
+      "lessons": []
+    },
+    {
+      "id": "module_3",
+      "number": 3,
+      "title": "Repetições e automação",
+      "description": "Use loops para repetir tarefas sem copiar a mesma instrução várias vezes.",
+      "project": "Jogo de adivinhação evoluído com tentativas, pistas e repetição.",
+      "lessons": []
+    },
+    {
+      "id": "module_4",
+      "number": 4,
+      "title": "Listas, dicionários e coleções",
+      "description": "Organize vários dados e escolha a estrutura certa para cada problema.",
+      "project": "Cadastro em memória com inclusão, busca, edição e listagem de dados.",
+      "lessons": []
+    },
+    {
+      "id": "module_5",
+      "number": 5,
+      "title": "Funções e organização do raciocínio",
+      "description": "Quebre problemas grandes em partes pequenas, reutilizáveis e fáceis de testar.",
+      "project": "Aplicativo dividido em funções que você planeja antes de implementar.",
+      "lessons": []
+    },
+    {
+      "id": "module_6",
+      "number": 6,
+      "title": "Arquivos, erros e módulos",
+      "description": "Salve informações, trate falhas esperadas e organize código em arquivos.",
+      "project": "Gerenciador de tarefas que salva os dados no computador.",
+      "lessons": []
+    },
+    {
+      "id": "module_7",
+      "number": 7,
+      "title": "Debugging, testes e refatoração",
+      "description": "Aprenda a investigar problemas, provar que o código funciona e melhorar código existente.",
+      "project": "Hospital de código: encontrar, explicar e corrigir bugs em programas reais.",
+      "lessons": []
+    },
+    {
+      "id": "module_8",
+      "number": 8,
+      "title": "APIs, JSON e documentação",
+      "description": "Conecte seu programa a serviços externos e aprenda a descobrir como uma API funciona.",
+      "project": "Aplicativo que consulta um serviço externo e transforma a resposta em informação útil.",
+      "lessons": []
+    },
+    {
+      "id": "module_9",
+      "number": 9,
+      "title": "Banco de dados com SQLite",
+      "description": "Guarde informações de forma estruturada e trabalhe com operações de cadastro completas.",
+      "project": "Controle de estoque ou finanças com banco de dados e CRUD.",
+      "lessons": []
+    },
+    {
+      "id": "module_10",
+      "number": 10,
+      "title": "Projetos maiores, OOP e ambientes",
+      "description": "Organize programas maiores com módulos, classes quando fizer sentido e dependências isoladas.",
+      "project": "Aplicativo organizado em várias partes, com estrutura de projeto profissional.",
+      "lessons": []
+    },
+    {
+      "id": "module_11",
+      "number": 11,
+      "title": "Git e GitHub na prática",
+      "description": "Versione seu código, entenda histórico, branches, commits e publicação de projetos.",
+      "project": "Publicar um projeto completo no GitHub com histórico organizado e documentação.",
+      "lessons": []
+    },
+    {
+      "id": "module_12",
+      "number": 12,
+      "title": "Desenvolvimento independente",
+      "description": "Planeje, pesquise, construa, teste e melhore algo que você ainda não sabe fazer sozinho.",
+      "project": "Projeto final escolhido por você, com requisitos abertos e pouca orientação passo a passo.",
+      "lessons": []
     }
   ]
 }

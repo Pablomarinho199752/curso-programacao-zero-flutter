@@ -14,30 +14,53 @@ class SectionCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      margin: const EdgeInsets.only(bottom: 16),
-      child: Padding(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                if (icon != null) ...[
-                  Icon(icon),
-                  const SizedBox(width: 10),
-                ],
-                Expanded(
-                  child: Text(
-                    title,
-                    style: Theme.of(context).textTheme.titleLarge,
+    final scheme = Theme.of(context).colorScheme;
+    final radius = BorderRadius.circular(24);
+
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 18),
+      child: Material(
+        color: Colors.white,
+        elevation: 2,
+        shadowColor: Colors.black.withValues(alpha: 0.10),
+        clipBehavior: Clip.antiAlias,
+        shape: RoundedRectangleBorder(
+          borderRadius: radius,
+          side: BorderSide(color: Colors.black.withValues(alpha: 0.06)),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(22),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  if (icon != null) ...[
+                    Container(
+                      width: 40,
+                      height: 40,
+                      decoration: BoxDecoration(
+                        color: scheme.primaryContainer,
+                        borderRadius: BorderRadius.circular(13),
+                      ),
+                      child: Icon(icon, color: scheme.primary),
+                    ),
+                    const SizedBox(width: 12),
+                  ],
+                  Expanded(
+                    child: Text(
+                      title,
+                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                            fontWeight: FontWeight.w800,
+                          ),
+                    ),
                   ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 14),
-            child,
-          ],
+                ],
+              ),
+              const SizedBox(height: 18),
+              child,
+            ],
+          ),
         ),
       ),
     );

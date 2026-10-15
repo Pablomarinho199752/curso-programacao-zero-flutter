@@ -1,14 +1,16 @@
-# Arquitetura v0.1
+# Arquitetura — Módulo 0
 
-- `lib/models`: modelos de curso, quiz e domínio.
-- `lib/data`: carregamento dos módulos em JSON.
-- `lib/services`: persistência do progresso.
-- `lib/screens`: telas de Início, Módulos, Progresso e Aula.
-- `lib/widgets`: componentes reutilizáveis.
-- `assets/content/modules.json`: conteúdo pedagógico separado do código da UI.
-- `.github/workflows`: CI e releases Android/Windows.
-- `installer`: definição do instalador Windows via Inno Setup.
+Flutter + JSON local + ChangeNotifier + SharedPreferences. Sem backend ou framework extra de estado.
 
-## Regra de evolução
+- `assets/content/modules.json`: uma aula com conteúdo das oito etapas, pistas, critérios e três perguntas.
+- `lib/models`: modelos do conteúdo; os complementos do onboarding ficam no bloco JSON `onboarding`.
+- `lib/data`: leitura do conteúdo empacotado.
+- `lib/services/progress_store.dart`: respostas, critérios, tentativas, etapa atual e etapas concluídas; escrita serializada e recuperável.
+- `lib/services/print_lab.dart`: simulador puro e restrito a print de texto. Nunca executa comandos arbitrários.
+- `lib/screens/lesson_screen.dart`: percurso guiado; validações de tarefa, pistas e relatório copiável.
+- `lib/screens`: início, módulos e progresso reagem ao mesmo store.
+- `.github/workflows`: análise, testes e builds em SDK fixo; publicação continua separada por tag.
 
-Adicionar conteúdo primeiro no JSON e criar novos componentes somente quando um tipo novo de atividade realmente exigir. Evitar transformar a primeira versão em uma arquitetura complexa antes de validar a experiência de estudo.
+O progresso conta etapas concluídas, não cliques em links nem apenas quiz. Etapas futuras exigem as anteriores; todas as etapas já alcançadas podem ser revisitadas. Uma edição invalida a conclusão da atividade e das posteriores, sem apagar os rascunhos. A marcação “Percurso concluído” não certifica domínio. A avaliação de textos abertos é explícita como autoavaliação.
+
+Plataformas Android/Windows são geradas por `scripts/bootstrap.*` ou CI para manter o repositório simples. Evitar múltiplos pacotes, roteador ou serviço remoto enquanto o Módulo 0 está em validação.

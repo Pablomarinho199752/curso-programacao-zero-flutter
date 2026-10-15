@@ -1,0 +1,85 @@
+{
+  "lessons": [
+    {
+      "id": "lesson_1_1",
+      "number": "1.1",
+      "title": "Valores e variáveis: dando nome aos dados",
+      "objective": "Ao final desta aula, você vai conseguir criar variáveis simples, diferenciar o nome da variável do valor guardado nela, mostrar esses valores e corrigir um erro de nome sem copiar uma solução pronta.",
+      "theory": [
+        "Um valor é uma informação que o programa pode usar. Nesta aula vamos trabalhar com texto, números inteiros e números com casas decimais.",
+        "Uma variável é um nome que aponta para um valor. Em apelido = \"Pythonista\", apelido é o nome da variável e Pythonista é o texto guardado nela.",
+        "O sinal = nesta situação significa atribuição: pegue o valor da direita e associe ao nome da esquerda. Depois podemos usar o nome no print para mostrar o valor guardado."
+      ],
+      "code": "apelido = \"Pythonista\"\nprojetos = 2\nmeta = 7.5\nprint(apelido)\nprint(projetos)\nprint(meta)",
+      "practicePrompt": "Sem executar: qual será a saída de idade neste código?\n\nidade = 42\nprint(idade)\n\nDigite somente o que aparece na saída.",
+      "practiceAnswer": "42",
+      "challenge": "Crie pelo menos três variáveis: uma com texto, uma com número inteiro e uma com número decimal. Escolha nomes que expliquem o que cada valor representa. Depois use print em pelo menos duas delas. Não copie os nomes do exemplo.",
+      "review": [
+        "Valor é a informação; variável é o nome usado para acessar essa informação.",
+        "Atribuição com = liga um nome a um valor. O nome fica à esquerda e o valor à direita.",
+        "print pode receber o nome de uma variável e mostrar o valor que ela guarda.",
+        "Erros de nome importam: nome, Nome e nom são identificadores diferentes. Leia a linha do erro antes de alterar o programa.",
+        "Concluir esta aula é só parte do Módulo 1. O domínio virá com novas situações, entrada de dados, conversões e a calculadora final."
+      ],
+      "videoUrl": "https://share.descript.com/view/LYmNVlmGLyW",
+      "quiz": [
+        {
+          "question": "Considere pontos = 15. Qual frase descreve melhor o que aconteceu?",
+          "options": [
+            "O texto pontos foi impresso automaticamente na tela.",
+            "O nome pontos passou a estar associado ao valor numérico 15.",
+            "O número 15 virou o nome de uma variável chamada pontos."
+          ],
+          "correctIndex": 1,
+          "explanation": "Na atribuição, o nome fica à esquerda e o valor que ele guarda fica à direita."
+        },
+        {
+          "question": "O código preco = 9.5 seguido de print(preco) produz qual saída?",
+          "options": [
+            "preco",
+            "9.5",
+            "preco = 9.5"
+          ],
+          "correctIndex": 1,
+          "explanation": "print(preco) busca o valor guardado na variável e mostra 9.5."
+        },
+        {
+          "question": "Você criou nome = \"Lia\" e depois escreveu print(nom). Qual investigação faz mais sentido primeiro?",
+          "options": [
+            "Verificar se o nome usado no print é exatamente o mesmo nome criado na atribuição.",
+            "Trocar o texto Lia por um número, porque print não aceita texto.",
+            "Adicionar vários prints até o erro desaparecer."
+          ],
+          "correctIndex": 0,
+          "explanation": "nom e nome são identificadores diferentes. Comparar os nomes é a investigação mais direta."
+        }
+      ],
+      "onboarding": {
+        "videoTitle": "Videoaula — valores viram dados que o programa consegue reutilizar",
+        "videoGuide": "Enquanto assiste, procure responder a uma pergunta: qual é a diferença entre escrever um valor diretamente e guardar esse valor em uma variável com nome?",
+        "videoFallback": [
+          "Imagine três caixas etiquetadas: apelido, projetos e meta. A etiqueta é o nome da variável; o conteúdo da caixa é o valor.",
+          "Quando escrevemos projetos = 2, estamos associando o nome projetos ao número 2. Depois print(projetos) consulta esse nome e mostra 2.",
+          "O nome deve ajudar a entender o dado. Em exercícios reais, nomes claros reduzem confusão e facilitam encontrar erros."
+        ],
+        "practiceHints": [
+          "A linha idade = 42 guarda o número 42 usando o nome idade.",
+          "print(idade) mostra o valor guardado, não a palavra idade."
+        ],
+        "challengeHints": [
+          "Pense em três informações diferentes da sua própria ideia de programa: um texto, uma contagem e uma medida com decimal.",
+          "O formato básico é nome = valor. Texto precisa de aspas; números não. Depois use print(nome)."
+        ],
+        "brokenCode": "nome = \"Pablo\"\nprint(nom)",
+        "correctionHints": [
+          "Compare, letra por letra, o nome criado na primeira linha com o nome usado na segunda.",
+          "A primeira linha cria nome. A segunda precisa pedir exatamente essa mesma variável."
+        ],
+        "fixedCode": "nome = \"Pablo\"\nprint(nome)",
+        "fixedOutput": "Pablo",
+        "projectPrompt": "Crie uma ficha simples com pelo menos três variáveis sobre um projeto que você gostaria de construir: um texto, um número inteiro e um número decimal. Use nomes seus, diferentes do modelo, e mostre as três informações com print. Execute e confira se a saída corresponde ao que você planejou.",
+        "projectStarter": "projeto = \"Meu app\"\ntarefas = 3\nversao = 1.0\nprint(projeto)\nprint(tarefas)\nprint(versao)"
+      }
+    }
+  ]
+}
