@@ -26,9 +26,11 @@ class RuntimeTests(unittest.TestCase):
         self.assertEqual(result['errorType'], 'SyntaxError')
         self.assertEqual(result['errorLine'], 1)
 
-    def test_blocks_dangerous_imports(self):
-        with self.assertRaises(runtime.LabValidationError):
-            runtime.execute_code('import os\nprint(os.getcwd())', '')
+    def test_blocks_dangerous_imports_with_friendly_feedback(self):
+        result = runtime.execute_code('import os\nprint(os.getcwd())', '')
+        self.assertFalse(result['ok'])
+        self.assertEqual(result['errorType'], 'ValidationError')
+        self.assertIn("módulo 'os'", result['error'])
 
     def test_interrupts_infinite_cpu_loop(self):
         old_limit = runtime.EXECUTION_SECONDS
