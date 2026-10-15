@@ -1,27 +1,46 @@
-# Piloto audiovisual 1.1 — Código Zero
-Data: 2026-10-15. Base: `feat/python-lab-cloud-progress`, commit `9d5e95b4888fc007e8a5bce97872d078082de1dd` (PR #4).
-## Estado
-Piloto ainda NÃO renderizado. Prévia visual em `preview.html`; roteiro integral em `pilot-script.json`.
-Título proposto: **Variáveis: nomes para os dados**.
-Módulo 1, aula `lesson_1_1` — Valores e variáveis: dando nome aos dados.
-Duração alvo: 3–7 minutos (estimativa 4–5); duração real: pendente.
-Link final: pendente. Link antigo preservado: https://share.descript.com/view/LYmNVlmGLyW
-Ferramentas tentadas: Descript Agent Underlord (bloqueado por créditos de IA insuficientes); HeyGen síntese (bloqueada: workspace exige Orca, chamada Starfish rejeitada). Nenhum áudio/vídeo novo gerado.
-Voz candidata: Will, `f8ae4c0d76fa4f5ebd133bbef14e1c67`, catálogo português. Ainda não sintetizada nem aprovada. Não fixar como padrão sem ouvir a voz.
-Não houve uso de Runway ou renderização no Higgsfield. Não houve cobrança/compra autorizada.
-Próximo passo: confirmar nova tentativa de síntese HeyGen com motor compatível após erro; produzir e avaliar o piloto completo antes dos demais vídeos.
+# Piloto 1.1 — Variáveis: nomes para os dados
 
-## Auditoria
-Lidos: modules.json, module_1_lessons.json, module_2_12_lessons.json, video_urls.json, course_repository.dart e documentação audiovisual.
-A branch mais completa incorpora conta e laboratório; os quatro arquivos de conteúdo têm os mesmos blobs da main neste instante.
-Existem **13 aulas carregadas, uma por módulo (0–12)**. Todos os 13 links efetivos responderam HTTP 200 em HEAD. Isso verifica disponibilidade HTTP, não reprodução, áudio ou aderência pedagógica integral.
-Em módulos 2–12, videoUrl vazio no JSON da aula é preenchido pelo mapa video_urls.json; não é ausência de vídeo no app.
-Nenhuma URL provisória aparente entre os links efetivos. Os IDs antigos de render dos módulos 3–12 não identificam os MP4s efetivamente usados: conforme VIDEO_PRODUCTION.md, tentativas HeyGen falharam e foram substituídas por vídeos narrados hospedados no Higgsfield.
-Aula 1.1: projeto publicado `dc7f72a3-669b-4791-9e36-142478ef1e07`, composição de **45,96 s**, é só abertura e não demonstra todo o objetivo da aula. Transcrição consultada.
-Outra versão no Descript: `ed4741bc-1e8e-48fa-a83b-07f83570c521`, **233,92 s**, sem publicação. A transcrição mistura variáveis, input e conversões, além do foco da aula atual.
-Módulo 0: publicação existente confirmada pelo Descript, duração **235,76 s**. Aderência visual completa ainda pendente.
-Módulos 2–12: URLs disponíveis; revisão audiovisual detalhada fica para os lotes após aprovação do piloto. Não afirmar que o conteúdo deles foi assistido ou aprovado.
-Inventário completo e URLs preservadas: inventory.json.
+**Renderizado e legendado. Aguardando aprovação do usuário.**
+
+- [Assistir ao piloto MP4](https://d2ol7oe51mr4n9.cloudfront.net/user_3Ke119x65sh4FYjNFHHZNJMSh6l/704de7de-edc4-45f5-a2e0-3c6785fb31c2.mp4)
+- [Baixar fontes completas, narração, legendas e projeto](https://d2ol7oe51mr4n9.cloudfront.net/user_3Ke119x65sh4FYjNFHHZNJMSh6l/3ed97a53-0b89-4868-8271-183f2ed40c2a.zip)
+- Aula: `lesson_1_1`, módulo 1.
+- Duração: **4min28s** (268,512 s). Formato: 1920×1080, 24 fps, H.264/AAC.
+- Narração: Runway, voz Leslie, português brasileiro, velocidade 0,9.
+- Montagem: Higgsfield/Higgsedit. Legendas: faster-whisper e burner clean.
+- Roteiro: `pilot-script.json`. Storyboard inicial: `preview.html`. Composição: `edit.jsx`. Metadados: `metadata.json`.
+- Link antigo preservado: https://share.descript.com/view/LYmNVlmGLyW
+
+## Base atual e preservação
+Nova branch `feat/video-pilot-main-20261015` criada diretamente da main `c1ef42fe1fdaa17ac747bcb2769960b3e6bb91f8`.
+Somente `docs/videos/pilot-1-1/` foi replicado da branch antiga. A branch `feat/video-pilot-1-1` continua intacta.
+Nenhum arquivo do app, Firebase, progresso, Python, navegação ou lógica pedagógica foi alterado.
+O arquivo da aula 1.1 na main mantém o mesmo conteúdo usado no roteiro (blob `96ebe507eff4d4837a511d4b27d2cc0c3d36a00b`).
+Nenhum vídeo do app foi substituído. Aprovar o piloto antes da integração e antes de produzir os demais módulos.
+
+## Validação realizada
+- Saídas dos exemplos e NameError conferidos em execução Python.
+- Áudio e vídeo chegam ao final; diferença de duração inferior a 0,2 s.
+- Legendas contêm todas as 566 palavras do roteiro; similaridade da transcrição 96,92%.
+- Imagens conferidas em 1s, 134s, 203s e 263s: legendas visíveis, código e saída separados, erro ampliado e pergunta final sem resposta.
+- Uploads concluídos com HTTP 200 e confirmados no Higgsfield.
+- Não houve teste de reprodução no app instalado em Android ou Windows, nem aprovação humana completa da voz/ritmo. Estes ficam para revisão do piloto.
+- Demonstração é ilustrada, não gravação da interface do app.
+
+## Histórico e limites
+Descript bloqueou por créditos insuficientes. HeyGen rejeitou Starfish; a tentativa autorizada com Orca terminou em timeout sem retornar áudio.
+Runway concluiu a narração, consumindo 68 créditos na geração registrada. O Higgsedit renderizou o master; o primeiro envio falhou por caminho relativo incorreto, resolvido nesta retomada.
+A versão legendada e o pacote de fontes estão agora hospedados. Não há bloqueio de crédito para entregar este piloto; limites de gerações futuras serão verificados antes de cada lote.
+
+## Reproduzir e editar
+Extraia o pacote de fontes. Ele inclui narração, clock.json, probe.json, roteiro, SRT, relatório de validação e projeto nativo.
+Ajuste a constante `root` em edit.jsx ao diretório extraído. No ambiente com Higgsedit:
+1. Registre Inter:400 e JetBrains Mono:400 em `project`.
+2. Execute `higgsedit build edit.jsx`.
+3. Renderize com caminho absoluto: `higgsedit render project --out /caminho/absoluto/master.mp4 --workers 4 --bitrate 3M`.
+4. Use o SRT alinhado para gravar legendas com o burner fornecido no workflow; se alterar a voz, transcreva e valide novamente.
+O projeto contém caminhos do ambiente original; ajuste-os ao importar em outro ambiente.
+O inventário de links é o levantamento inicial de 2026-10-15; disponibilidade HTTP não equivale a revisão audiovisual completa dos outros módulos.
 
 ## Padrão reutilizável de roteiro
 1. Identificar módulo/aula, SHA de origem, objetivo único e pré-requisitos.
@@ -60,9 +79,10 @@ Não são exemplos copiados dos desafios atuais. Não mostrar soluções de prá
 - Atualizar título/guia de vídeo somente se necessário para a nova videoaula.
 Não alterar progresso, conta, Firebase, laboratório Python ou lógica pedagógica.
 
-## Relatório do lote
-Criados: roteiro, padrão reutilizável, inventário e storyboard interativo.
-Vídeos criados: 0. Substituídos: 0.
-Faltam: render e validação do piloto 1.1; depois, refação das demais 12 aulas, uma etapa por vez conforme aprovação.
-Bloqueios: créditos Descript; incompatibilidade de motor da síntese HeyGen.
-Ação do usuário: autorizar nova tentativa HeyGen com Orca; avaliar piloto renderizado antes de continuar.
+
+
+## Resultado deste lote
+Criado: 1 piloto legendado da aula 1.1.
+Substituídos no app: 0.
+Restantes: demais 12 aulas, condicionadas à aprovação do estilo.
+Próximo passo: avaliação do usuário sobre voz, legibilidade, ritmo e clareza.
