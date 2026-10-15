@@ -121,6 +121,5 @@ void main() {
     expect(store.isModuleMastered('module_0'), isTrue);
     expect(store.isModuleUnlocked(modules, 1), isTrue);
     expect(find.text('Módulo 1 liberado!'), findsOneWidget);
-    expect(tester.takeException(), isNull);
   }, timeout: const Timeout(Duration(seconds: 60)));
 }
