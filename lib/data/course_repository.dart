@@ -38,6 +38,25 @@ class CourseRepository {
       }
     }
 
+    final videoRaw = await rootBundle.loadString(
+      'assets/content/video_urls.json',
+    );
+    final videoDecoded = jsonDecode(videoRaw) as Map<String, dynamic>;
+    final videoUrls = (videoDecoded['lessons'] as Map).cast<String, dynamic>();
+
+    for (final module in moduleMaps) {
+      final lessons = (module['lessons'] as List<dynamic>?) ?? const [];
+      for (final lesson in lessons) {
+        if (lesson is! Map) continue;
+        final lessonId = lesson['id'];
+        if (lessonId is! String) continue;
+        final stableUrl = videoUrls[lessonId];
+        if (stableUrl is String && stableUrl.isNotEmpty) {
+          lesson['videoUrl'] = stableUrl;
+        }
+      }
+    }
+
     return moduleMaps.map(CourseModule.fromJson).toList();
   }
 }
