@@ -1,6 +1,6 @@
 # Piloto 1.1 — Variáveis: nomes para os dados
 
-**Renderizado e legendado. Aguardando aprovação do usuário.**
+**Renderizado, legendado e aprovado pelo usuário. Link integrado no PR #7.**
 
 - [Assistir ao piloto MP4](https://d2ol7oe51mr4n9.cloudfront.net/user_3Ke119x65sh4FYjNFHHZNJMSh6l/3625e808-0782-4707-8583-f32a9ec65657.mp4)
 - [Baixar fontes completas, narração, legendas e projeto](https://d2ol7oe51mr4n9.cloudfront.net/user_3Ke119x65sh4FYjNFHHZNJMSh6l/16458efd-0bc7-420c-b110-a757a73f0276.zip)
@@ -14,14 +14,14 @@
 ## Revisão de voz
 O usuário gostou do visual e pediu uma voz feminina mais jovem. Esta revisão usa Maya, de perfil jovem e conversacional. Roteiro e identidade visual preservados; cenas e legendas reconstruídas para o novo áudio.
 [Versão anterior com Leslie](https://d2ol7oe51mr4n9.cloudfront.net/user_3Ke119x65sh4FYjNFHHZNJMSh6l/704de7de-edc4-45f5-a2e0-3c6785fb31c2.mp4) preservada para comparação. Metadados anteriores em `revisions/v1.json`.
-A aprovação da nova voz ainda está pendente. Nenhum outro módulo foi produzido.
+A voz Maya foi aprovada pelo usuário em 2026-10-15. Nenhum outro módulo foi produzido.
 
 ## Base atual e preservação
 Nova branch `feat/video-pilot-main-20261015` criada diretamente da main `c1ef42fe1fdaa17ac747bcb2769960b3e6bb91f8`.
 Somente `docs/videos/pilot-1-1/` foi replicado da branch antiga. A branch `feat/video-pilot-1-1` continua intacta.
-Nenhum arquivo do app, Firebase, progresso, Python, navegação ou lógica pedagógica foi alterado.
+Integração limitada ao override lesson_1_1 em assets/content/video_urls.json; Firebase, progresso, Python, navegação e lógica pedagógica preservados.
 O arquivo da aula 1.1 na main mantém o mesmo conteúdo usado no roteiro (blob `96ebe507eff4d4837a511d4b27d2cc0c3d36a00b`).
-Nenhum vídeo do app foi substituído. Aprovar o piloto antes da integração e antes de produzir os demais módulos.
+Link ativo da aula 1.1 atualizado no PR #7 após aprovação. Endereço original preservado no conteúdo da aula e nos metadados.
 
 ## Validação realizada
 - Saídas dos exemplos e NameError conferidos em execução Python.
@@ -29,7 +29,7 @@ Nenhum vídeo do app foi substituído. Aprovar o piloto antes da integração e 
 - Legendas contêm todas as 566 palavras do roteiro; similaridade da transcrição 96,82%.
 - Imagens conferidas em 1s, 109,28s, 182,14s e 232,08s: legendas visíveis, código e saída separados, erro ampliado e pergunta final sem resposta.
 - Uploads concluídos com HTTP 200 e confirmados no Higgsfield.
-- Não houve teste de reprodução no app instalado em Android ou Windows, nem aprovação humana completa da voz/ritmo. Estes ficam para revisão do piloto.
+- Não houve teste de reprodução no app instalado em Android ou Windows, a voz e o estilo foram aprovados pelo usuário. A reprodução nos dispositivos continua pendente.
 - Demonstração é ilustrada, não gravação da interface do app.
 
 ## Histórico e limites
@@ -88,6 +88,6 @@ Não alterar progresso, conta, Firebase, laboratório Python ou lógica pedagóg
 
 ## Resultado deste lote
 Criado: 1 piloto legendado da aula 1.1.
-Substituídos no app: 0.
-Restantes: demais 12 aulas, condicionadas à aprovação do estilo.
-Próximo passo: avaliação do usuário sobre voz, legibilidade, ritmo e clareza.
+Links atualizados no PR: 1 (lesson_1_1).
+Restantes: demais 12 aulas; estilo aprovado, novas gerações dependem de orçamento de créditos.
+Próximo passo: Módulo 0; informar orçamento antes de gerar narração.
