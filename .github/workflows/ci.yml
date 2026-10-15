@@ -4,7 +4,6 @@ on:
   push:
     branches: [main]
   pull_request:
-    branches: [main]
   workflow_dispatch:
 
 permissions:
@@ -13,7 +12,7 @@ permissions:
 jobs:
   android:
     name: Android APK
-    timeout-minutes: 30
+    timeout-minutes: 35
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -24,6 +23,8 @@ jobs:
           cache: true
       - name: Gerar arquivos de plataforma
         run: flutter create --platforms=android,windows --project-name curso_programacao_zero --org br.com.cursozero .
+      - name: Preparar segurança e rede nativas
+        run: python scripts/prepare_native_platforms.py
       - run: flutter pub get
       - run: flutter analyze
       - run: flutter test --timeout 60s --reporter expanded
@@ -40,7 +41,7 @@ jobs:
 
   windows:
     name: Windows EXE
-    timeout-minutes: 40
+    timeout-minutes: 45
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
@@ -51,6 +52,8 @@ jobs:
           cache: true
       - name: Gerar arquivos de plataforma
         run: flutter create --platforms=android,windows --project-name curso_programacao_zero --org br.com.cursozero .
+      - name: Preparar segurança e rede nativas
+        run: python scripts/prepare_native_platforms.py
       - run: flutter pub get
       - run: flutter analyze
       - run: flutter test --timeout 60s --reporter expanded
