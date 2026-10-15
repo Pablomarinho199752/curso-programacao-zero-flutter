@@ -18,7 +18,7 @@ export default async ({ project }) => {
  function base(si){return [R(0,0,1920,1080,'#101827',0),R(90,67,7,35,'#55D9E8',3),T('CÓDIGO ZERO',114,66,25,'#55D9E8'),T('AULA 1.1  ·  '+labels[si],1260,72,18,'#A8B8CF',570),T(titles[si],90,140,56),T('Demonstração didática · saídas conferidas em Python',90,1020,17,'#8B9BB5'),R(90,994,1740*(si+1)/7,3,'#55D9E8',0)];}
  function line(code,i,y=316){const tokens=code.match(/"[^"]*"|\b\d+(?:\.\d+)?\b|\bprint\b|[^"\d]+?/g)||[];let x=165;let nodes=[T(String(i+1),115,y+44*i,26,'#63738C',40,'JetBrains Mono')]; for(const token of tokens){let col=token.startsWith('"')?'#55D9E8':/^\d/.test(token)?'#B69CFF':token==='print'?'#E8BC78':'#EEF4FF';nodes.push(T(token,x,y+44*i,34,col,1700-x,'JetBrains Mono'));x+=token.length*20.4;}return nodes;}
  function editor(code,output='',focus=-1,note='',pointer=null,error=false){
-  return [R(90,258,1740,370),T('exemplo.py',120,278,18,'#A8B8CF'),R(1600,272,190,46,'#55D9E8',10),T('▶ Executar',1624,281,20,'#101827',180),
+  return [R(90,258,1740,370),T('exemplo.py',120,278,18,'#A8B8CF'),R(1600,272,190,46,'#55D9E8',10),T('Executar',1624,281,20,'#101827',180),
    ...(focus>=0?[R(149,312+44*focus,1395,43,'#293D58',7)]:[]),...code.flatMap((l,i)=>line(l,i)),
    R(90,650,1740,190),T(error?'SAÍDA · ERRO NA LINHA 2':'SAÍDA',118,665,17,error?'#FFB4A9':'#A8B8CF'),
    T(output,120,700,30,error?'#FFB4A9':'#55D9E8',1620,'JetBrains Mono'),T(note,100,851,24,'#B69CFF',1720),...(pointer?[cursor(...pointer)]:[])];
@@ -39,27 +39,27 @@ export default async ({ project }) => {
  const code=['produto = "Suco"','quantidade = 2','preco = 4.5'];
  const n=cue('Quantidade está associada'),decimal=cue('Preco está associado'),until=cue('Até aqui');
  segment(2,s[2],n,editor(code,'Ainda não executamos.',1,'Texto entre aspas. Números sem aspas.',[455,370]));
- segment(2,n,decimal,editor(code,'Ainda não executamos.',1,'quantidade → número inteiro',[445,370]));
- segment(2,decimal,until,editor(code,'Ainda não executamos.',2,'preco → número decimal. Em Python, use ponto.',[410,413]));
+ segment(2,n,decimal,editor(code,'Ainda não executamos.',1,'quantidade  >  número inteiro',[445,370]));
+ segment(2,decimal,until,editor(code,'Ainda não executamos.',2,'preco  >  número decimal. Em Python, use ponto.',[410,413]));
  segment(2,until,s[3],editor(code,'Nenhum print: nenhuma saída.',-1,'Dar nomes aos dados não os mostra na tela.'));
  const full=[...code,'print(produto)','print(quantidade)','print(preco)'];
  const run=cue('Agora executamos'),out=cue('Aparece Suco');
  segment(3,s[3],run,editor(full,'Qual será a primeira saída?',3,'Faça sua previsão antes de executar.',[460,455]));
  segment(3,run,out,editor(full,'Executando…',3,'Consultando os nomes.',[1705,294]));
  segment(3,out,s[4],editor(full,'Suco\n2\n4.5',-1,'O código fica em cima. O resultado, embaixo.'));
- const compare=['produto = "Suco"','print("produto")','print(produto)'];const r5=cue('Execute e observe'),c5=cue('Com aspas'),n5=cue('Sem aspas');
+ const compare=['produto = "Suco"','print("produto")','print(produto)'];const r5=cue('Execute e observe'),c5=cue('Com aspas',s[4]),n5=cue('Sem aspas',s[4]);
  segment(4,s[4],r5,editor(compare,'Observe a diferença entre as duas linhas.',1,'Aspas indicam um texto literal.',[400,370]));
  segment(4,r5,c5,editor(compare,'produto\nSuco',-1,'Duas instruções parecidas; duas saídas diferentes.',[1705,294]));
- segment(4,c5,n5,editor(compare,'produto\nSuco',1,'print("produto") → mostra a palavra produto.',[400,370]));
- segment(4,n5,s[5],editor(compare,'produto\nSuco',2,'print(produto) → consulta o valor Suco.',[380,414]));
- const bad=['produto = "Suco"','print(Produto)'];const err=cue('Ao executar'),hyp=cue('Compare letra por letra'),fix=cue('Vamos mudar apenas'),success=cue('Agora aparece Suco');
+ segment(4,c5,n5,editor(compare,'produto\nSuco',1,'print("produto")  >  mostra a palavra produto.',[400,370]));
+ segment(4,n5,s[5],editor(compare,'produto\nSuco',2,'print(produto)  >  consulta o valor Suco.',[380,414]));
+ const bad=['produto = "Suco"','print(Produto)'];const err=cue('Ao executar',s[5]),hyp=cue('Compare letra por letra'),fix=cue('Vamos mudar apenas'),success=cue('Agora aparece Suco');
  segment(5,s[5],err,editor(bad,'Antes de executar: os nomes são iguais?',1,'Um erro de propósito.',[370,370]));
  segment(5,err,hyp,editor(bad,"NameError: name 'Produto' is not defined.",1,'Leia a linha indicada. Depois, compare os nomes.',[1705,294],true));
- segment(5,hyp,fix,[R(90,290,1740,390),T('produto',180,340,88,'#55D9E8',700,'JetBrains Mono'),T('Produto',1050,340,88,'#FFB4A9',700,'JetBrains Mono'),T('NOME CRIADO',180,505,27,'#A8B8CF'),T('NOME USADO NO PRINT',1050,505,27,'#A8B8CF'),T('p ≠ P',760,590,50,'#B69CFF'),T('Hipótese: a primeira letra mudou.',110,750,35),cursor(1065,447)]);
- segment(5,fix,success,editor(['produto = "Suco"','print(produto)'],'Vamos testar a mudança.',1,'Uma alteração: P → p.',[370,370]));
- segment(5,success,s[6],editor(['produto = "Suco"','print(produto)'],'Suco',1,'Hipótese → mudança pequena → novo teste.',[1705,294]));
+ segment(5,hyp,fix,[R(90,290,1740,390),T('produto',180,340,88,'#55D9E8',700,'JetBrains Mono'),T('Produto',1050,340,88,'#FFB4A9',700,'JetBrains Mono'),T('NOME CRIADO',180,505,27,'#A8B8CF'),T('NOME USADO NO PRINT',1050,505,27,'#A8B8CF'),T('p e P são nomes diferentes',500,590,40,'#B69CFF'),T('Hipótese: a primeira letra mudou.',110,750,35),cursor(1065,447)]);
+ segment(5,fix,success,editor(['produto = "Suco"','print(produto)'],'Vamos testar a mudança.',1,'Uma alteração: P  >  p.',[370,370]));
+ segment(5,success,s[6],editor(['produto = "Suco"','print(produto)'],'Suco',1,'Hipótese  >  mudança pequena  >  novo teste.',[1705,294]));
  const predict=cue('Agora é a sua vez');
- segment(6,s[6],predict,[R(90,290,1740,480),T('01   Nome → valor',150,340,50,'#55D9E8'),T('02   print consulta o nome',150,465,50),T('03   Compare a escrita ao investigar erros',150,590,44,'#B69CFF')]);
+ segment(6,s[6],predict,[R(90,290,1740,480),T('01   Nome  >  valor',150,340,50,'#55D9E8'),T('02   print consulta o nome',150,465,50),T('03   Compare a escrita ao investigar erros',150,590,44,'#B69CFF')]);
  segment(6,predict,end,editor(['quantidade = 2','quantidade = 5','print(quantidade)'],'Qual valor será mostrado?',-1,'Volte ao app. Faça sua previsão e teste.'));
  await p.frame(s[3]+3,root+'/frame-code.png');
  await p.frame(hyp+1,root+'/frame-error.png');
