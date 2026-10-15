@@ -4,6 +4,7 @@ import '../models/course_models.dart';
 import '../services/progress_store.dart';
 import '../widgets/status_chip.dart';
 import 'lesson_destination.dart';
+import 'module_mastery_screen.dart';
 
 class ModulesScreen extends StatelessWidget {
   const ModulesScreen({
@@ -43,6 +44,7 @@ class ModulesScreen extends StatelessWidget {
           final lessonIds = module.lessons.map((lesson) => lesson.id);
           final completion = progressStore.completionFor(lessonIds);
           final previousNumber = index > 0 ? modules[index - 1].number : null;
+          final nextNumber = index + 1 < modules.length ? modules[index + 1].number : null;
 
           return Padding(
             padding: const EdgeInsets.only(bottom: 18),
@@ -205,6 +207,90 @@ class ModulesScreen extends StatelessWidget {
                       ),
                       child: const Text(
                         'Conteúdo em produção. A estrutura deste módulo já faz parte da trilha e as aulas serão adicionadas antes de ele ser liberado para estudo.',
+                      ),
+                    ),
+                  ],
+                  if (unlocked &&
+                      module.number == 0 &&
+                      module.lessons.isNotEmpty &&
+                      completion >= 1 &&
+                      !mastered) ...[
+                    const SizedBox(height: 12),
+                    Container(
+                      key: const ValueKey('module_0_mastery_callout'),
+                      width: double.infinity,
+                      padding: const EdgeInsets.all(18),
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [
+                            scheme.primaryContainer,
+                            scheme.secondaryContainer,
+                          ],
+                        ),
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              Icon(Icons.workspace_premium_rounded, color: scheme.primary),
+                              const SizedBox(width: 9),
+                              Expanded(
+                                child: Text(
+                                  'Percurso concluído. Falta provar domínio.',
+                                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                                        fontWeight: FontWeight.w900,
+                                      ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 8),
+                          Text(
+                            'Faça um desafio curto de previsão, correção, criação e explicação. Ao concluir as quatro evidências, o Módulo $nextNumber abre automaticamente.',
+                          ),
+                          const SizedBox(height: 14),
+                          FilledButton.icon(
+                            key: const ValueKey('module_0_mastery_button'),
+                            onPressed: () => Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (_) => Module0MasteryScreen(
+                                  progressStore: progressStore,
+                                ),
+                              ),
+                            ),
+                            icon: const Icon(Icons.lock_open_rounded),
+                            label: const Text('Fazer desafio de domínio'),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                  if (unlocked && module.number == 0 && mastered) ...[
+                    const SizedBox(height: 12),
+                    Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: Colors.green.shade50,
+                        borderRadius: BorderRadius.circular(20),
+                        border: Border.all(color: Colors.green.shade200),
+                      ),
+                      child: Row(
+                        children: [
+                          Icon(Icons.verified_rounded, color: Colors.green.shade700),
+                          const SizedBox(width: 10),
+                          Expanded(
+                            child: Text(
+                              'Domínio comprovado pelo desafio prático. O Módulo $nextNumber está liberado.',
+                              style: TextStyle(
+                                color: Colors.green.shade900,
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ],
