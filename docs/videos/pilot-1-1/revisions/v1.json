@@ -1,0 +1,52 @@
+{
+  "title": "Variáveis: nomes para os dados",
+  "module": "module_1",
+  "lesson": "lesson_1_1",
+  "durationSeconds": 268.512,
+  "language": "pt-BR",
+  "resolution": "1920x1080",
+  "fps": 24,
+  "status": "rendered_awaiting_user_approval",
+  "videoUrl": "https://d2ol7oe51mr4n9.cloudfront.net/user_3Ke119x65sh4FYjNFHHZNJMSh6l/704de7de-edc4-45f5-a2e0-3c6785fb31c2.mp4",
+  "sourcesUrl": "https://d2ol7oe51mr4n9.cloudfront.net/user_3Ke119x65sh4FYjNFHHZNJMSh6l/3ed97a53-0b89-4868-8271-183f2ed40c2a.zip",
+  "oldVideoUrl": "https://share.descript.com/view/LYmNVlmGLyW",
+  "baseCommit": "c1ef42fe1fdaa17ac747bcb2769960b3e6bb91f8",
+  "branch": "feat/video-pilot-main-20261015",
+  "preservedBranch": "feat/video-pilot-1-1",
+  "tools": {
+    "narration": "Runway",
+    "voice": "Leslie",
+    "voiceSpeed": 0.9,
+    "narrationTaskId": "c7fff88d-3866-4f2e-bf1e-c547853e60ee",
+    "composition": "Higgsfield Higgsedit",
+    "captions": "faster-whisper + bundled clean caption burner"
+  },
+  "validation": {
+    "scriptWords": 566,
+    "captionWords": 566,
+    "transcriptionSimilarity": 0.969217238346526,
+    "durationChecks": "passed",
+    "sampledVisualFramesSeconds": [
+      1,
+      134,
+      203,
+      263
+    ],
+    "actualAndroidWindowsPlayback": "not_tested"
+  },
+  "editingNotes": [
+    "Sem avatar, música ou efeitos sonoros.",
+    "Demonstração ilustrada identificada; saídas conferidas em Python.",
+    "Cursor e realce de código; comparação ampliada produto/Produto.",
+    "Pergunta final sem revelar resposta.",
+    "Legendas gravadas no vídeo.",
+    "Revisão humana completa de voz, ritmo e estilo ainda pendente."
+  ],
+  "limits": [
+    "Descript: geração bloqueada por créditos insuficientes.",
+    "HeyGen: Starfish incompatível; tentativa Orca terminou em timeout sem áudio retornado.",
+    "Runway: narração concluída; 68 créditos consumidos na geração registrada.",
+    "Nenhum bloqueio impede a entrega deste piloto."
+  ],
+  "integration": "Nenhum link do app substituído; aguarda aprovação."
+}
