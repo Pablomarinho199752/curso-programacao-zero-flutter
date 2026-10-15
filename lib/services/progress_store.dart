@@ -1,10 +1,15 @@
 import 'dart:convert';
+
 import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
 import '../models/course_models.dart';
+
+int _clampStep(num value) => value.toInt().clamp(0, 7);
 
 class LessonProgress {
   int step = 0;
+  int updatedAtMs = 0;
   final Set<int> completed = {};
   final Map<String, String> drafts = {};
   final Set<String> checks = {};
@@ -12,61 +17,135 @@ class LessonProgress {
   final Map<String, int> answers = {};
 
   Map<String, dynamic> toJson() => {
-    'step': step,
-    'completed': completed.toList(),
-    'drafts': drafts,
-    'checks': checks.toList(),
-    'attempts': attempts,
-    'answers': answers,
-  };
+        'step': step,
+        'updatedAtMs': updatedAtMs,
+        'completed': completed.toList()..sort(),
+        'drafts': drafts,
+        'checks': checks.toList()..sort(),
+        'attempts': attempts,
+        'answers': answers,
+      };
 
   factory LessonProgress.fromJson(Map<String, dynamic> json) {
-    final p = LessonProgress();
-    p.step = (json['step'] as int).clamp(0, 7);
-    p.completed.addAll(
-      (json['completed'] as List).cast<int>().where((n) => n >= 0 && n < 8),
-    );
-    p.drafts.addAll((json['drafts'] as Map).cast<String, String>());
-    p.checks.addAll((json['checks'] as List).cast<String>());
-    p.attempts.addAll((json['attempts'] as Map).cast<String, int>());
-    p.answers.addAll((json['answers'] as Map).cast<String, int>());
-    return p;
+    final progress = LessonProgress();
+    final rawStep = json['step'];
+    progress.step = rawStep is num ? _clampStep(rawStep) : 0;
+    final rawUpdatedAt = json['updatedAtMs'];
+    progress.updatedAtMs = rawUpdatedAt is num ? rawUpdatedAt.toInt() : 0;
+
+    final completed = json['completed'];
+    if (completed is List) {
+      progress.completed.addAll(
+        completed
+            .whereType<num>()
+            .map((value) => value.toInt())
+            .where((value) => value >= 0 && value < 8),
+      );
+    }
+
+    final drafts = json['drafts'];
+    if (drafts is Map) {
+      for (final entry in drafts.entries) {
+        if (entry.key is String && entry.value is String) {
+          progress.drafts[entry.key as String] = entry.value as String;
+        }
+      }
+    }
+
+    final checks = json['checks'];
+    if (checks is List) {
+      progress.checks.addAll(checks.whereType<String>());
+    }
+
+    final attempts = json['attempts'];
+    if (attempts is Map) {
+      for (final entry in attempts.entries) {
+        if (entry.key is String && entry.value is num) {
+          progress.attempts[entry.key as String] = (entry.value as num).toInt();
+        }
+      }
+    }
+
+    final answers = json['answers'];
+    if (answers is Map) {
+      for (final entry in answers.entries) {
+        if (entry.key is String && entry.value is num) {
+          progress.answers[entry.key as String] = (entry.value as num).toInt();
+        }
+      }
+    }
+    return progress;
   }
+
   LessonProgress();
 }
 
 class ProgressStore extends ChangeNotifier {
+  static const _lessonStorageKey = 'onboarding_v1';
+  static const _masteryStorageKey = 'module_mastery_v1';
+  static const _metaStorageKey = 'course_meta_v1';
+
   final Map<String, LessonProgress> _lessons = {};
   final Set<String> _masteredModules = {};
   SharedPreferences? _prefs;
   Future<void> _pending = Future.value();
+
   String? saveError;
   bool recoveredData = false;
+  String? _lastLessonId;
+  int _lastStep = 0;
+  int _updatedAtMs = 0;
+
+  String? get lastLessonId => _lastLessonId;
+  int get lastStep => _lastStep;
+  int get updatedAtMs => _updatedAtMs;
 
   Future<void> initialize() async {
     try {
       _prefs = await SharedPreferences.getInstance();
-      final raw = _prefs!.getString('onboarding_v1');
+      final raw = _prefs!.getString(_lessonStorageKey);
       if (raw != null) {
-        final decoded = (jsonDecode(raw) as Map).cast<String, dynamic>();
-        for (final entry in decoded.entries) {
-          try {
-            _lessons[entry.key] = LessonProgress.fromJson(
-              (entry.value as Map).cast<String, dynamic>(),
-            );
-          } catch (_) {
-            recoveredData = true;
+        final decoded = jsonDecode(raw);
+        if (decoded is Map) {
+          for (final entry in decoded.entries) {
+            if (entry.key is! String || entry.value is! Map) continue;
+            try {
+              _lessons[entry.key as String] = LessonProgress.fromJson(
+                Map<String, dynamic>.from(entry.value as Map),
+              );
+            } catch (_) {
+              recoveredData = true;
+            }
           }
         }
       }
-      final masteryRaw = _prefs!.getStringList('module_mastery_v1');
+
+      final masteryRaw = _prefs!.getStringList(_masteryStorageKey);
       if (masteryRaw != null) {
-        _masteredModules.addAll(masteryRaw.where((id) => id.startsWith('module_')));
+        _masteredModules.addAll(
+          masteryRaw.where((id) => id.startsWith('module_')),
+        );
+      }
+
+      final metaRaw = _prefs!.getString(_metaStorageKey);
+      if (metaRaw != null) {
+        final decoded = jsonDecode(metaRaw);
+        if (decoded is Map) {
+          final meta = Map<String, dynamic>.from(decoded);
+          final lessonId = meta['lastLessonId'];
+          if (lessonId is String && lessonId.startsWith('lesson_')) {
+            _lastLessonId = lessonId;
+          }
+          final step = meta['lastStep'];
+          _lastStep = step is num ? _clampStep(step) : 0;
+          final updated = meta['updatedAtMs'];
+          _updatedAtMs = updated is num ? updated.toInt() : 0;
+        }
       }
     } catch (_) {
       recoveredData = true;
       saveError =
-          'Não foi possível recuperar o progresso. Você pode estudar e tentar salvar novamente.';
+          'Não foi possível recuperar todo o progresso. Você pode continuar estudando e tentar salvar novamente.';
     }
     notifyListeners();
   }
@@ -75,19 +154,123 @@ class ProgressStore extends ChangeNotifier {
       _lessons.putIfAbsent(id, LessonProgress.new);
 
   Future<void> update(String id, void Function(LessonProgress) change) {
-    change(forLesson(id));
+    final now = DateTime.now().millisecondsSinceEpoch;
+    final progress = forLesson(id);
+    change(progress);
+    progress.updatedAtMs = now;
+    _lastLessonId = id;
+    _lastStep = _clampStep(progress.step);
+    _updatedAtMs = now;
     notifyListeners();
     return save();
   }
 
+  Future<void> markVisited(String lessonId, int step) {
+    final now = DateTime.now().millisecondsSinceEpoch;
+    _lastLessonId = lessonId;
+    _lastStep = _clampStep(step);
+    _updatedAtMs = now;
+    notifyListeners();
+    return save();
+  }
+
+  Map<String, dynamic> cloudState() => {
+        'schemaVersion': 2,
+        'updatedAtMs': _updatedAtMs,
+        'lastLessonId': _lastLessonId,
+        'lastStep': _lastStep,
+        'masteredModules': _masteredModules.toList()..sort(),
+        'lessons': _lessons.map(
+          (key, value) => MapEntry(key, value.toJson()),
+        ),
+      };
+
+  Future<void> mergeCloudState(Map<String, dynamic> remote) async {
+    final remoteLessons = remote['lessons'];
+    if (remoteLessons is Map) {
+      for (final entry in remoteLessons.entries) {
+        if (entry.key is! String || entry.value is! Map) continue;
+        final lessonId = entry.key as String;
+        final incoming = LessonProgress.fromJson(
+          Map<String, dynamic>.from(entry.value as Map),
+        );
+        final local = _lessons[lessonId];
+        if (local == null) {
+          _lessons[lessonId] = incoming;
+          continue;
+        }
+
+        local.completed.addAll(incoming.completed);
+        local.checks.addAll(incoming.checks);
+        local.step = local.step > incoming.step ? local.step : incoming.step;
+
+        final attemptKeys = <String>{
+          ...local.attempts.keys,
+          ...incoming.attempts.keys,
+        };
+        for (final key in attemptKeys) {
+          final localValue = local.attempts[key] ?? 0;
+          final remoteValue = incoming.attempts[key] ?? 0;
+          local.attempts[key] =
+              localValue > remoteValue ? localValue : remoteValue;
+        }
+
+        if (incoming.updatedAtMs > local.updatedAtMs) {
+          local.drafts
+            ..clear()
+            ..addAll(incoming.drafts);
+          local.answers
+            ..clear()
+            ..addAll(incoming.answers);
+          local.updatedAtMs = incoming.updatedAtMs;
+        }
+      }
+    }
+
+    final remoteMastery = remote['masteredModules'];
+    if (remoteMastery is List) {
+      _masteredModules.addAll(
+        remoteMastery.whereType<String>().where((id) => id.startsWith('module_')),
+      );
+    }
+
+    final remoteUpdated = remote['updatedAtMs'];
+    final remoteUpdatedAtMs = remoteUpdated is num ? remoteUpdated.toInt() : 0;
+    if (remoteUpdatedAtMs > _updatedAtMs) {
+      final remoteLastLesson = remote['lastLessonId'];
+      if (remoteLastLesson is String && remoteLastLesson.startsWith('lesson_')) {
+        _lastLessonId = remoteLastLesson;
+      }
+      final remoteStep = remote['lastStep'];
+      if (remoteStep is num) {
+        _lastStep = _clampStep(remoteStep);
+      }
+      _updatedAtMs = remoteUpdatedAtMs;
+    }
+
+    notifyListeners();
+    await save();
+  }
+
   Future<void> save() {
-    final snapshot = jsonEncode(
+    final lessonSnapshot = jsonEncode(
       _lessons.map((key, value) => MapEntry(key, value.toJson())),
     );
+    final masterySnapshot = _masteredModules.toList()..sort();
+    final metaSnapshot = jsonEncode({
+      'lastLessonId': _lastLessonId,
+      'lastStep': _lastStep,
+      'updatedAtMs': _updatedAtMs,
+    });
+
     _pending = _pending.then((_) async {
       try {
         _prefs ??= await SharedPreferences.getInstance();
-        if (!await _prefs!.setString('onboarding_v1', snapshot)) {
+        final lessonOk = await _prefs!.setString(_lessonStorageKey, lessonSnapshot);
+        final masteryOk =
+            await _prefs!.setStringList(_masteryStorageKey, masterySnapshot);
+        final metaOk = await _prefs!.setString(_metaStorageKey, metaSnapshot);
+        if (!lessonOk || !masteryOk || !metaOk) {
           throw StateError('save failed');
         }
         saveError = null;
@@ -100,7 +283,8 @@ class ProgressStore extends ChangeNotifier {
     return _pending;
   }
 
-  bool isModuleMastered(String moduleId) => _masteredModules.contains(moduleId);
+  bool isModuleMastered(String moduleId) =>
+      _masteredModules.contains(moduleId);
 
   bool isModuleUnlocked(List<CourseModule> modules, int index) {
     if (index <= 0) return true;
@@ -108,33 +292,23 @@ class ProgressStore extends ChangeNotifier {
   }
 
   Future<void> setModuleMastered(String moduleId, bool mastered) {
+    final now = DateTime.now().millisecondsSinceEpoch;
     if (mastered) {
       _masteredModules.add(moduleId);
     } else {
       _masteredModules.remove(moduleId);
     }
+    _updatedAtMs = now;
     notifyListeners();
-    final masterySnapshot = _masteredModules.toList()..sort();
-    _pending = _pending.then((_) async {
-      try {
-        _prefs ??= await SharedPreferences.getInstance();
-        if (!await _prefs!.setStringList('module_mastery_v1', masterySnapshot)) {
-          throw StateError('save failed');
-        }
-        saveError = null;
-      } catch (_) {
-        saveError =
-            'Não foi possível salvar no aparelho. Mantenha o app aberto e tente novamente.';
-      }
-      notifyListeners();
-    });
-    return _pending;
+    return save();
   }
 
   SkillStatus statusFor(String id) {
-    final p = forLesson(id);
-    if (p.completed.length == 8) return SkillStatus.mastered;
-    return p.completed.isNotEmpty || p.drafts.isNotEmpty || p.checks.isNotEmpty
+    final progress = forLesson(id);
+    if (progress.completed.length == 8) return SkillStatus.mastered;
+    return progress.completed.isNotEmpty ||
+            progress.drafts.isNotEmpty ||
+            progress.checks.isNotEmpty
         ? SkillStatus.inProgress
         : SkillStatus.notStarted;
   }
@@ -142,7 +316,10 @@ class ProgressStore extends ChangeNotifier {
   double completionFor(Iterable<String> ids) {
     final all = ids.toList();
     if (all.isEmpty) return 0;
-    return all.fold<int>(0, (sum, id) => sum + forLesson(id).completed.length) /
+    return all.fold<int>(
+          0,
+          (sum, id) => sum + forLesson(id).completed.length,
+        ) /
         (all.length * 8);
   }
 }

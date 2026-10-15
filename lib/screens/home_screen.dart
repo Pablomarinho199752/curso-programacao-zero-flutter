@@ -1,9 +1,21 @@
 import 'package:flutter/material.dart';
 
 import '../models/course_models.dart';
+import '../services/learning_coach_service.dart';
 import '../services/progress_store.dart';
 import '../widgets/status_chip.dart';
 import 'lesson_destination.dart';
+
+const _homeStepLabels = [
+  'Explicação',
+  'Videoaula',
+  'Exemplo',
+  'Prática',
+  'Desafio',
+  'Correção',
+  'Mini projeto',
+  'Revisão',
+];
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({
@@ -17,19 +29,43 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    const coach = LearningCoachService();
     final scheme = Theme.of(context).colorScheme;
     final unlockedModules = modules.asMap().entries
         .where((entry) => progressStore.isModuleUnlocked(modules, entry.key))
         .map((entry) => entry.value)
         .toList();
     final lessons = unlockedModules.expand((module) => module.lessons).toList();
-    final progress = progressStore.completionFor(lessons.map((lesson) => lesson.id));
-    final nextLesson = lessons.cast<CourseLesson?>().firstWhere(
-      (lesson) =>
-          lesson != null &&
-          progressStore.statusFor(lesson.id) != SkillStatus.mastered,
-      orElse: () => lessons.isEmpty ? null : lessons.last,
-    );
+    final progress =
+        progressStore.completionFor(lessons.map((lesson) => lesson.id));
+
+    final fallbackLesson = lessons.cast<CourseLesson?>().firstWhere(
+          (lesson) =>
+              lesson != null &&
+              progressStore.statusFor(lesson.id) != SkillStatus.mastered,
+          orElse: () => lessons.isEmpty ? null : lessons.last,
+        );
+
+    CourseLesson? lastLesson;
+    final lastLessonId = progressStore.lastLessonId;
+    if (lastLessonId != null) {
+      for (final lesson in lessons) {
+        if (lesson.id == lastLessonId) {
+          lastLesson = lesson;
+          break;
+        }
+      }
+    }
+    final nextLesson = lastLesson ?? fallbackLesson;
+    final resumedFromCloud = lastLesson != null;
+    final resumeStep = progressStore.lastStep.clamp(0, 7).toInt();
+
+    final dueReviews = lessons
+        .where(
+          (lesson) => coach.reviewDue(progressStore.forLesson(lesson.id)),
+        )
+        .toList();
+
     final completedSteps = lessons.fold<int>(
       0,
       (total, lesson) =>
@@ -232,18 +268,39 @@ class HomeScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 6),
                   Text(
-                    'O cálculo usa somente os módulos já desbloqueados. Concluir o percurso não significa dominar sozinho.',
+                    dueReviews.isEmpty
+                        ? 'O cálculo usa somente os módulos já desbloqueados. Concluir o percurso não significa dominar sozinho.'
+                        : '${dueReviews.length} revisão${dueReviews.length == 1 ? '' : 'ões'} pronta${dueReviews.length == 1 ? '' : 's'} para fortalecer o que você já estudou.',
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                           color: scheme.onSurfaceVariant,
                         ),
                   ),
+                  if (dueReviews.isNotEmpty) ...[
+                    const SizedBox(height: 12),
+                    OutlinedButton.icon(
+                      onPressed: () => Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (_) => lessonDestination(
+                            lesson: dueReviews.first,
+                            progressStore: progressStore,
+                          ),
+                        ),
+                      ),
+                      icon: const Icon(Icons.psychology_alt_rounded),
+                      label: const Text('Fazer revisão agora'),
+                    ),
+                  ],
                 ],
               ),
             );
 
             final continueCard = _InfoCard(
               icon: Icons.play_circle_fill_rounded,
-              title: progress == 1 ? 'Revisar módulo atual' : 'Continuar estudando',
+              title: resumedFromCloud
+                  ? 'Continuar de onde parei'
+                  : progress == 1
+                      ? 'Revisar módulo atual'
+                      : 'Continuar estudando',
               accent: true,
               child: nextLesson == null
                   ? const Text('Nenhuma aula disponível.')
@@ -264,6 +321,16 @@ class HomeScreen extends StatelessWidget {
                                 fontWeight: FontWeight.w800,
                               ),
                         ),
+                        if (resumedFromCloud) ...[
+                          const SizedBox(height: 8),
+                          Text(
+                            'Última etapa: ${_homeStepLabels[resumeStep]}',
+                            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                  color: scheme.onSurfaceVariant,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                          ),
+                        ],
                         const SizedBox(height: 12),
                         StatusChip(status: progressStore.statusFor(nextLesson.id)),
                         const SizedBox(height: 14),
@@ -279,14 +346,18 @@ class HomeScreen extends StatelessWidget {
                               ),
                             ),
                             icon: Icon(
-                              progress == 1
-                                  ? Icons.replay_rounded
-                                  : Icons.play_arrow_rounded,
+                              resumedFromCloud
+                                  ? Icons.play_arrow_rounded
+                                  : progress == 1
+                                      ? Icons.replay_rounded
+                                      : Icons.play_arrow_rounded,
                             ),
                             label: Text(
-                              progress == 1
-                                  ? 'Revisar percurso'
-                                  : 'Continuar agora',
+                              resumedFromCloud
+                                  ? 'Retomar exatamente daqui'
+                                  : progress == 1
+                                      ? 'Revisar percurso'
+                                      : 'Continuar agora',
                             ),
                           ),
                         ),
