@@ -2,14 +2,19 @@
 
 **Renderizado e legendado. Aguardando aprovação do usuário.**
 
-- [Assistir ao piloto MP4](https://d2ol7oe51mr4n9.cloudfront.net/user_3Ke119x65sh4FYjNFHHZNJMSh6l/704de7de-edc4-45f5-a2e0-3c6785fb31c2.mp4)
-- [Baixar fontes completas, narração, legendas e projeto](https://d2ol7oe51mr4n9.cloudfront.net/user_3Ke119x65sh4FYjNFHHZNJMSh6l/3ed97a53-0b89-4868-8271-183f2ed40c2a.zip)
+- [Assistir ao piloto MP4](https://d2ol7oe51mr4n9.cloudfront.net/user_3Ke119x65sh4FYjNFHHZNJMSh6l/3625e808-0782-4707-8583-f32a9ec65657.mp4)
+- [Baixar fontes completas, narração, legendas e projeto](https://d2ol7oe51mr4n9.cloudfront.net/user_3Ke119x65sh4FYjNFHHZNJMSh6l/16458efd-0bc7-420c-b110-a757a73f0276.zip)
 - Aula: `lesson_1_1`, módulo 1.
-- Duração: **4min28s** (268,512 s). Formato: 1920×1080, 24 fps, H.264/AAC.
-- Narração: Runway, voz Leslie, português brasileiro, velocidade 0,9.
+- Duração: **3min58s** (238,084 s). Formato: 1920×1080, 24 fps, H.264/AAC.
+- Narração: Runway, voz Maya, português brasileiro, velocidade 1,0.
 - Montagem: Higgsfield/Higgsedit. Legendas: faster-whisper e burner clean.
 - Roteiro: `pilot-script.json`. Storyboard inicial: `preview.html`. Composição: `edit.jsx`. Metadados: `metadata.json`.
 - Link antigo preservado: https://share.descript.com/view/LYmNVlmGLyW
+
+## Revisão de voz
+O usuário gostou do visual e pediu uma voz feminina mais jovem. Esta revisão usa Maya, de perfil jovem e conversacional. Roteiro e identidade visual preservados; cenas e legendas reconstruídas para o novo áudio.
+[Versão anterior com Leslie](https://d2ol7oe51mr4n9.cloudfront.net/user_3Ke119x65sh4FYjNFHHZNJMSh6l/704de7de-edc4-45f5-a2e0-3c6785fb31c2.mp4) preservada para comparação. Metadados anteriores em `revisions/v1.json`.
+A aprovação da nova voz ainda está pendente. Nenhum outro módulo foi produzido.
 
 ## Base atual e preservação
 Nova branch `feat/video-pilot-main-20261015` criada diretamente da main `c1ef42fe1fdaa17ac747bcb2769960b3e6bb91f8`.
@@ -21,8 +26,8 @@ Nenhum vídeo do app foi substituído. Aprovar o piloto antes da integração e 
 ## Validação realizada
 - Saídas dos exemplos e NameError conferidos em execução Python.
 - Áudio e vídeo chegam ao final; diferença de duração inferior a 0,2 s.
-- Legendas contêm todas as 566 palavras do roteiro; similaridade da transcrição 96,92%.
-- Imagens conferidas em 1s, 134s, 203s e 263s: legendas visíveis, código e saída separados, erro ampliado e pergunta final sem resposta.
+- Legendas contêm todas as 566 palavras do roteiro; similaridade da transcrição 96,82%.
+- Imagens conferidas em 1s, 109,28s, 182,14s e 232,08s: legendas visíveis, código e saída separados, erro ampliado e pergunta final sem resposta.
 - Uploads concluídos com HTTP 200 e confirmados no Higgsfield.
 - Não houve teste de reprodução no app instalado em Android ou Windows, nem aprovação humana completa da voz/ritmo. Estes ficam para revisão do piloto.
 - Demonstração é ilustrada, não gravação da interface do app.
