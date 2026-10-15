@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../models/course_models.dart';
 import '../services/progress_store.dart';
 import '../widgets/status_chip.dart';
+import 'generic_module_mastery_screen.dart';
 import 'lesson_destination.dart';
 import 'module_mastery_screen.dart';
 
@@ -30,7 +31,7 @@ class ModulesScreen extends StatelessWidget {
         ),
         const SizedBox(height: 8),
         Text(
-          'Você pode enxergar toda a trilha desde o começo. O próximo módulo só abre depois que o domínio do anterior for comprovado — concluir telas ou acertar um quiz, sozinho, não basta.',
+          'Todos os módulos ficam visíveis desde o começo. Concluir aulas não abre o próximo módulo: primeiro você precisa comprovar domínio com tarefas variadas.',
           style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                 color: scheme.onSurfaceVariant,
               ),
@@ -45,6 +46,8 @@ class ModulesScreen extends StatelessWidget {
           final completion = progressStore.completionFor(lessonIds);
           final previousNumber = index > 0 ? modules[index - 1].number : null;
           final nextNumber = index + 1 < modules.length ? modules[index + 1].number : null;
+          final readyForMastery =
+              unlocked && module.lessons.isNotEmpty && completion >= 1 && !mastered;
 
           return Padding(
             padding: const EdgeInsets.only(bottom: 18),
@@ -84,17 +87,16 @@ class ModulesScreen extends StatelessWidget {
                           color: scheme.onSurfaceVariant,
                         ),
                 ),
-                title: Row(
+                title: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Expanded(
-                      child: Text(
-                        'Módulo ${module.number} — ${module.title}',
-                        style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                              fontWeight: FontWeight.w900,
-                            ),
-                      ),
+                    Text(
+                      'Módulo ${module.number} — ${module.title}',
+                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                            fontWeight: FontWeight.w900,
+                          ),
                     ),
-                    const SizedBox(width: 10),
+                    const SizedBox(height: 8),
                     if (mastered)
                       const _ModuleStateChip(
                         icon: Icons.verified_rounded,
@@ -132,44 +134,7 @@ class ModulesScreen extends StatelessWidget {
                   ),
                 ),
                 children: [
-                  Container(
-                    width: double.infinity,
-                    padding: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      color: unlocked
-                          ? scheme.primaryContainer.withValues(alpha: 0.35)
-                          : scheme.surfaceContainerHighest,
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Icon(
-                          Icons.rocket_launch_rounded,
-                          color: unlocked
-                              ? scheme.primary
-                              : scheme.onSurfaceVariant,
-                        ),
-                        const SizedBox(width: 12),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Projeto do módulo',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .labelLarge
-                                    ?.copyWith(fontWeight: FontWeight.w900),
-                              ),
-                              const SizedBox(height: 4),
-                              Text(module.project),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+                  _ProjectCard(module: module, unlocked: unlocked),
                   if (!unlocked) ...[
                     const SizedBox(height: 12),
                     Container(
@@ -189,7 +154,7 @@ class ModulesScreen extends StatelessWidget {
                           const SizedBox(width: 12),
                           Expanded(
                             child: Text(
-                              '🔒 Libera quando o Módulo $previousNumber estiver realmente dominado. O domínio será validado por tarefas variadas: entender, modificar, criar, corrigir e explicar código.',
+                              '🔒 Libera quando o Módulo $previousNumber estiver dominado. Concluir o percurso anterior, sozinho, não basta.',
                             ),
                           ),
                         ],
@@ -205,19 +170,13 @@ class ModulesScreen extends StatelessWidget {
                         color: scheme.surfaceContainerHighest,
                         borderRadius: BorderRadius.circular(20),
                       ),
-                      child: const Text(
-                        'Conteúdo em produção. A estrutura deste módulo já faz parte da trilha e as aulas serão adicionadas antes de ele ser liberado para estudo.',
-                      ),
+                      child: const Text('Conteúdo em produção.'),
                     ),
                   ],
-                  if (unlocked &&
-                      module.number == 0 &&
-                      module.lessons.isNotEmpty &&
-                      completion >= 1 &&
-                      !mastered) ...[
+                  if (readyForMastery) ...[
                     const SizedBox(height: 12),
                     Container(
-                      key: const ValueKey('module_0_mastery_callout'),
+                      key: ValueKey('${module.id}_mastery_callout'),
                       width: double.infinity,
                       padding: const EdgeInsets.all(18),
                       decoration: BoxDecoration(
@@ -234,40 +193,60 @@ class ModulesScreen extends StatelessWidget {
                         children: [
                           Row(
                             children: [
-                              Icon(Icons.workspace_premium_rounded, color: scheme.primary),
+                              Icon(
+                                Icons.workspace_premium_rounded,
+                                color: scheme.primary,
+                              ),
                               const SizedBox(width: 9),
                               Expanded(
                                 child: Text(
                                   'Percurso concluído. Falta provar domínio.',
-                                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                                        fontWeight: FontWeight.w900,
-                                      ),
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .titleMedium
+                                      ?.copyWith(fontWeight: FontWeight.w900),
                                 ),
                               ),
                             ],
                           ),
                           const SizedBox(height: 8),
                           Text(
-                            'Faça um desafio curto de previsão, correção, criação e explicação. Ao concluir as quatro evidências, o Módulo $nextNumber abre automaticamente.',
+                            module.number == 0
+                                ? 'Faça o desafio de previsão, correção, criação e explicação. Ao passar, o Módulo $nextNumber abre automaticamente.'
+                                : nextNumber == null
+                                    ? 'Reúna evidências de entender, corrigir, criar, explicar e executar em ambiente real para concluir o domínio do curso.'
+                                    : 'Reúna evidências de entender, corrigir, criar, explicar e executar em ambiente real. Ao passar, o Módulo $nextNumber abre automaticamente.',
                           ),
                           const SizedBox(height: 14),
                           FilledButton.icon(
-                            key: const ValueKey('module_0_mastery_button'),
+                            key: module.number == 0
+                                ? const ValueKey('module_0_mastery_button')
+                                : ValueKey('${module.id}_mastery_button'),
                             onPressed: () => Navigator.of(context).push(
                               MaterialPageRoute(
-                                builder: (_) => Module0MasteryScreen(
-                                  progressStore: progressStore,
-                                ),
+                                builder: (_) => module.number == 0
+                                    ? Module0MasteryScreen(
+                                        progressStore: progressStore,
+                                      )
+                                    : GenericModuleMasteryScreen(
+                                        module: module,
+                                        progressStore: progressStore,
+                                        nextModuleNumber: nextNumber,
+                                      ),
                               ),
                             ),
                             icon: const Icon(Icons.lock_open_rounded),
-                            label: const Text('Fazer desafio de domínio'),
+                            label: Text(
+                              nextNumber == null
+                                  ? 'Fazer desafio final de domínio'
+                                  : 'Fazer desafio de domínio',
+                            ),
                           ),
                         ],
                       ),
                     ),
                   ],
-                  if (unlocked && module.number == 0 && mastered) ...[
+                  if (unlocked && mastered) ...[
                     const SizedBox(height: 12),
                     Container(
                       width: double.infinity,
@@ -278,12 +257,18 @@ class ModulesScreen extends StatelessWidget {
                         border: Border.all(color: Colors.green.shade200),
                       ),
                       child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Icon(Icons.verified_rounded, color: Colors.green.shade700),
+                          Icon(
+                            Icons.verified_rounded,
+                            color: Colors.green.shade700,
+                          ),
                           const SizedBox(width: 10),
                           Expanded(
                             child: Text(
-                              'Domínio comprovado pelo desafio prático. O Módulo $nextNumber está liberado.',
+                              nextNumber == null
+                                  ? 'Domínio final registrado. Você concluiu a trilha e o projeto final continua aberto para evoluir.'
+                                  : 'Domínio comprovado. O Módulo $nextNumber está liberado.',
                               style: TextStyle(
                                 color: Colors.green.shade900,
                                 fontWeight: FontWeight.w700,
@@ -350,9 +335,7 @@ class ModulesScreen extends StatelessWidget {
                                           style: Theme.of(context)
                                               .textTheme
                                               .titleMedium
-                                              ?.copyWith(
-                                                fontWeight: FontWeight.w800,
-                                              ),
+                                              ?.copyWith(fontWeight: FontWeight.w800),
                                         ),
                                         const SizedBox(height: 9),
                                         StatusChip(status: status),
@@ -392,6 +375,54 @@ class ModulesScreen extends StatelessWidget {
   }
 }
 
+class _ProjectCard extends StatelessWidget {
+  const _ProjectCard({required this.module, required this.unlocked});
+
+  final CourseModule module;
+  final bool unlocked;
+
+  @override
+  Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: unlocked
+            ? scheme.primaryContainer.withValues(alpha: 0.35)
+            : scheme.surfaceContainerHighest,
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Icon(
+            Icons.rocket_launch_rounded,
+            color: unlocked ? scheme.primary : scheme.onSurfaceVariant,
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Projeto do módulo',
+                  style: Theme.of(context)
+                      .textTheme
+                      .labelLarge
+                      ?.copyWith(fontWeight: FontWeight.w900),
+                ),
+                const SizedBox(height: 4),
+                Text(module.project),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
 class _ModuleStateChip extends StatelessWidget {
   const _ModuleStateChip({required this.icon, required this.label});
 
@@ -401,24 +432,27 @@ class _ModuleStateChip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 6),
-      decoration: BoxDecoration(
-        color: scheme.surfaceContainerHighest,
-        borderRadius: BorderRadius.circular(999),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(icon, size: 15, color: scheme.onSurfaceVariant),
-          const SizedBox(width: 5),
-          Text(
-            label,
-            style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                  fontWeight: FontWeight.w800,
-                ),
-          ),
-        ],
+    return Align(
+      alignment: Alignment.centerLeft,
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 6),
+        decoration: BoxDecoration(
+          color: scheme.surfaceContainerHighest,
+          borderRadius: BorderRadius.circular(999),
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(icon, size: 15, color: scheme.onSurfaceVariant),
+            const SizedBox(width: 5),
+            Text(
+              label,
+              style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                    fontWeight: FontWeight.w800,
+                  ),
+            ),
+          ],
+        ),
       ),
     );
   }
