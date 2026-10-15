@@ -39,7 +39,7 @@ class _LessonWorkspaceScreenState extends State<LessonWorkspaceScreen> {
   LessonProgress get progress =>
       widget.progressStore.forLesson(widget.lesson.id);
 
-  int get currentStep => progress.step.clamp(0, 7);
+  int get currentStep => progress.step.clamp(0, 7).toInt();
 
   String get _activeDraftKey => _cumulativeMode
       ? _coach.cumulativeProjectKey(widget.lesson)
@@ -174,7 +174,8 @@ class _LessonWorkspaceScreenState extends State<LessonWorkspaceScreen> {
   Future<void> _registerReview() async {
     if (!_coach.reviewDue(progress) || _result?.ok != true) return;
     await widget.progressStore.update(widget.lesson.id, (lessonProgress) {
-      final next = (_coach.reviewCount(lessonProgress) + 1).clamp(0, 999);
+      final next =
+          (_coach.reviewCount(lessonProgress) + 1).clamp(0, 999).toInt();
       lessonProgress.attempts['spaced_review_count'] = next;
       lessonProgress.checks.add('spaced_review_$next');
     });
@@ -182,7 +183,9 @@ class _LessonWorkspaceScreenState extends State<LessonWorkspaceScreen> {
     setState(() {});
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
-        content: Text('Revisão registrada. O curso vai aumentar o intervalo da próxima revisão.'),
+        content: Text(
+          'Revisão registrada. O curso vai aumentar o intervalo da próxima revisão.',
+        ),
       ),
     );
   }
@@ -508,7 +511,7 @@ class _LessonWorkspaceScreenState extends State<LessonWorkspaceScreen> {
     if (duration.inDays >= 1) {
       return '${duration.inDays} dia${duration.inDays == 1 ? '' : 's'}';
     }
-    final hours = duration.inHours.clamp(1, 23);
+    final hours = duration.inHours.clamp(1, 23).toInt();
     return '$hours hora${hours == 1 ? '' : 's'}';
   }
 }
