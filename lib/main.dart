@@ -180,12 +180,12 @@ class CourseShell extends StatefulWidget {
     super.key,
     required this.modules,
     required this.progressStore,
-    required this.cloudSync,
+    this.cloudSync,
   });
 
   final List<CourseModule> modules;
   final ProgressStore progressStore;
-  final CloudSyncService cloudSync;
+  final CloudSyncService? cloudSync;
 
   @override
   State<CourseShell> createState() => _CourseShellState();
@@ -215,7 +215,9 @@ class _CourseShellState extends State<CourseShell> {
               modules: widget.modules,
               progressStore: widget.progressStore,
             ),
-            CloudAccountScreen(cloudSync: widget.cloudSync),
+            widget.cloudSync == null
+                ? const Center(child: Text('Sincronização indisponível neste teste.'))
+                : CloudAccountScreen(cloudSync: widget.cloudSync!),
           ];
           final desktop = constraints.maxWidth >= 850;
 
