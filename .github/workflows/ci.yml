@@ -26,6 +26,8 @@ jobs:
       - name: Preparar segurança e rede nativas
         run: python scripts/prepare_native_platforms.py
       - run: flutter pub get
+      - name: Testar núcleo do laboratório Python
+        run: python -m unittest python_runtime/test_runtime.py
       - name: Configurar Python embarcado
         run: |
           echo "SERIOUS_PYTHON_VERSION=3.13" >> "$GITHUB_ENV"
