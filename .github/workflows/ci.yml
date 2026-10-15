@@ -12,7 +12,7 @@ permissions:
 jobs:
   android:
     name: Android APK
-    timeout-minutes: 35
+    timeout-minutes: 45
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -26,6 +26,13 @@ jobs:
       - name: Preparar segurança e rede nativas
         run: python scripts/prepare_native_platforms.py
       - run: flutter pub get
+      - name: Configurar Python embarcado
+        run: |
+          echo "SERIOUS_PYTHON_VERSION=3.13" >> "$GITHUB_ENV"
+          echo "SERIOUS_PYTHON_APP=$GITHUB_WORKSPACE/build/serious_python/app" >> "$GITHUB_ENV"
+          echo "SERIOUS_PYTHON_SITE_PACKAGES=$GITHUB_WORKSPACE/build/serious_python/site-packages" >> "$GITHUB_ENV"
+      - name: Empacotar runtime Python
+        run: dart run serious_python:main package python_runtime -p Android --cleanup-app --cleanup-packages
       - run: flutter analyze
       - run: flutter test --timeout 60s --reporter expanded
       - run: flutter build apk --release
@@ -41,7 +48,7 @@ jobs:
 
   windows:
     name: Windows EXE
-    timeout-minutes: 45
+    timeout-minutes: 55
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
@@ -55,6 +62,14 @@ jobs:
       - name: Preparar segurança e rede nativas
         run: python scripts/prepare_native_platforms.py
       - run: flutter pub get
+      - name: Configurar Python embarcado
+        shell: powershell
+        run: |
+          "SERIOUS_PYTHON_VERSION=3.13" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+          "SERIOUS_PYTHON_APP=$env:GITHUB_WORKSPACE\build\serious_python\app" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+          "SERIOUS_PYTHON_SITE_PACKAGES=$env:GITHUB_WORKSPACE\build\serious_python\site-packages" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+      - name: Empacotar runtime Python
+        run: dart run serious_python:main package python_runtime -p Windows --cleanup-app --cleanup-packages
       - run: flutter analyze
       - run: flutter test --timeout 60s --reporter expanded
       - run: flutter build windows --release
