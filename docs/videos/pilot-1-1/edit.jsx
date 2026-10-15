@@ -1,6 +1,6 @@
 import fs from 'node:fs';
 export default async ({ project }) => {
- const root='/home/user/codigo-zero-pilot';
+ const root='/home/user/codigo-zero-pilot-v2';
  const clock=JSON.parse(fs.readFileSync(root+'/clock.json','utf8'));
  const caps=clock.captions; const script=JSON.parse(fs.readFileSync(root+'/script.json','utf8'));
  const norm=s=>s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]/g,'');
