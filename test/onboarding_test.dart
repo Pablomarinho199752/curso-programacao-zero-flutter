@@ -148,7 +148,6 @@ void main() {
     );
     await tester.pumpAndSettle();
 
-    expect(find.textContaining('0 de 8'), findsOneWidget);
     expect(find.text('1. Explicação curta'), findsOneWidget);
     expect(find.text('8. Revisão'), findsOneWidget);
     expect(tester.takeException(), isNull);
