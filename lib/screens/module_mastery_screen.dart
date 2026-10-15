@@ -335,11 +335,7 @@ class _Module0MasteryScreenState extends State<Module0MasteryScreen> {
                     child: CircularProgressIndicator(strokeWidth: 2),
                   )
                 : const Icon(Icons.lock_open_rounded),
-            label: Text(
-              _ready
-                  ? 'Comprovar domínio e liberar Módulo 1'
-                  : 'Conclua as 4 evidências para liberar',
-            ),
+            label: Text(_ready ? 'Liberar Módulo 1' : 'Complete as 4 evidências'),
           ),
           const SizedBox(height: 10),
           Text(
