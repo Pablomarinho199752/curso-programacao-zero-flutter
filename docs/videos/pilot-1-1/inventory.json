@@ -1,0 +1,132 @@
+[
+  {
+    "module": "module_0",
+    "lesson": "lesson_0_1",
+    "title": "Primeiros passos: pensar, testar e corrigir",
+    "url": "https://share.descript.com/view/zboVy82eLM0",
+    "override": false,
+    "old_render_id": null,
+    "http_status": 200,
+    "content_type": "text/html; charset=utf-8"
+  },
+  {
+    "module": "module_1",
+    "lesson": "lesson_1_1",
+    "title": "Valores e variáveis: dando nome aos dados",
+    "url": "https://share.descript.com/view/LYmNVlmGLyW",
+    "override": false,
+    "old_render_id": null,
+    "http_status": 200,
+    "content_type": "text/html; charset=utf-8"
+  },
+  {
+    "module": "module_2",
+    "lesson": "lesson_2_1",
+    "title": "Decisões: transformar regras em caminhos",
+    "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3Ke119x65sh4FYjNFHHZNJMSh6l/75523c96-749f-4488-8681-7b8ef9b9b155.mp4",
+    "override": true,
+    "old_render_id": "6b2ed308d1aa30e57515c7e80ed16d03",
+    "http_status": 200,
+    "content_type": "video/mp4"
+  },
+  {
+    "module": "module_3",
+    "lesson": "lesson_3_1",
+    "title": "Repetições: automatizar sem perder o controle",
+    "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3Ke119x65sh4FYjNFHHZNJMSh6l/cd7dc083-31f2-45ee-b4a8-3d4bb0ac587b.mp4",
+    "override": true,
+    "old_render_id": "5c5691069e00098202ff035548281350",
+    "http_status": 200,
+    "content_type": "video/mp4"
+  },
+  {
+    "module": "module_4",
+    "lesson": "lesson_4_1",
+    "title": "Coleções: escolher uma estrutura para os dados",
+    "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3Ke119x65sh4FYjNFHHZNJMSh6l/8fedd634-ec84-437a-b1f4-45c867fffee1.mp4",
+    "override": true,
+    "old_render_id": "2e7069188e8e387f12566aa85268a00f",
+    "http_status": 200,
+    "content_type": "video/mp4"
+  },
+  {
+    "module": "module_5",
+    "lesson": "lesson_5_1",
+    "title": "Funções: dividir o problema em responsabilidades",
+    "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3Ke119x65sh4FYjNFHHZNJMSh6l/30266f88-2d33-4450-96d1-e907150cdffa.mp4",
+    "override": true,
+    "old_render_id": "f0cd62b2ca92c9df5596fb17209cf9bf",
+    "http_status": 200,
+    "content_type": "video/mp4"
+  },
+  {
+    "module": "module_6",
+    "lesson": "lesson_6_1",
+    "title": "Persistência e falhas esperadas",
+    "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3Ke119x65sh4FYjNFHHZNJMSh6l/f43d36e6-9b03-4976-ad19-c082509bab98.mp4",
+    "override": true,
+    "old_render_id": "27912784275958e5a92d1abd9db1c841",
+    "http_status": 200,
+    "content_type": "video/mp4"
+  },
+  {
+    "module": "module_7",
+    "lesson": "lesson_7_1",
+    "title": "Debugging e testes: transformar erro em evidência",
+    "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3Ke119x65sh4FYjNFHHZNJMSh6l/a8677f33-beac-4bfb-b5e9-3d2a7c81b4ca.mp4",
+    "override": true,
+    "old_render_id": "3bcb4152c303baeed81d80b95c60cd56",
+    "http_status": 200,
+    "content_type": "video/mp4"
+  },
+  {
+    "module": "module_8",
+    "lesson": "lesson_8_1",
+    "title": "APIs e JSON: aprender pela documentação",
+    "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3Ke119x65sh4FYjNFHHZNJMSh6l/3fb6a708-d219-40d3-b38d-5ea5b734e447.mp4",
+    "override": true,
+    "old_render_id": "9c9126cba89555b4f3b032c0ce70ea9c",
+    "http_status": 200,
+    "content_type": "video/mp4"
+  },
+  {
+    "module": "module_9",
+    "lesson": "lesson_9_1",
+    "title": "SQLite e CRUD: dados estruturados que permanecem",
+    "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3Ke119x65sh4FYjNFHHZNJMSh6l/09366ca9-2488-444c-8f73-116bb7ae7db0.mp4",
+    "override": true,
+    "old_render_id": "e3d93c7fb93ec7efa517a70a8c2b9bb9",
+    "http_status": 200,
+    "content_type": "video/mp4"
+  },
+  {
+    "module": "module_10",
+    "lesson": "lesson_10_1",
+    "title": "Projetos maiores: estrutura, classes e ambiente",
+    "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3Ke119x65sh4FYjNFHHZNJMSh6l/4b87ec03-d36c-4740-88c4-f013313cc3ac.mp4",
+    "override": true,
+    "old_render_id": "1188d7f4439b0f1a1b7530f7f7bd90ce",
+    "http_status": 200,
+    "content_type": "video/mp4"
+  },
+  {
+    "module": "module_11",
+    "lesson": "lesson_11_1",
+    "title": "Git e GitHub: histórico para experimentar com segurança",
+    "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3Ke119x65sh4FYjNFHHZNJMSh6l/07795707-49c5-43c3-bed0-e5f1bc5625ba.mp4",
+    "override": true,
+    "old_render_id": "e52e100a1279e81f19bbc33aca2c2e1a",
+    "http_status": 200,
+    "content_type": "video/mp4"
+  },
+  {
+    "module": "module_12",
+    "lesson": "lesson_12_1",
+    "title": "Desenvolvimento independente: descobrir, construir e provar",
+    "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3Ke119x65sh4FYjNFHHZNJMSh6l/2b32211f-1d2f-41a9-a041-3ebf19cf010e.mp4",
+    "override": true,
+    "old_render_id": "9590722ae35591925245d7c7c7e2818d",
+    "http_status": 200,
+    "content_type": "video/mp4"
+  }
+]
