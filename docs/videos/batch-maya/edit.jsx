@@ -23,7 +23,7 @@ export default async ({project})=>{
    const lines=code.split('\n');
    if(lines.length>8)throw Error('Too many code lines');
    if(focus>=0)nodes.push(R(152,322+focus*39,1380,39,'#293D58',6));
-   lines.forEach((line,n)=>{if(line.length>76)throw Error('Long code line');nodes.push(T(String(n+1),115,325+n*39,23,'#63738C',40,'JetBrains Mono'),T(line,170,325+n*39,31,line.trim().startsWith('#')?'#8B9BB5':'#EEF4FF',1610,'JetBrains Mono',60));});
+   lines.forEach((line,n)=>{if(line.length>76)throw Error('Long code line');nodes.push(T(String(n+1),115,325+n*39,23,'#63738C',40,'JetBrains Mono'),T(line.trimStart(),170+(line.length-line.trimStart().length)*18.6,325+n*39,31,line.trim().startsWith('#')?'#8B9BB5':'#EEF4FF',1610-(line.length-line.trimStart().length)*18.6,'JetBrains Mono',60));});
    if(focus>=0)nodes.push(cursor(1545,330+focus*39));
    const err=/Error|Esperávamos/.test(out);
    nodes.push(R(90,669,1740,180),T(err?'SAÍDA · INVESTIGAÇÃO':'SAÍDA',118,682,17,err?'#FFB4A9':'#A8B8CF'),T(out,120,715,28,err?'#FFB4A9':'#55D9E8',1620,'JetBrains Mono',135));
