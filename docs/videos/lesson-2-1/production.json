@@ -1,0 +1,176 @@
+{
+  "module": 2,
+  "lesson": "lesson_2_1",
+  "title": "Decisões: transformar regras em caminhos",
+  "sourceCommit": "c1ef42fe1fdaa17ac747bcb2769960b3e6bb91f8",
+  "scenes": [
+    {
+      "narration": "Imagine um painel que informa como está a bateria de um aparelho. Não basta guardar a porcentagem: queremos escolher uma mensagem conforme esse valor. Esse é o foco desta aula: transformar uma regra em caminhos e verificar se o programa escolheu o caminho certo. Vamos começar pela regra em português. Abaixo de vinte por cento, pedimos para carregar. De vinte até setenta e nove, dizemos que está em uso. A partir de oitenta, a carga está alta. Cada valor precisa ter uma resposta clara."
+    },
+    {
+      "narration": "Na tela, bateria recebe quinze. O if faz uma pergunta: bateria é menor que vinte? Essa comparação resulta em verdadeiro ou falso. Se for verdadeira, executamos o bloco que está recuado. Aqui ele mostra Carregar. Os dois pontos anunciam o bloco, e a indentação indica quais linhas pertencem a ele. Antes de executar, faça sua previsão. Executando com quinze, aparece Carregar. O número guardado não mudou; ele foi consultado para escolher uma ação. O print dentro do bloco só é executado quando essa condição permite."
+    },
+    {
+      "narration": "Agora completamos a decisão. Se a primeira condição for falsa, o elif pergunta se a bateria é menor que oitenta. Se também for falsa, chegamos ao else. Ele cobre o que restou, sem escrever outra condição. Com cinquenta, a primeira pergunta é falsa e a segunda é verdadeira. A saída é Em uso. Com noventa, as duas perguntas são falsas e aparece Carga alta. Nessa cadeia, o primeiro caminho verdadeiro vence. Os outros caminhos não são executados nessa mesma passagem. Observe as mensagens junto com as condições, e não apenas os números."
+    },
+    {
+      "narration": "Vamos conferir as fronteiras da nossa regra. Dezenove ainda deve pedir carga. Vinte já entra em uso. Setenta e nove continua em uso, e oitenta entra em carga alta. Ao executar esses quatro casos, compare cada resultado com a regra original. Um teste com cinquenta sozinho não mostraria se tratamos vinte corretamente. O operador menor que deixa o próprio limite de fora. Menor ou igual o incluiria. A escolha depende do que foi pedido, não de qual símbolo parece mais familiar. Escrever os resultados esperados antes de executar ajuda a perceber uma diferença."
+    },
+    {
+      "narration": "Veja este erro de propósito. Colocamos primeiro a pergunta: bateria é menor que oitenta? Só depois perguntamos se é menor que vinte. Executando com quinze, aparece Em uso. Não há mensagem de erro do Python, mas o resultado está errado para a nossa regra. Vamos raciocinar: quinze é menor que oitenta, então o primeiro caminho já venceu. A condição mais específica nem chegou a ser usada. A hipótese é que a ordem está escondendo esse caso. Colocamos a faixa abaixo de vinte primeiro e repetimos o teste. Agora aparece Carregar. Depois conferimos novamente os limites, para não corrigir um caso e estragar outro."
+    },
+    {
+      "narration": "Às vezes uma regra exige duas condições ao mesmo tempo. Para mostrar um aviso apenas quando a bateria está baixa e o aparelho está ligado, podemos combinar as duas perguntas com and. As duas precisam ser verdadeiras. Com or, basta uma delas ser verdadeira. Compare os valores na tela e acompanhe o resultado da expressão antes de usá-la num if. Agora volte à prática. Antes, uma previsão: com a regra correta do nosso painel, qual caminho deve receber uma bateria exatamente em vinte? Explique por quê antes de executar."
+    }
+  ],
+  "script": "Imagine um painel que informa como está a bateria de um aparelho. Não basta guardar a porcentagem: queremos escolher uma mensagem conforme esse valor. Esse é o foco desta aula: transformar uma regra em caminhos e verificar se o programa escolheu o caminho certo. Vamos começar pela regra em português. Abaixo de vinte por cento, pedimos para carregar. De vinte até setenta e nove, dizemos que está em uso. A partir de oitenta, a carga está alta. Cada valor precisa ter uma resposta clara.\n\nNa tela, bateria recebe quinze. O if faz uma pergunta: bateria é menor que vinte? Essa comparação resulta em verdadeiro ou falso. Se for verdadeira, executamos o bloco que está recuado. Aqui ele mostra Carregar. Os dois pontos anunciam o bloco, e a indentação indica quais linhas pertencem a ele. Antes de executar, faça sua previsão. Executando com quinze, aparece Carregar. O número guardado não mudou; ele foi consultado para escolher uma ação. O print dentro do bloco só é executado quando essa condição permite.\n\nAgora completamos a decisão. Se a primeira condição for falsa, o elif pergunta se a bateria é menor que oitenta. Se também for falsa, chegamos ao else. Ele cobre o que restou, sem escrever outra condição. Com cinquenta, a primeira pergunta é falsa e a segunda é verdadeira. A saída é Em uso. Com noventa, as duas perguntas são falsas e aparece Carga alta. Nessa cadeia, o primeiro caminho verdadeiro vence. Os outros caminhos não são executados nessa mesma passagem. Observe as mensagens junto com as condições, e não apenas os números.\n\nVamos conferir as fronteiras da nossa regra. Dezenove ainda deve pedir carga. Vinte já entra em uso. Setenta e nove continua em uso, e oitenta entra em carga alta. Ao executar esses quatro casos, compare cada resultado com a regra original. Um teste com cinquenta sozinho não mostraria se tratamos vinte corretamente. O operador menor que deixa o próprio limite de fora. Menor ou igual o incluiria. A escolha depende do que foi pedido, não de qual símbolo parece mais familiar. Escrever os resultados esperados antes de executar ajuda a perceber uma diferença.\n\nVeja este erro de propósito. Colocamos primeiro a pergunta: bateria é menor que oitenta? Só depois perguntamos se é menor que vinte. Executando com quinze, aparece Em uso. Não há mensagem de erro do Python, mas o resultado está errado para a nossa regra. Vamos raciocinar: quinze é menor que oitenta, então o primeiro caminho já venceu. A condição mais específica nem chegou a ser usada. A hipótese é que a ordem está escondendo esse caso. Colocamos a faixa abaixo de vinte primeiro e repetimos o teste. Agora aparece Carregar. Depois conferimos novamente os limites, para não corrigir um caso e estragar outro.\n\nÀs vezes uma regra exige duas condições ao mesmo tempo. Para mostrar um aviso apenas quando a bateria está baixa e o aparelho está ligado, podemos combinar as duas perguntas com and. As duas precisam ser verdadeiras. Com or, basta uma delas ser verdadeira. Compare os valores na tela e acompanhe o resultado da expressão antes de usá-la num if. Agora volte à prática. Antes, uma previsão: com a regra correta do nosso painel, qual caminho deve receber uma bateria exatamente em vinte? Explique por quê antes de executar.",
+  "voice": "Maya",
+  "narrationTaskId": "62a56602-042b-4941-b01f-b67c49c70e9b",
+  "states": [
+    [
+      "Imagine um painel",
+      "Uma regra vira caminhos",
+      "",
+      "",
+      "Escreva a regra em português.",
+      -1,
+      [
+        "Abaixo de 20: Carregar",
+        "20 até 79: Em uso",
+        "80 ou mais: Carga alta"
+      ]
+    ],
+    [
+      "Na tela bateria",
+      "Uma condição",
+      "bateria = 15\nif bateria < 20:\n    print(\"Carregar\")",
+      "Qual é sua previsão?",
+      "if testa; a indentação delimita o bloco.",
+      1
+    ],
+    [
+      "Executando com quinze",
+      "Condição verdadeira",
+      "bateria = 15\nif bateria < 20:\n    print(\"Carregar\")",
+      "Carregar",
+      "15 < 20 é verdadeiro.",
+      2
+    ],
+    [
+      "Agora completamos a decisão",
+      "if, elif e else",
+      "bateria = 15\nif bateria < 20:\n    print(\"Carregar\")\nelif bateria < 80:\n    print(\"Em uso\")\nelse:\n    print(\"Carga alta\")",
+      "Carregar",
+      "O primeiro caminho verdadeiro vence.",
+      3
+    ],
+    [
+      "Com cinquenta",
+      "Outro valor, outro caminho",
+      "bateria = 50\nif bateria < 20:\n    print(\"Carregar\")\nelif bateria < 80:\n    print(\"Em uso\")\nelse:\n    print(\"Carga alta\")",
+      "Em uso",
+      "50 < 20: falso. 50 < 80: verdadeiro.",
+      4
+    ],
+    [
+      "Com noventa",
+      "O caminho restante",
+      "bateria = 90\nif bateria < 20:\n    print(\"Carregar\")\nelif bateria < 80:\n    print(\"Em uso\")\nelse:\n    print(\"Carga alta\")",
+      "Carga alta",
+      "As duas comparações são falsas.",
+      6
+    ],
+    [
+      "Vamos conferir as fronteiras",
+      "Teste os limites",
+      "",
+      "",
+      "Compare com a regra original.",
+      -1,
+      [
+        "19: Carregar     |     20: Em uso",
+        "79: Em uso       |     80: Carga alta",
+        "Um caso no meio não prova as fronteiras."
+      ]
+    ],
+    [
+      "Veja este erro",
+      "A ordem pode esconder um caso",
+      "bateria = 15\nif bateria < 80:\n    print(\"Em uso\")\nelif bateria < 20:\n    print(\"Carregar\")\nelse:\n    print(\"Carga alta\")",
+      "Em uso",
+      "Esperávamos Carregar: erro de lógica.",
+      1
+    ],
+    [
+      "A condição mais específica",
+      "O primeiro caminho já venceu",
+      "",
+      "",
+      "Hipótese: a ordem esconde a faixa menor.",
+      -1,
+      [
+        "15 < 80: verdadeiro",
+        "Primeiro caminho escolhido",
+        "A próxima condição não é avaliada"
+      ]
+    ],
+    [
+      "Colocamos a faixa",
+      "Reordene e teste",
+      "bateria = 15\nif bateria < 20:\n    print(\"Carregar\")\nelif bateria < 80:\n    print(\"Em uso\")\nelse:\n    print(\"Carga alta\")",
+      "Carregar",
+      "Conferir novamente 19, 20, 79 e 80.",
+      1
+    ],
+    [
+      "Às vezes uma regra",
+      "Duas perguntas combinadas",
+      "bateria = 15\nligado = True\nprint(bateria < 20 and ligado)\nprint(bateria < 20 or ligado)",
+      "True\nTrue",
+      "and exige as duas; or exige pelo menos uma.",
+      2
+    ],
+    [
+      "Com or",
+      "Compare as combinações",
+      "bateria = 15\nligado = False\nprint(bateria < 20 and ligado)\nprint(bateria < 20 or ligado)",
+      "False\nTrue",
+      "Apenas a primeira condição é verdadeira.",
+      3
+    ],
+    [
+      "Agora volte à prática",
+      "Sua previsão",
+      "",
+      "",
+      "Explique antes de testar.",
+      -1,
+      [
+        "Na regra correta,",
+        "qual caminho recebe bateria = 20?"
+      ]
+    ]
+  ],
+  "status": "rendering",
+  "tools": {
+    "narration": "Runway",
+    "composition": "Higgsfield Higgsedit",
+    "captions": "faster-whisper + clean burner"
+  },
+  "language": "pt-BR",
+  "voiceSpeed": 1,
+  "budget": {
+    "runwayCredits": 65,
+    "characters": 3241
+  },
+  "actualDurationSeconds": 227.369796,
+  "oldVideoUrl": "https://d2ol7oe51mr4n9.cloudfront.net/user_3Ke119x65sh4FYjNFHHZNJMSh6l/75523c96-749f-4488-8681-7b8ef9b9b155.mp4",
+  "videoUrl": null,
+  "sourcesUrl": null,
+  "editingNotes": [
+    "Mesma voz e identidade visual do piloto aprovado.",
+    "Demonstração ilustrada, com saídas executadas em Python.",
+    "Cursor, destaque, erro e correção; pergunta final sem resposta.",
+    "Não inclui soluções dos desafios; reprodução Android/Windows ainda não testada."
+  ]
+}
