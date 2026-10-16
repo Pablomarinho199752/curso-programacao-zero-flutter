@@ -162,7 +162,7 @@ class _GenericModuleLessonScreenState extends State<GenericModuleLessonScreen> {
     if (!mounted) return;
     setState(() {
       _feedback[key] = accepted
-          ? 'A estrutura pedida está presente. Agora execute em um Python real e compare o comportamento com o seu plano.'
+          ? 'A estrutura pedida está presente. Agora abra a aba “Python na aula”, execute o código e compare o comportamento com o seu plano.'
           : 'Ainda falta pelo menos um elemento essencial do pedido. Leia o objetivo, confira as pistas e ajuste uma coisa de cada vez.';
     });
   }
@@ -437,7 +437,7 @@ class _GenericModuleLessonScreenState extends State<GenericModuleLessonScreen> {
               _feedbackBox('project'),
               const SizedBox(height: 10),
               const Text(
-                'A validação acima verifica a estrutura, não executa Python arbitrário. Execute o projeto em um ambiente Python real antes de fechar a revisão.',
+                'A validação acima confere a estrutura. Use a aba “Python na aula” para executar o projeto antes de fechar a revisão.',
               ),
             ],
           ),
