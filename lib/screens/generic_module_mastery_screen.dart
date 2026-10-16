@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../models/course_models.dart';
 import '../services/progress_store.dart';
+import 'lesson_destination.dart';
 
 class GenericModuleMasteryScreen extends StatefulWidget {
   const GenericModuleMasteryScreen({
@@ -86,7 +87,9 @@ class _GenericModuleMasteryScreenState
 
   List<String> get _debugRequirements {
     final fixed = text('fixedCode');
-    if (fixed.isNotEmpty) return fixed.split('\n').where((e) => e.trim().isNotEmpty).toList();
+    if (fixed.isNotEmpty) {
+      return fixed.split('\n').where((e) => e.trim().isNotEmpty).toList();
+    }
     return texts('correctionRequiredTokens');
   }
 
@@ -160,7 +163,7 @@ class _GenericModuleMasteryScreenState
     setState(() {
       _createPassed = passed;
       _createMessage = passed
-          ? 'A solução é sua e contém a estrutura necessária. Falta provar o comportamento com uma execução real.'
+          ? 'A solução é sua e contém a estrutura necessária. Agora prove o comportamento no Python da própria aula.'
           : 'Ainda não há evidência suficiente de criação própria. Não copie o starter: construa uma solução que atenda ao pedido.';
     });
   }
@@ -206,8 +209,8 @@ class _GenericModuleMasteryScreenState
     setState(() {
       _evidencePassed = passed;
       _evidenceMessage = passed
-          ? 'Evidência registrada. O app não executa Python arbitrário; por isso você precisa descrever o teste real que fez e o resultado observado.'
-          : 'Registre uma execução real: diga o que executou, qual entrada/teste usou e qual saída, resultado ou erro observou.';
+          ? 'Evidência registrada. Confira se o que você descreveu corresponde ao resultado visto no Python da aula.'
+          : 'Abra o Python da aula, execute seu código e registre aqui a entrada usada e a saída, resultado ou erro observado.';
     });
   }
 
@@ -230,7 +233,7 @@ class _GenericModuleMasteryScreenState
         content: Text(
           widget.nextModuleNumber == null
               ? 'Você apresentou evidências de entender, corrigir, criar, explicar e testar. O projeto final continua sendo algo vivo: agora você já tem um método para descobrir o próximo passo.'
-              : 'Você apresentou cinco evidências: entender, corrigir, criar, explicar e testar em ambiente real. O próximo módulo foi liberado neste aparelho.',
+              : 'Você apresentou cinco evidências: entender, corrigir, criar, explicar e testar no Python do curso. O próximo módulo foi liberado neste aparelho.',
         ),
         actions: [
           FilledButton(
@@ -247,6 +250,7 @@ class _GenericModuleMasteryScreenState
 
   Widget _feedback(bool passed, String? message) {
     if (message == null) return const SizedBox.shrink();
+    final scheme = Theme.of(context).colorScheme;
     return Padding(
       padding: const EdgeInsets.only(top: 10),
       child: Row(
@@ -254,7 +258,7 @@ class _GenericModuleMasteryScreenState
         children: [
           Icon(
             passed ? Icons.check_circle_rounded : Icons.lightbulb_outline_rounded,
-            color: passed ? Colors.green.shade700 : Colors.orange.shade800,
+            color: passed ? scheme.tertiary : scheme.secondary,
           ),
           const SizedBox(width: 8),
           Expanded(child: Text(message)),
@@ -274,12 +278,10 @@ class _GenericModuleMasteryScreenState
       margin: const EdgeInsets.only(bottom: 14),
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: scheme.surfaceContainer,
         borderRadius: BorderRadius.circular(22),
         border: Border.all(
-          color: passed
-              ? Colors.green.withValues(alpha: 0.35)
-              : Colors.black.withValues(alpha: 0.06),
+          color: passed ? scheme.tertiary : scheme.outlineVariant,
         ),
       ),
       child: Column(
@@ -292,12 +294,21 @@ class _GenericModuleMasteryScreenState
                 height: 34,
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
-                  color: passed ? Colors.green.shade50 : scheme.primaryContainer,
+                  color: passed
+                      ? scheme.tertiaryContainer
+                      : scheme.primaryContainer,
                   borderRadius: BorderRadius.circular(11),
                 ),
                 child: passed
-                    ? const Icon(Icons.check_rounded, color: Colors.green, size: 20)
-                    : Text('$number', style: const TextStyle(fontWeight: FontWeight.w900)),
+                    ? Icon(
+                        Icons.check_rounded,
+                        color: scheme.onTertiaryContainer,
+                        size: 20,
+                      )
+                    : Text(
+                        '$number',
+                        style: const TextStyle(fontWeight: FontWeight.w900),
+                      ),
               ),
               const SizedBox(width: 10),
               Expanded(
@@ -337,7 +348,7 @@ class _GenericModuleMasteryScreenState
           ),
           const SizedBox(height: 8),
           const Text(
-            'Agora reúna evidências diferentes. A validação estrutural ajuda, mas o item 5 exige que você realmente execute seu código fora do simulador limitado do app.',
+            'Agora reúna evidências diferentes. A validação estrutural ajuda, mas no item 5 você precisa executar o código no Python real integrado à própria aula e registrar o que observou.',
           ),
           const SizedBox(height: 18),
           _card(
@@ -451,12 +462,25 @@ class _GenericModuleMasteryScreenState
           ),
           _card(
             number: 5,
-            title: 'Provar com execução real',
+            title: 'Provar com o Python da aula',
             passed: _evidencePassed,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(text('evidencePrompt')),
+                const SizedBox(height: 10),
+                OutlinedButton.icon(
+                  onPressed: () => Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (_) => lessonDestination(
+                        lesson: lesson,
+                        progressStore: widget.progressStore,
+                      ),
+                    ),
+                  ),
+                  icon: const Icon(Icons.play_circle_outline_rounded),
+                  label: const Text('Abrir aula e executar no Python'),
+                ),
                 const SizedBox(height: 10),
                 TextField(
                   controller: _evidenceController,
