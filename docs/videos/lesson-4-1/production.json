@@ -164,7 +164,7 @@
       ]
     ]
   ],
-  "status": "rendering",
+  "status": "rendered_validated_integrated_in_pr",
   "tools": {
     "narration": "Runway",
     "composition": "Higgsfield Higgsedit",
@@ -174,16 +174,36 @@
   "voiceSpeed": 1,
   "budget": {
     "runwayCredits": 67,
-    "characters": 3347
+    "characters": 3347,
+    "renderingCost": "Não confirmado; sem compra ou upgrade."
   },
-  "actualDurationSeconds": 233.453424,
+  "actualDurationSeconds": 233.5,
   "oldVideoUrl": "https://d2ol7oe51mr4n9.cloudfront.net/user_3Ke119x65sh4FYjNFHHZNJMSh6l/8fedd634-ec84-437a-b1f4-45c867fffee1.mp4",
-  "videoUrl": null,
-  "sourcesUrl": null,
+  "videoUrl": "https://d2ol7oe51mr4n9.cloudfront.net/user_3Ke119x65sh4FYjNFHHZNJMSh6l/60eeb04d-1cf8-4232-bd5f-690604440472.mp4",
+  "sourcesUrl": "https://d2ol7oe51mr4n9.cloudfront.net/user_3Ke119x65sh4FYjNFHHZNJMSh6l/49a1bad3-5145-453f-b712-8eb661f9ef20.zip",
   "editingNotes": [
     "Mesma voz e identidade visual do piloto aprovado.",
     "Demonstração ilustrada, com saídas executadas em Python.",
     "Cursor, destaque, erro e correção; pergunta final sem resposta.",
     "Não inclui soluções dos desafios; reprodução Android/Windows ainda não testada."
-  ]
+  ],
+  "validation": {
+    "durationSeconds": 233.5,
+    "captionWords": 546,
+    "scriptWords": 546,
+    "similarity": 0.9744058500914077,
+    "streamsDurationPassed": true,
+    "sampledFramesSeconds": [
+      9.52,
+      118.12,
+      225.21
+    ],
+    "devicePlayback": "not_tested",
+    "visualSampleReview": "passed",
+    "pythonExamplesExecuted": true
+  },
+  "integration": {
+    "path": "assets/content/video_urls.json",
+    "oldLinkPreserved": true
+  }
 }
