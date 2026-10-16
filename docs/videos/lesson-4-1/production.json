@@ -1,0 +1,189 @@
+{
+  "module": 4,
+  "lesson": "lesson_4_1",
+  "title": "Coleções: escolher uma estrutura para os dados",
+  "sourceCommit": "c1ef42fe1fdaa17ac747bcb2769960b3e6bb91f8",
+  "scenes": [
+    {
+      "narration": "Imagine organizar a programação de um pequeno evento. Temos uma sequência de atividades e também informações sobre cada sala. Guardar tudo em variáveis soltas deixa difícil percorrer os dados. Hoje vamos escolher entre duas formas de organizar valores: lista e dicionário. A pergunta principal é como queremos encontrar cada informação. Pela posição numa sequência, ou por um nome que identifica o campo? Vamos usar esse critério para construir exemplos pequenos e entender um erro de consulta."
+    },
+    {
+      "narration": "Na tela criamos atividades com três textos: Recepção, Oficina e Encerramento. Os colchetes delimitam a lista, e as vírgulas separam os itens. Cada item ocupa uma posição, chamada índice. A contagem dos índices começa em zero. Então a primeira atividade está no índice zero, a segunda no um e a terceira no dois. Antes de executar a consulta da posição um, faça sua previsão. A saída é Oficina. Não estamos pedindo o item número um na contagem do dia a dia. Estamos usando o índice um da lista. Essa diferença merece atenção."
+    },
+    {
+      "narration": "Se queremos mostrar todas as atividades, podemos usar for diretamente sobre a lista. A cada volta, atividade recebe o próximo texto, na ordem guardada. O print mostra Recepção, depois Oficina e por fim Encerramento. Não precisamos escrever uma consulta separada para cada posição. Agora vamos alterar a segunda atividade para Debate. A atribuição usa o índice um. Ao executar o mesmo percurso, a segunda mensagem muda para Debate. A estrutura continua sendo uma lista; apenas um dos valores foi atualizado. Observe como a escolha da estrutura facilita percorrer e modificar a sequência."
+    },
+    {
+      "narration": "Para descrever uma sala, nomes de campos ficam mais claros que posições. Criamos um dicionário com duas chaves: local e vagas. Cada chave aparece antes dos dois pontos, ligada ao seu valor. Local guarda Sala B, e vagas guarda doze. Ao consultar a chave local, aparece Sala B. Ao consultar vagas, aparece doze. Aqui os colchetes continuam fazendo uma consulta, mas usamos uma chave em vez de um índice numérico. Depois atualizamos vagas para dez. Uma nova consulta mostra dez. O nome do campo explica o significado do valor, sem depender de lembrar a posição."
+    },
+    {
+      "narration": "Agora surge um erro: tentamos consultar a chave vaga, no singular. O dicionário foi criado com vagas, no plural. A execução mostra KeyError. Em vez de trocar toda a estrutura, vamos comparar a chave pedida com as chaves existentes. A mensagem ajuda a identificar qual nome não foi encontrado. Nossa hipótese é uma diferença na escrita. Corrigimos a consulta para vagas e executamos novamente. A saída é dez. O problema não era o valor nem a lista de atividades; era a chave usada nesta consulta. Nas listas, também precisamos conferir se o índice solicitado existe, antes de concluir que o dado desapareceu."
+    },
+    {
+      "narration": "Uma lista funciona bem para uma sequência de itens. Um dicionário funciona bem para informações com nomes. Eles também podem ser combinados quando o problema pede, mas primeiro entenda como cada consulta funciona. Pergunte sempre: vou procurar por posição ou por uma chave? Depois confira como os dados serão alterados e percorridos. Agora volte ao aplicativo e construa seus próprios exemplos. Antes, uma previsão: se colocarmos uma atividade nova no começo da lista, o índice um continuará apontando para o mesmo texto? Pense na diferença entre posição e identidade."
+    }
+  ],
+  "script": "Imagine organizar a programação de um pequeno evento. Temos uma sequência de atividades e também informações sobre cada sala. Guardar tudo em variáveis soltas deixa difícil percorrer os dados. Hoje vamos escolher entre duas formas de organizar valores: lista e dicionário. A pergunta principal é como queremos encontrar cada informação. Pela posição numa sequência, ou por um nome que identifica o campo? Vamos usar esse critério para construir exemplos pequenos e entender um erro de consulta.\n\nNa tela criamos atividades com três textos: Recepção, Oficina e Encerramento. Os colchetes delimitam a lista, e as vírgulas separam os itens. Cada item ocupa uma posição, chamada índice. A contagem dos índices começa em zero. Então a primeira atividade está no índice zero, a segunda no um e a terceira no dois. Antes de executar a consulta da posição um, faça sua previsão. A saída é Oficina. Não estamos pedindo o item número um na contagem do dia a dia. Estamos usando o índice um da lista. Essa diferença merece atenção.\n\nSe queremos mostrar todas as atividades, podemos usar for diretamente sobre a lista. A cada volta, atividade recebe o próximo texto, na ordem guardada. O print mostra Recepção, depois Oficina e por fim Encerramento. Não precisamos escrever uma consulta separada para cada posição. Agora vamos alterar a segunda atividade para Debate. A atribuição usa o índice um. Ao executar o mesmo percurso, a segunda mensagem muda para Debate. A estrutura continua sendo uma lista; apenas um dos valores foi atualizado. Observe como a escolha da estrutura facilita percorrer e modificar a sequência.\n\nPara descrever uma sala, nomes de campos ficam mais claros que posições. Criamos um dicionário com duas chaves: local e vagas. Cada chave aparece antes dos dois pontos, ligada ao seu valor. Local guarda Sala B, e vagas guarda doze. Ao consultar a chave local, aparece Sala B. Ao consultar vagas, aparece doze. Aqui os colchetes continuam fazendo uma consulta, mas usamos uma chave em vez de um índice numérico. Depois atualizamos vagas para dez. Uma nova consulta mostra dez. O nome do campo explica o significado do valor, sem depender de lembrar a posição.\n\nAgora surge um erro: tentamos consultar a chave vaga, no singular. O dicionário foi criado com vagas, no plural. A execução mostra KeyError. Em vez de trocar toda a estrutura, vamos comparar a chave pedida com as chaves existentes. A mensagem ajuda a identificar qual nome não foi encontrado. Nossa hipótese é uma diferença na escrita. Corrigimos a consulta para vagas e executamos novamente. A saída é dez. O problema não era o valor nem a lista de atividades; era a chave usada nesta consulta. Nas listas, também precisamos conferir se o índice solicitado existe, antes de concluir que o dado desapareceu.\n\nUma lista funciona bem para uma sequência de itens. Um dicionário funciona bem para informações com nomes. Eles também podem ser combinados quando o problema pede, mas primeiro entenda como cada consulta funciona. Pergunte sempre: vou procurar por posição ou por uma chave? Depois confira como os dados serão alterados e percorridos. Agora volte ao aplicativo e construa seus próprios exemplos. Antes, uma previsão: se colocarmos uma atividade nova no começo da lista, o índice um continuará apontando para o mesmo texto? Pense na diferença entre posição e identidade.",
+  "voice": "Maya",
+  "narrationTaskId": "e5fb712a-f2fb-45bf-b237-cc0bec340139",
+  "states": [
+    [
+      "Imagine organizar",
+      "Como encontrar cada dado?",
+      "",
+      "",
+      "Organizando a programação de um evento.",
+      -1,
+      [
+        "Lista: posição na sequência",
+        "Dicionário: nome do campo",
+        "Escolha conforme o acesso"
+      ]
+    ],
+    [
+      "Na tela criamos",
+      "Uma lista em ordem",
+      "atividades = [\"Recepção\", \"Oficina\", \"Encerramento\"]",
+      "",
+      "Colchetes delimitam. Vírgulas separam.",
+      0
+    ],
+    [
+      "A contagem dos índices",
+      "Índices começam em zero",
+      "",
+      "",
+      "Posição não é identidade.",
+      -1,
+      [
+        "0  Recepção",
+        "1  Oficina",
+        "2  Encerramento"
+      ]
+    ],
+    [
+      "Antes de executar",
+      "Consultar uma posição",
+      "atividades = [\"Recepção\", \"Oficina\", \"Encerramento\"]\nprint(atividades[1])",
+      "Qual é sua previsão?",
+      "Índice 1: segundo item.",
+      1
+    ],
+    [
+      "A saída é Oficina",
+      "Confira a consulta",
+      "atividades = [\"Recepção\", \"Oficina\", \"Encerramento\"]\nprint(atividades[1])",
+      "Oficina",
+      "O índice começa em zero.",
+      1
+    ],
+    [
+      "Se queremos mostrar",
+      "Percorrer uma lista",
+      "atividades = [\"Recepção\", \"Oficina\", \"Encerramento\"]\nfor atividade in atividades:\n    print(atividade)",
+      "Recepção\nOficina\nEncerramento",
+      "Um texto por volta, na ordem da lista.",
+      2
+    ],
+    [
+      "Agora vamos alterar",
+      "Atualizar um item",
+      "atividades = [\"Recepção\", \"Oficina\", \"Encerramento\"]\natividades[1] = \"Debate\"\nfor atividade in atividades:\n    print(atividade)",
+      "Recepção\nDebate\nEncerramento",
+      "O índice 1 agora guarda Debate.",
+      1
+    ],
+    [
+      "Para descrever uma sala",
+      "Campos com nomes",
+      "sala = {\"local\": \"Sala B\", \"vagas\": 12}\nprint(sala[\"local\"])\nprint(sala[\"vagas\"])",
+      "Sala B\n12",
+      "Chave : valor",
+      0
+    ],
+    [
+      "Depois atualizamos vagas",
+      "Atualizar um campo",
+      "sala = {\"local\": \"Sala B\", \"vagas\": 12}\nsala[\"vagas\"] = 10\nprint(sala[\"vagas\"])",
+      "10",
+      "A chave identifica o campo.",
+      1
+    ],
+    [
+      "Agora surge um erro",
+      "Investigue a chave",
+      "sala = {\"local\": \"Sala B\", \"vagas\": 10}\nprint(sala[\"vaga\"])",
+      "KeyError: 'vaga'",
+      "A consulta pede uma chave que não existe.",
+      1
+    ],
+    [
+      "Nossa hipótese é",
+      "Compare o nome exato",
+      "",
+      "",
+      "Hipótese: falta a letra s.",
+      -1,
+      [
+        "Chave existente: vagas",
+        "Chave consultada: vaga",
+        "Compare a escrita antes de alterar os dados"
+      ]
+    ],
+    [
+      "Corrigimos a consulta",
+      "Corrija e execute",
+      "sala = {\"local\": \"Sala B\", \"vagas\": 10}\nprint(sala[\"vagas\"])",
+      "10",
+      "A consulta usa a chave existente.",
+      1
+    ],
+    [
+      "Uma lista funciona",
+      "Estrutura a serviço do problema",
+      "",
+      "",
+      "Como vou encontrar, alterar e percorrer?",
+      -1,
+      [
+        "Lista: uma sequência de itens",
+        "Dicionário: informações nomeadas"
+      ]
+    ],
+    [
+      "Antes uma previsão",
+      "Sua previsão",
+      "",
+      "",
+      "Pense antes de voltar ao aplicativo.",
+      -1,
+      [
+        "Adicionar um item no começo da lista:",
+        "o índice 1 continua apontando",
+        "para o mesmo texto?"
+      ]
+    ]
+  ],
+  "status": "rendering",
+  "tools": {
+    "narration": "Runway",
+    "composition": "Higgsfield Higgsedit",
+    "captions": "faster-whisper + clean burner"
+  },
+  "language": "pt-BR",
+  "voiceSpeed": 1,
+  "budget": {
+    "runwayCredits": 67,
+    "characters": 3347
+  },
+  "actualDurationSeconds": 233.453424,
+  "oldVideoUrl": "https://d2ol7oe51mr4n9.cloudfront.net/user_3Ke119x65sh4FYjNFHHZNJMSh6l/8fedd634-ec84-437a-b1f4-45c867fffee1.mp4",
+  "videoUrl": null,
+  "sourcesUrl": null,
+  "editingNotes": [
+    "Mesma voz e identidade visual do piloto aprovado.",
+    "Demonstração ilustrada, com saídas executadas em Python.",
+    "Cursor, destaque, erro e correção; pergunta final sem resposta.",
+    "Não inclui soluções dos desafios; reprodução Android/Windows ainda não testada."
+  ]
+}
