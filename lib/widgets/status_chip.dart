@@ -11,14 +11,14 @@ class StatusChip extends StatelessWidget {
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
     final background = switch (status) {
-      SkillStatus.notStarted => const Color(0xFFFFECEC),
-      SkillStatus.inProgress => const Color(0xFFFFF4D6),
-      SkillStatus.mastered => const Color(0xFFE4F8EA),
+      SkillStatus.notStarted => scheme.errorContainer,
+      SkillStatus.inProgress => scheme.secondaryContainer,
+      SkillStatus.mastered => scheme.tertiaryContainer,
     };
     final foreground = switch (status) {
-      SkillStatus.notStarted => const Color(0xFFB42318),
-      SkillStatus.inProgress => const Color(0xFF8A5700),
-      SkillStatus.mastered => const Color(0xFF177245),
+      SkillStatus.notStarted => scheme.onErrorContainer,
+      SkillStatus.inProgress => scheme.onSecondaryContainer,
+      SkillStatus.mastered => scheme.onTertiaryContainer,
     };
 
     return Container(
@@ -46,7 +46,7 @@ class StatusChip extends StatelessWidget {
           ),
           if (status == SkillStatus.mastered) ...[
             const SizedBox(width: 6),
-            Icon(Icons.check_rounded, size: 16, color: scheme.primary),
+            Icon(Icons.check_rounded, size: 16, color: foreground),
           ],
         ],
       ),
