@@ -2,12 +2,12 @@
   "lesson": "lesson_0_1",
   "title": "Primeiros passos: pensar, testar e corrigir",
   "sourceCommit": "c1ef42fe1fdaa17ac747bcb2769960b3e6bb91f8",
-  "status": "rendered_validated",
+  "status": "rendered_validated_integrated_in_pr",
   "voice": "Maya",
   "language": "pt-BR",
   "speed": 1,
   "estimatedDurationSeconds": 213,
-  "actualDurationSeconds": 205.589478,
+  "actualDurationSeconds": 205.636,
   "tools": {
     "narration": "Runway",
     "composition": "Higgsfield Higgsedit",
@@ -17,7 +17,8 @@
   "oldVideoUrl": "https://share.descript.com/view/zboVy82eLM0",
   "budget": {
     "runwayCredits": 62,
-    "characters": 3083
+    "characters": 3083,
+    "renderingCost": "Não confirmado; sem compra ou upgrade."
   },
   "editingNotes": [
     "Mesma voz e identidade visual do piloto aprovado.",
@@ -203,5 +204,24 @@
   ],
   "voiceSpeed": 1,
   "narrationTaskId": "33f27849-6c8e-4000-af8f-32f6b4d8dbca",
-  "sourcesUrl": "https://d2ol7oe51mr4n9.cloudfront.net/user_3Ke119x65sh4FYjNFHHZNJMSh6l/3be5566e-12c5-47ac-90c1-3eef65e256f3.zip"
+  "sourcesUrl": "https://d2ol7oe51mr4n9.cloudfront.net/user_3Ke119x65sh4FYjNFHHZNJMSh6l/3be5566e-12c5-47ac-90c1-3eef65e256f3.zip",
+  "validation": {
+    "durationSeconds": 205.636,
+    "captionWords": 506,
+    "scriptWords": 506,
+    "similarity": 0.9901574803149606,
+    "streamsDurationPassed": true,
+    "sampledFramesSeconds": [
+      8.23,
+      102.32,
+      200.18
+    ],
+    "devicePlayback": "not_tested",
+    "visualSampleReview": "passed",
+    "pythonExamplesExecuted": true
+  },
+  "integration": {
+    "path": "assets/content/video_urls.json",
+    "oldLinkPreserved": true
+  }
 }
