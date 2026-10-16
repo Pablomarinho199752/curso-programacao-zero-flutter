@@ -13,7 +13,7 @@ export default async ({project})=>{
  const p=await project({dir:root+'/project',size:'1920x1080',fps:24,background:'#101827'});
  const a=await p.add(root+'/narration.mp3');p.cut(a,{at:0,from:0,dur:duration});
  const R=(x,y,w,h,fill='#18253B',radius=18)=><rect x={x} y={y} width={w} height={h} fill={fill} radius={radius}/>;
- const T=(s,x,y,sz=36,col='#EEF4FF',w=1660,font='Inter',h=150)=><text x={x} y={y} width={w} height={h} fontSize={sz} fontFamily={font} color={col}>{s}</text>;
+ const T=(s,x,y,sz=36,col='#EEF4FF',w=1660,font='Inter',h=150)=>s.trim()?<text x={x} y={y} width={w} height={h} fontSize={sz} fontFamily={font} color={col}>{s}</text>:R(x,y,1,1);
  const cursor=(x,y)=><path x={x} y={y} width={28} height={38} d="M0 0 L0 31 L8 23 L15 37 L22 33 L14 20 L27 20 Z" fill="#FFFFFF" stroke={{color:'#101827',width:2}}/>;
  for(let i=0;i<d.states.length;i++){
   const [cue,title,code,out,note,focus,cards]=d.states[i];
