@@ -1,0 +1,14 @@
+{
+  "name": "codigo-zero-video-v2",
+  "private": true,
+  "scripts": {
+    "studio": "remotion studio src/index.ts",
+    "render:lesson0": "remotion render src/index.ts Lesson01 out/lesson_0_1_v2.mp4 --codec h264 --crf 18"
+  },
+  "dependencies": {
+    "@remotion/cli": "latest",
+    "react": "latest",
+    "react-dom": "latest",
+    "remotion": "latest"
+  }
+}
