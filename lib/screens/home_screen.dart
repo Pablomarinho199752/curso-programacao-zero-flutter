@@ -439,16 +439,16 @@ class _InfoCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: scheme.surfaceContainer,
         borderRadius: BorderRadius.circular(24),
         border: Border.all(
           color: accent
-              ? scheme.primary.withValues(alpha: 0.18)
-              : Colors.black.withValues(alpha: 0.06),
+              ? scheme.primary.withValues(alpha: 0.35)
+              : scheme.outlineVariant,
         ),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.035),
+            color: scheme.shadow.withValues(alpha: 0.08),
             blurRadius: 22,
             offset: const Offset(0, 8),
           ),
@@ -500,9 +500,9 @@ class _MethodChip extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 13, vertical: 10),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: scheme.surfaceContainer,
         borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: Colors.black.withValues(alpha: 0.06)),
+        border: Border.all(color: scheme.outlineVariant),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
