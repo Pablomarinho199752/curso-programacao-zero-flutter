@@ -16,61 +16,24 @@
       "fechamento"
     ]
   },
+  "current_blocker": {
+    "type": "audio_generation_workspace_limit",
+    "provider": "Runway",
+    "note": "A produção visual e os roteiros podem continuar; a narração Maya pt-BR 0.80 e os renders finais dependem de disponibilidade de geração de áudio."
+  },
   "lessons": {
-    "lesson_0_1": {
-      "title": "Primeiros passos: pensar, testar e corrigir",
-      "status": "needs_expand_to_3min",
-      "note": "Versão V2 atual é curta e será ampliada para o novo mínimo."
-    },
-    "lesson_1_1": {
-      "title": "Valores e variáveis: dando nome aos dados",
-      "status": "needs_expand_to_3min",
-      "note": "Versão Maya 0.80 aprovada; manter voz e estilo, ampliar conteúdo."
-    },
-    "lesson_2_1": {
-      "title": "Decisões: transformar regras em caminhos",
-      "status": "script_ready_audio_blocked",
-      "script": "video_v2/scripts/lesson_2_1_ptbr.md"
-    },
-    "lesson_3_1": {
-      "title": "Repetições: automatizar sem perder o controle",
-      "status": "curriculum_loaded"
-    },
-    "lesson_4_1": {
-      "title": "Coleções: escolher uma estrutura para os dados",
-      "status": "curriculum_loaded"
-    },
-    "lesson_5_1": {
-      "title": "Funções: dividir o problema em responsabilidades",
-      "status": "curriculum_loaded"
-    },
-    "lesson_6_1": {
-      "title": "Persistência e falhas esperadas",
-      "status": "curriculum_loaded"
-    },
-    "lesson_7_1": {
-      "title": "Debugging e testes: transformar erro em evidência",
-      "status": "curriculum_loaded"
-    },
-    "lesson_8_1": {
-      "title": "APIs e JSON: aprender pela documentação",
-      "status": "curriculum_loaded"
-    },
-    "lesson_9_1": {
-      "title": "SQLite e CRUD: dados estruturados que permanecem",
-      "status": "curriculum_loaded"
-    },
-    "lesson_10_1": {
-      "title": "Projetos maiores: estrutura, classes e ambiente",
-      "status": "curriculum_loaded"
-    },
-    "lesson_11_1": {
-      "title": "Git e GitHub: histórico para experimentar com segurança",
-      "status": "curriculum_loaded"
-    },
-    "lesson_12_1": {
-      "title": "Desenvolvimento independente: descobrir, construir e provar",
-      "status": "curriculum_loaded"
-    }
+    "lesson_0_1": {"title":"Primeiros passos: pensar, testar e corrigir","status":"script_ready_audio_blocked","script":"video_v2/scripts/lesson_0_1_ptbr.md"},
+    "lesson_1_1": {"title":"Valores e variáveis: dando nome aos dados","status":"script_ready_audio_blocked","script":"video_v2/scripts/lesson_1_1_ptbr.md"},
+    "lesson_2_1": {"title":"Decisões: transformar regras em caminhos","status":"script_ready_audio_blocked","script":"video_v2/scripts/lesson_2_1_ptbr.md"},
+    "lesson_3_1": {"title":"Repetições: automatizar sem perder o controle","status":"script_ready_audio_blocked","script":"video_v2/scripts/lesson_3_1_ptbr.md"},
+    "lesson_4_1": {"title":"Coleções: escolher uma estrutura para os dados","status":"script_ready_audio_blocked","script":"video_v2/scripts/lesson_4_1_ptbr.md"},
+    "lesson_5_1": {"title":"Funções: dividir o problema em responsabilidades","status":"script_ready_audio_blocked","script":"video_v2/scripts/lesson_5_1_ptbr.md"},
+    "lesson_6_1": {"title":"Persistência e falhas esperadas","status":"script_ready_audio_blocked","script":"video_v2/scripts/lesson_6_1_ptbr.md"},
+    "lesson_7_1": {"title":"Debugging e testes: transformar erro em evidência","status":"script_ready_audio_blocked","script":"video_v2/scripts/lesson_7_1_ptbr.md"},
+    "lesson_8_1": {"title":"APIs e JSON: aprender pela documentação","status":"script_ready_audio_blocked","script":"video_v2/scripts/lesson_8_1_ptbr.md"},
+    "lesson_9_1": {"title":"SQLite e CRUD: dados estruturados que permanecem","status":"script_ready_audio_blocked","script":"video_v2/scripts/lesson_9_1_ptbr.md"},
+    "lesson_10_1": {"title":"Projetos maiores: estrutura, classes e ambiente","status":"script_ready_audio_blocked","script":"video_v2/scripts/lesson_10_1_ptbr.md"},
+    "lesson_11_1": {"title":"Git e GitHub: histórico para experimentar com segurança","status":"script_ready_audio_blocked","script":"video_v2/scripts/lesson_11_1_ptbr.md"},
+    "lesson_12_1": {"title":"Desenvolvimento independente: descobrir, construir e provar","status":"script_ready_audio_blocked","script":"video_v2/scripts/lesson_12_1_ptbr.md"}
   }
 }
