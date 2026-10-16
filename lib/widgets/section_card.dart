@@ -20,13 +20,13 @@ class SectionCard extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(bottom: 18),
       child: Material(
-        color: Colors.white,
+        color: scheme.surfaceContainer,
         elevation: 2,
-        shadowColor: Colors.black.withValues(alpha: 0.10),
+        shadowColor: scheme.shadow.withValues(alpha: 0.10),
         clipBehavior: Clip.antiAlias,
         shape: RoundedRectangleBorder(
           borderRadius: radius,
-          side: BorderSide(color: Colors.black.withValues(alpha: 0.06)),
+          side: BorderSide(color: scheme.outlineVariant),
         ),
         child: Padding(
           padding: const EdgeInsets.all(22),
