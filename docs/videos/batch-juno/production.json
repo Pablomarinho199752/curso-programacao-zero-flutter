@@ -1,0 +1,623 @@
+{
+  "status": "scripts_ready_render_blocked_credits",
+  "checked_at": "2026-10-16",
+  "source_main_sha": "ab4565cdbdb85201f20b93c77bfdd47f397735fa",
+  "voice": {
+    "name": "Juno female",
+    "approved_by_user": true,
+    "voice_id": "a3ce02fe-4d3e-55bc-b4d4-a4801b9acdb4",
+    "voice_type": "preset",
+    "model": "seed_audio",
+    "tool": "Higgsfield",
+    "approved_sample_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3Ke119x65sh4FYjNFHHZNJMSh6l/hf_20261016_092231_72fb718e-9f77-4ad1-93de-7d10ffeb64d6.wav"
+  },
+  "budget": {
+    "available_credits": 8,
+    "quoted_narration_credits": 99.3,
+    "spent_this_resume": 0,
+    "scope": "Somente narração; montagem/render e eventuais novas tomadas não incluídos. Cotação deve ser reconsultada antes de gerar.",
+    "jobs_submitted": 0
+  },
+  "style": {
+    "language": "pt-BR",
+    "visual": "Reutilizar docs/videos/batch-maya/edit.jsx, Inter e JetBrains Mono, editor escuro, cursor e destaques; preservar indentação.",
+    "captions": "Português sincronizado à fala real; conferir todas as palavras e nomes técnicos.",
+    "target_duration_seconds": [
+      180,
+      420
+    ],
+    "timing": "Pausas de previsão e execução de 5–10 segundos entre demonstrações. Medir áudio e montagem antes de declarar duração. Não esticar artificialmente nem reduzir clareza.",
+    "music": "Sem música de fundo.",
+    "integration": "Não alterar links antes de validar vídeo final. Não modificar lógica ou conteúdo pedagógico do app."
+  },
+  "validation": {
+    "status": "code_examples_executed_passed",
+    "environment": "Python e Git locais em pasta temporária, sem rede ou dados reais",
+    "checks": [
+      "6: escrita, leitura e truncamento com w",
+      "7: divisor incorreto e asserts com 0, 50 e 100",
+      "8: TypeError reproduzido e acesso JSON correto",
+      "9: transação explícita sem commit revertida, com commit preservada; CRUD parametrizado",
+      "10: variável local não altera atributo; instâncias independentes",
+      "11: edição após add não altera índice; novo add seleciona versão atual",
+      "12: sorted retorna nova lista, preservando entrada"
+    ],
+    "remaining": [
+      "render",
+      "sincronização de legendas",
+      "audição completa",
+      "inspeção visual",
+      "HTTP do link final",
+      "reprodução no app"
+    ]
+  },
+  "lessons": [
+    {
+      "lesson_id": "lesson_6_1",
+      "module": 6,
+      "title": "Persistência e falhas esperadas",
+      "scenes": [
+        {
+          "title": "Por que salvar",
+          "narration": "Você ajusta o volume de um programa, fecha a janela e abre de novo. A preferência continua lá? Uma variável existe durante a execução. Para recuperar esse valor depois, precisamos guardar a informação fora daquela execução. Hoje vamos acompanhar esse caminho com um arquivo de demonstração chamado configuracao.txt. Tudo será feito em uma pasta temporária, sem tocar nos arquivos do seu projeto.",
+          "visual": "Mostrar variável volume=40; encerrar execução; contrastar memória com arquivo."
+        },
+        {
+          "title": "Escrever",
+          "narration": "Vamos abrir o arquivo usando with open, o nome, o modo w e a codificação UTF oito. O w indica escrita. Dentro do bloco, arquivo.write recebe o texto volume igual a quarenta. Observe a indentação: a escrita pertence ao bloco. Ao sair dele, o with fecha o arquivo. Executamos e abrimos o arquivo para conferir. Mostrar uma mensagem no terminal não salvaria esse conteúdo por conta própria.",
+          "visual": "Digitar with open('configuracao.txt', 'w', encoding='utf-8') as arquivo: e arquivo.write('volume=40'); mostrar arquivo."
+        },
+        {
+          "title": "Ler de novo",
+          "narration": "Agora encerramos o primeiro programa e executamos outro. Usamos o mesmo nome, mas trocamos o modo para r, de leitura. O read devolve o conteúdo, e o print permite enxergá-lo. O resultado aparece mesmo sem repetir a escrita. Esse é o detalhe importante: estamos recuperando algo que já estava no disco. O caminho relativo é procurado a partir da pasta de trabalho do programa.",
+          "visual": "Executar leitor separado; saída volume=40; destacar modo r e pasta de trabalho."
+        },
+        {
+          "title": "Investigar o arquivo vazio",
+          "narration": "Vamos reproduzir um erro só na cópia temporária. Alguém abre o arquivo existente com w, pensando que apenas vai consultá-lo, e fecha o bloco sem escrever. Ao ler depois, o conteúdo está vazio. Nossa hipótese é que o modo de abertura alterou o arquivo. Comparamos antes e depois: w trunca um arquivo existente. Corrigimos o leitor para r e restauramos o conteúdo de demonstração. Trocar o modo não recupera automaticamente o que foi apagado.",
+          "visual": "Abrir com w e pass; leitor mostra repr igual a ''; restaurar; repetir leitura correta."
+        },
+        {
+          "title": "Falha esperada e previsão",
+          "narration": "E se o arquivo não existir? A leitura levanta FileNotFoundError. Podemos tratar especificamente essa situação e explicar que ainda não há configuração salva. Capturar qualquer erro e ignorar tudo esconderia problemas diferentes, como uma falha de permissão. Conforme o projeto cresce, leitura e escrita podem virar funções em um módulo próprio. Agora pense antes de voltar à prática: se o arquivo já existe e a próxima execução usa somente r, o que você espera que aconteça com o conteúdo?",
+          "visual": "Mostrar try/except FileNotFoundError só no leitor; fechar com pergunta e pausa."
+        }
+      ],
+      "script": "Você ajusta o volume de um programa, fecha a janela e abre de novo. A preferência continua lá? Uma variável existe durante a execução. Para recuperar esse valor depois, precisamos guardar a informação fora daquela execução. Hoje vamos acompanhar esse caminho com um arquivo de demonstração chamado configuracao.txt. Tudo será feito em uma pasta temporária, sem tocar nos arquivos do seu projeto.\n\nVamos abrir o arquivo usando with open, o nome, o modo w e a codificação UTF oito. O w indica escrita. Dentro do bloco, arquivo.write recebe o texto volume igual a quarenta. Observe a indentação: a escrita pertence ao bloco. Ao sair dele, o with fecha o arquivo. Executamos e abrimos o arquivo para conferir. Mostrar uma mensagem no terminal não salvaria esse conteúdo por conta própria.\n\nAgora encerramos o primeiro programa e executamos outro. Usamos o mesmo nome, mas trocamos o modo para r, de leitura. O read devolve o conteúdo, e o print permite enxergá-lo. O resultado aparece mesmo sem repetir a escrita. Esse é o detalhe importante: estamos recuperando algo que já estava no disco. O caminho relativo é procurado a partir da pasta de trabalho do programa.\n\nVamos reproduzir um erro só na cópia temporária. Alguém abre o arquivo existente com w, pensando que apenas vai consultá-lo, e fecha o bloco sem escrever. Ao ler depois, o conteúdo está vazio. Nossa hipótese é que o modo de abertura alterou o arquivo. Comparamos antes e depois: w trunca um arquivo existente. Corrigimos o leitor para r e restauramos o conteúdo de demonstração. Trocar o modo não recupera automaticamente o que foi apagado.\n\nE se o arquivo não existir? A leitura levanta FileNotFoundError. Podemos tratar especificamente essa situação e explicar que ainda não há configuração salva. Capturar qualquer erro e ignorar tudo esconderia problemas diferentes, como uma falha de permissão. Conforme o projeto cresce, leitura e escrita podem virar funções em um módulo próprio. Agora pense antes de voltar à prática: se o arquivo já existe e a próxima execução usa somente r, o que você espera que aconteça com o conteúdo?",
+      "chunks": [
+        "Você ajusta o volume de um programa, fecha a janela e abre de novo. A preferência continua lá? Uma variável existe durante a execução. Para recuperar esse valor depois, precisamos guardar a informação fora daquela execução. Hoje vamos acompanhar esse caminho com um arquivo de demonstração chamado configuracao.txt. Tudo será feito em uma pasta temporária, sem tocar nos arquivos do seu projeto.\n\nVamos abrir o arquivo usando with open, o nome, o modo w e a codificação UTF oito. O w indica escrita. Dentro do bloco, arquivo.write recebe o texto volume igual a quarenta. Observe a indentação: a escrita pertence ao bloco. Ao sair dele, o with fecha o arquivo. Executamos e abrimos o arquivo para conferir. Mostrar uma mensagem no terminal não salvaria esse conteúdo por conta própria.\n\nAgora encerramos o primeiro programa e executamos outro. Usamos o mesmo nome, mas trocamos o modo para r, de leitura. O read devolve o conteúdo, e o print permite enxergá-lo. O resultado aparece mesmo sem repetir a escrita. Esse é o detalhe importante: estamos recuperando algo que já estava no disco. O caminho relativo é procurado a partir da pasta de trabalho do programa.\n\nVamos reproduzir um erro só na cópia temporária. Alguém abre o arquivo existente com w, pensando que apenas vai consultá-lo, e fecha o bloco sem escrever. Ao ler depois, o conteúdo está vazio. Nossa hipótese é que o modo de abertura alterou o arquivo. Comparamos antes e depois: w trunca um arquivo existente. Corrigimos o leitor para r e restauramos o conteúdo de demonstração. Trocar o modo não recupera automaticamente o que foi apagado.",
+        "E se o arquivo não existir? A leitura levanta FileNotFoundError. Podemos tratar especificamente essa situação e explicar que ainda não há configuração salva. Capturar qualquer erro e ignorar tudo esconderia problemas diferentes, como uma falha de permissão. Conforme o projeto cresce, leitura e escrita podem virar funções em um módulo próprio. Agora pense antes de voltar à prática: se o arquivo já existe e a próxima execução usa somente r, o que você espera que aconteça com o conteúdo?"
+      ],
+      "quotes": [
+        {
+          "cost": {
+            "credits": 10.7,
+            "credits_exact": 10.7
+          }
+        },
+        {
+          "cost": {
+            "credits": 3.3,
+            "credits_exact": 3.3
+          }
+        }
+      ],
+      "status": "script_and_storyboard_ready",
+      "duration_actual_seconds": null,
+      "final_video_url": null,
+      "audio_urls": [],
+      "estimated_narration_credits": 14,
+      "narration_blocks": [
+        {
+          "order": 1,
+          "text": "Você ajusta o volume de um programa, fecha a janela e abre de novo. A preferência continua lá? Uma variável existe durante a execução. Para recuperar esse valor depois, precisamos guardar a informação fora daquela execução. Hoje vamos acompanhar esse caminho com um arquivo de demonstração chamado configuracao.txt. Tudo será feito em uma pasta temporária, sem tocar nos arquivos do seu projeto.\n\nVamos abrir o arquivo usando with open, o nome, o modo w e a codificação UTF oito. O w indica escrita. Dentro do bloco, arquivo.write recebe o texto volume igual a quarenta. Observe a indentação: a escrita pertence ao bloco. Ao sair dele, o with fecha o arquivo. Executamos e abrimos o arquivo para conferir. Mostrar uma mensagem no terminal não salvaria esse conteúdo por conta própria.\n\nAgora encerramos o primeiro programa e executamos outro. Usamos o mesmo nome, mas trocamos o modo para r, de leitura. O read devolve o conteúdo, e o print permite enxergá-lo. O resultado aparece mesmo sem repetir a escrita. Esse é o detalhe importante: estamos recuperando algo que já estava no disco. O caminho relativo é procurado a partir da pasta de trabalho do programa.\n\nVamos reproduzir um erro só na cópia temporária. Alguém abre o arquivo existente com w, pensando que apenas vai consultá-lo, e fecha o bloco sem escrever. Ao ler depois, o conteúdo está vazio. Nossa hipótese é que o modo de abertura alterou o arquivo. Comparamos antes e depois: w trunca um arquivo existente. Corrigimos o leitor para r e restauramos o conteúdo de demonstração. Trocar o modo não recupera automaticamente o que foi apagado.",
+          "char_count": 1603,
+          "quote": {
+            "cost": {
+              "credits": 10.7,
+              "credits_exact": 10.7
+            }
+          }
+        },
+        {
+          "order": 2,
+          "text": "E se o arquivo não existir? A leitura levanta FileNotFoundError. Podemos tratar especificamente essa situação e explicar que ainda não há configuração salva. Capturar qualquer erro e ignorar tudo esconderia problemas diferentes, como uma falha de permissão. Conforme o projeto cresce, leitura e escrita podem virar funções em um módulo próprio. Agora pense antes de voltar à prática: se o arquivo já existe e a próxima execução usa somente r, o que você espera que aconteça com o conteúdo?",
+          "char_count": 489,
+          "quote": {
+            "cost": {
+              "credits": 3.3,
+              "credits_exact": 3.3
+            }
+          }
+        }
+      ],
+      "editing_notes": "Montar cada cena a partir da fala medida. Mostrar código, execução, saída, erro e correção; pergunta final com pausa. Não usar soluções dos desafios."
+    },
+    {
+      "lesson_id": "lesson_7_1",
+      "module": 7,
+      "title": "Debugging e testes: transformar erro em evidência",
+      "scenes": [
+        {
+          "title": "Esperado e observado",
+          "narration": "Você pediu uma conversão de centímetros para metros. Cem centímetros deveriam virar um metro, mas o programa mostra dez. Antes de mudar o código, precisamos registrar o problema de um jeito que possamos repetir. Nossa entrada será cem. O resultado esperado será um. O resultado observado será dez. Essa diferença é o ponto de partida da investigação, não um motivo para reescrever tudo.",
+          "visual": "Cartões entrada100/esperado1/observado10."
+        },
+        {
+          "title": "Uma hipótese pequena",
+          "narration": "A função recebe centímetros e devolve esse valor dividido por dez. Vamos seguir o caminho: cem entra, a divisão acontece, dez sai. A hipótese é que o divisor está errado. Ainda não vamos alterar várias linhas juntas. Queremos saber se uma mudança específica explica o comportamento. Quando o exemplo é pequeno, fica mais fácil relacionar uma alteração ao resultado que apareceu no terminal.",
+          "visual": "Mostrar def em_metros(cm): return cm / 10; executar print(em_metros(100))."
+        },
+        {
+          "title": "Teste antes da correção",
+          "narration": "Escrevemos um assert comparando a conversão de cem com um. Ao executar, a condição é falsa e aparece AssertionError. Esse teste registra a regra que queremos proteger. Agora trocamos somente o divisor por cem e executamos outra vez. O assert passa. Colocamos uma mensagem depois dele para enxergar que o programa chegou até ali. A correção tem uma evidência que podemos repetir.",
+          "visual": "Adicionar assert em_metros(100)==1; mostrar falha; corrigir /100; saída teste passou."
+        },
+        {
+          "title": "Escolher entradas úteis",
+          "narration": "Um caso só não conta toda a história. Acrescentamos cinquenta centímetros, esperando meio metro, e zero, esperando zero. Observe uma armadilha: dividir zero por dez também dá zero. Se tivéssemos testado apenas essa entrada, a versão errada pareceria correta. Escolher testes exige pensar nos comportamentos que diferenciam uma implementação boa de uma ruim. Esses três casos ajudam aqui, mas não garantem que qualquer uso possível esteja coberto.",
+          "visual": "Mostrar asserts 50==0.5 e0==0; comparar resultado do zero nas duas versões."
+        },
+        {
+          "title": "Melhorar com proteção",
+          "narration": "Com os resultados protegidos, podemos melhorar o nome do parâmetro para centimetros. A intenção é tornar o código mais fácil de ler sem mudar o que ele faz. Isso é uma refatoração. Executamos os testes novamente e comparamos. O caminho foi reproduzir, levantar uma hipótese, testar uma alteração e só depois melhorar a estrutura. Antes de voltar ao app: por que um teste que passa com zero pode deixar esse erro de conversão escondido?",
+          "visual": "Renomear cm em assinatura e retorno; repetir testes; pergunta final."
+        }
+      ],
+      "script": "Você pediu uma conversão de centímetros para metros. Cem centímetros deveriam virar um metro, mas o programa mostra dez. Antes de mudar o código, precisamos registrar o problema de um jeito que possamos repetir. Nossa entrada será cem. O resultado esperado será um. O resultado observado será dez. Essa diferença é o ponto de partida da investigação, não um motivo para reescrever tudo.\n\nA função recebe centímetros e devolve esse valor dividido por dez. Vamos seguir o caminho: cem entra, a divisão acontece, dez sai. A hipótese é que o divisor está errado. Ainda não vamos alterar várias linhas juntas. Queremos saber se uma mudança específica explica o comportamento. Quando o exemplo é pequeno, fica mais fácil relacionar uma alteração ao resultado que apareceu no terminal.\n\nEscrevemos um assert comparando a conversão de cem com um. Ao executar, a condição é falsa e aparece AssertionError. Esse teste registra a regra que queremos proteger. Agora trocamos somente o divisor por cem e executamos outra vez. O assert passa. Colocamos uma mensagem depois dele para enxergar que o programa chegou até ali. A correção tem uma evidência que podemos repetir.\n\nUm caso só não conta toda a história. Acrescentamos cinquenta centímetros, esperando meio metro, e zero, esperando zero. Observe uma armadilha: dividir zero por dez também dá zero. Se tivéssemos testado apenas essa entrada, a versão errada pareceria correta. Escolher testes exige pensar nos comportamentos que diferenciam uma implementação boa de uma ruim. Esses três casos ajudam aqui, mas não garantem que qualquer uso possível esteja coberto.\n\nCom os resultados protegidos, podemos melhorar o nome do parâmetro para centimetros. A intenção é tornar o código mais fácil de ler sem mudar o que ele faz. Isso é uma refatoração. Executamos os testes novamente e comparamos. O caminho foi reproduzir, levantar uma hipótese, testar uma alteração e só depois melhorar a estrutura. Antes de voltar ao app: por que um teste que passa com zero pode deixar esse erro de conversão escondido?",
+      "chunks": [
+        "Você pediu uma conversão de centímetros para metros. Cem centímetros deveriam virar um metro, mas o programa mostra dez. Antes de mudar o código, precisamos registrar o problema de um jeito que possamos repetir. Nossa entrada será cem. O resultado esperado será um. O resultado observado será dez. Essa diferença é o ponto de partida da investigação, não um motivo para reescrever tudo.\n\nA função recebe centímetros e devolve esse valor dividido por dez. Vamos seguir o caminho: cem entra, a divisão acontece, dez sai. A hipótese é que o divisor está errado. Ainda não vamos alterar várias linhas juntas. Queremos saber se uma mudança específica explica o comportamento. Quando o exemplo é pequeno, fica mais fácil relacionar uma alteração ao resultado que apareceu no terminal.\n\nEscrevemos um assert comparando a conversão de cem com um. Ao executar, a condição é falsa e aparece AssertionError. Esse teste registra a regra que queremos proteger. Agora trocamos somente o divisor por cem e executamos outra vez. O assert passa. Colocamos uma mensagem depois dele para enxergar que o programa chegou até ali. A correção tem uma evidência que podemos repetir.\n\nUm caso só não conta toda a história. Acrescentamos cinquenta centímetros, esperando meio metro, e zero, esperando zero. Observe uma armadilha: dividir zero por dez também dá zero. Se tivéssemos testado apenas essa entrada, a versão errada pareceria correta. Escolher testes exige pensar nos comportamentos que diferenciam uma implementação boa de uma ruim. Esses três casos ajudam aqui, mas não garantem que qualquer uso possível esteja coberto.",
+        "Com os resultados protegidos, podemos melhorar o nome do parâmetro para centimetros. A intenção é tornar o código mais fácil de ler sem mudar o que ele faz. Isso é uma refatoração. Executamos os testes novamente e comparamos. O caminho foi reproduzir, levantar uma hipótese, testar uma alteração e só depois melhorar a estrutura. Antes de voltar ao app: por que um teste que passa com zero pode deixar esse erro de conversão escondido?"
+      ],
+      "quotes": [
+        {
+          "cost": {
+            "credits": 10.8,
+            "credits_exact": 10.8
+          }
+        },
+        {
+          "cost": {
+            "credits": 2.9,
+            "credits_exact": 2.9
+          }
+        }
+      ],
+      "status": "script_and_storyboard_ready",
+      "duration_actual_seconds": null,
+      "final_video_url": null,
+      "audio_urls": [],
+      "estimated_narration_credits": 13.7,
+      "narration_blocks": [
+        {
+          "order": 1,
+          "text": "Você pediu uma conversão de centímetros para metros. Cem centímetros deveriam virar um metro, mas o programa mostra dez. Antes de mudar o código, precisamos registrar o problema de um jeito que possamos repetir. Nossa entrada será cem. O resultado esperado será um. O resultado observado será dez. Essa diferença é o ponto de partida da investigação, não um motivo para reescrever tudo.\n\nA função recebe centímetros e devolve esse valor dividido por dez. Vamos seguir o caminho: cem entra, a divisão acontece, dez sai. A hipótese é que o divisor está errado. Ainda não vamos alterar várias linhas juntas. Queremos saber se uma mudança específica explica o comportamento. Quando o exemplo é pequeno, fica mais fácil relacionar uma alteração ao resultado que apareceu no terminal.\n\nEscrevemos um assert comparando a conversão de cem com um. Ao executar, a condição é falsa e aparece AssertionError. Esse teste registra a regra que queremos proteger. Agora trocamos somente o divisor por cem e executamos outra vez. O assert passa. Colocamos uma mensagem depois dele para enxergar que o programa chegou até ali. A correção tem uma evidência que podemos repetir.\n\nUm caso só não conta toda a história. Acrescentamos cinquenta centímetros, esperando meio metro, e zero, esperando zero. Observe uma armadilha: dividir zero por dez também dá zero. Se tivéssemos testado apenas essa entrada, a versão errada pareceria correta. Escolher testes exige pensar nos comportamentos que diferenciam uma implementação boa de uma ruim. Esses três casos ajudam aqui, mas não garantem que qualquer uso possível esteja coberto.",
+          "char_count": 1606,
+          "quote": {
+            "cost": {
+              "credits": 10.8,
+              "credits_exact": 10.8
+            }
+          }
+        },
+        {
+          "order": 2,
+          "text": "Com os resultados protegidos, podemos melhorar o nome do parâmetro para centimetros. A intenção é tornar o código mais fácil de ler sem mudar o que ele faz. Isso é uma refatoração. Executamos os testes novamente e comparamos. O caminho foi reproduzir, levantar uma hipótese, testar uma alteração e só depois melhorar a estrutura. Antes de voltar ao app: por que um teste que passa com zero pode deixar esse erro de conversão escondido?",
+          "char_count": 435,
+          "quote": {
+            "cost": {
+              "credits": 2.9,
+              "credits_exact": 2.9
+            }
+          }
+        }
+      ],
+      "editing_notes": "Montar cada cena a partir da fala medida. Mostrar código, execução, saída, erro e correção; pergunta final com pausa. Não usar soluções dos desafios."
+    },
+    {
+      "lesson_id": "lesson_8_1",
+      "module": 8,
+      "title": "APIs e JSON: aprender pela documentação",
+      "scenes": [
+        {
+          "title": "Ler o contrato",
+          "narration": "Imagine uma biblioteca que fornece informações sobre seu acervo. Como descobrir onde está o título de um livro? Começamos pela documentação, que descreve o contrato dos dados. Neste vídeo usaremos um contrato fictício, claramente identificado, e um texto JSON local. Não estamos fazendo uma chamada de rede. Essa separação permite estudar a estrutura da resposta sem misturar problemas de conexão com problemas de acesso aos dados.",
+          "visual": "Selo exemplo fictício, sem chamada HTTP; desenho objeto/lista/objeto."
+        },
+        {
+          "title": "Requisição e resposta",
+          "narration": "Em uma integração real, procuramos o endereço da operação, o método, os parâmetros e a autenticação exigida. Depois observamos o status e o corpo da resposta. Um status de sucesso não nos diz sozinho em qual nível está cada campo. Também precisamos considerar falhas de rede e limites de espera. Aqui vamos concentrar a demonstração no corpo: um objeto com a chave acervo, contendo uma lista de livros.",
+          "visual": "Checklist visual contrato; destacar corpo JSON como foco único."
+        },
+        {
+          "title": "Percorrer os níveis",
+          "narration": "Importamos json e guardamos o texto da resposta. A função json.loads transforma esse texto em estruturas Python. O objeto externo vira um dicionário. A chave acervo leva a uma lista. O índice zero seleciona o primeiro item. Esse item é outro dicionário, e a chave titulo devolve Estrelas. Vamos mostrar cada etapa no terminal, antes de juntar o acesso em uma única expressão.",
+          "visual": "Mostrar json.loads('{\"acervo\":[{\"titulo\":\"Estrelas\"}]}'); imprimir cada nível."
+        },
+        {
+          "title": "Entender o erro",
+          "narration": "Agora tentamos acessar a chave titulo diretamente na lista acervo. Surge um TypeError. Em vez de experimentar nomes ao acaso, verificamos o tipo do valor intermediário. É uma lista, que nesse acesso precisa de um índice inteiro. Selecionamos o primeiro item e só então buscamos a chave. A correção acompanha o formato dos dados. A mensagem de erro ajuda quando olhamos exatamente para a operação que falhou.",
+          "visual": "Reproduzir dados['acervo']['titulo']; inspecionar type; corrigir dados['acervo'][0]['titulo']."
+        },
+        {
+          "title": "Não presumir que existe um item",
+          "narration": "O contrato também pode permitir um acervo vazio. Nesse caso, tentar acessar o índice zero causaria outro erro. Primeiro verificamos se há itens e escolhemos uma resposta apropriada quando não houver. Isso é diferente de tratar qualquer resposta como se tivesse sempre o mesmo conteúdo. Documentação e inspeção trabalham juntas. Antes da prática, faça sua previsão: se acervo vier como uma lista vazia, qual suposição do nosso primeiro acesso deixa de ser verdadeira?",
+          "visual": "Comparar lista com item e []; mostrar if livros: ... else: print('Acervo vazio'); pergunta."
+        }
+      ],
+      "script": "Imagine uma biblioteca que fornece informações sobre seu acervo. Como descobrir onde está o título de um livro? Começamos pela documentação, que descreve o contrato dos dados. Neste vídeo usaremos um contrato fictício, claramente identificado, e um texto JSON local. Não estamos fazendo uma chamada de rede. Essa separação permite estudar a estrutura da resposta sem misturar problemas de conexão com problemas de acesso aos dados.\n\nEm uma integração real, procuramos o endereço da operação, o método, os parâmetros e a autenticação exigida. Depois observamos o status e o corpo da resposta. Um status de sucesso não nos diz sozinho em qual nível está cada campo. Também precisamos considerar falhas de rede e limites de espera. Aqui vamos concentrar a demonstração no corpo: um objeto com a chave acervo, contendo uma lista de livros.\n\nImportamos json e guardamos o texto da resposta. A função json.loads transforma esse texto em estruturas Python. O objeto externo vira um dicionário. A chave acervo leva a uma lista. O índice zero seleciona o primeiro item. Esse item é outro dicionário, e a chave titulo devolve Estrelas. Vamos mostrar cada etapa no terminal, antes de juntar o acesso em uma única expressão.\n\nAgora tentamos acessar a chave titulo diretamente na lista acervo. Surge um TypeError. Em vez de experimentar nomes ao acaso, verificamos o tipo do valor intermediário. É uma lista, que nesse acesso precisa de um índice inteiro. Selecionamos o primeiro item e só então buscamos a chave. A correção acompanha o formato dos dados. A mensagem de erro ajuda quando olhamos exatamente para a operação que falhou.\n\nO contrato também pode permitir um acervo vazio. Nesse caso, tentar acessar o índice zero causaria outro erro. Primeiro verificamos se há itens e escolhemos uma resposta apropriada quando não houver. Isso é diferente de tratar qualquer resposta como se tivesse sempre o mesmo conteúdo. Documentação e inspeção trabalham juntas. Antes da prática, faça sua previsão: se acervo vier como uma lista vazia, qual suposição do nosso primeiro acesso deixa de ser verdadeira?",
+      "chunks": [
+        "Imagine uma biblioteca que fornece informações sobre seu acervo. Como descobrir onde está o título de um livro? Começamos pela documentação, que descreve o contrato dos dados. Neste vídeo usaremos um contrato fictício, claramente identificado, e um texto JSON local. Não estamos fazendo uma chamada de rede. Essa separação permite estudar a estrutura da resposta sem misturar problemas de conexão com problemas de acesso aos dados.\n\nEm uma integração real, procuramos o endereço da operação, o método, os parâmetros e a autenticação exigida. Depois observamos o status e o corpo da resposta. Um status de sucesso não nos diz sozinho em qual nível está cada campo. Também precisamos considerar falhas de rede e limites de espera. Aqui vamos concentrar a demonstração no corpo: um objeto com a chave acervo, contendo uma lista de livros.\n\nImportamos json e guardamos o texto da resposta. A função json.loads transforma esse texto em estruturas Python. O objeto externo vira um dicionário. A chave acervo leva a uma lista. O índice zero seleciona o primeiro item. Esse item é outro dicionário, e a chave titulo devolve Estrelas. Vamos mostrar cada etapa no terminal, antes de juntar o acesso em uma única expressão.\n\nAgora tentamos acessar a chave titulo diretamente na lista acervo. Surge um TypeError. Em vez de experimentar nomes ao acaso, verificamos o tipo do valor intermediário. É uma lista, que nesse acesso precisa de um índice inteiro. Selecionamos o primeiro item e só então buscamos a chave. A correção acompanha o formato dos dados. A mensagem de erro ajuda quando olhamos exatamente para a operação que falhou.",
+        "O contrato também pode permitir um acervo vazio. Nesse caso, tentar acessar o índice zero causaria outro erro. Primeiro verificamos se há itens e escolhemos uma resposta apropriada quando não houver. Isso é diferente de tratar qualquer resposta como se tivesse sempre o mesmo conteúdo. Documentação e inspeção trabalham juntas. Antes da prática, faça sua previsão: se acervo vier como uma lista vazia, qual suposição do nosso primeiro acesso deixa de ser verdadeira?"
+      ],
+      "quotes": [
+        {
+          "cost": {
+            "credits": 10.9,
+            "credits_exact": 10.9
+          }
+        },
+        {
+          "cost": {
+            "credits": 3.2,
+            "credits_exact": 3.2
+          }
+        }
+      ],
+      "status": "script_and_storyboard_ready",
+      "duration_actual_seconds": null,
+      "final_video_url": null,
+      "audio_urls": [],
+      "estimated_narration_credits": 14.1,
+      "narration_blocks": [
+        {
+          "order": 1,
+          "text": "Imagine uma biblioteca que fornece informações sobre seu acervo. Como descobrir onde está o título de um livro? Começamos pela documentação, que descreve o contrato dos dados. Neste vídeo usaremos um contrato fictício, claramente identificado, e um texto JSON local. Não estamos fazendo uma chamada de rede. Essa separação permite estudar a estrutura da resposta sem misturar problemas de conexão com problemas de acesso aos dados.\n\nEm uma integração real, procuramos o endereço da operação, o método, os parâmetros e a autenticação exigida. Depois observamos o status e o corpo da resposta. Um status de sucesso não nos diz sozinho em qual nível está cada campo. Também precisamos considerar falhas de rede e limites de espera. Aqui vamos concentrar a demonstração no corpo: um objeto com a chave acervo, contendo uma lista de livros.\n\nImportamos json e guardamos o texto da resposta. A função json.loads transforma esse texto em estruturas Python. O objeto externo vira um dicionário. A chave acervo leva a uma lista. O índice zero seleciona o primeiro item. Esse item é outro dicionário, e a chave titulo devolve Estrelas. Vamos mostrar cada etapa no terminal, antes de juntar o acesso em uma única expressão.\n\nAgora tentamos acessar a chave titulo diretamente na lista acervo. Surge um TypeError. Em vez de experimentar nomes ao acaso, verificamos o tipo do valor intermediário. É uma lista, que nesse acesso precisa de um índice inteiro. Selecionamos o primeiro item e só então buscamos a chave. A correção acompanha o formato dos dados. A mensagem de erro ajuda quando olhamos exatamente para a operação que falhou.",
+          "char_count": 1621,
+          "quote": {
+            "cost": {
+              "credits": 10.9,
+              "credits_exact": 10.9
+            }
+          }
+        },
+        {
+          "order": 2,
+          "text": "O contrato também pode permitir um acervo vazio. Nesse caso, tentar acessar o índice zero causaria outro erro. Primeiro verificamos se há itens e escolhemos uma resposta apropriada quando não houver. Isso é diferente de tratar qualquer resposta como se tivesse sempre o mesmo conteúdo. Documentação e inspeção trabalham juntas. Antes da prática, faça sua previsão: se acervo vier como uma lista vazia, qual suposição do nosso primeiro acesso deixa de ser verdadeira?",
+          "char_count": 466,
+          "quote": {
+            "cost": {
+              "credits": 3.2,
+              "credits_exact": 3.2
+            }
+          }
+        }
+      ],
+      "editing_notes": "Montar cada cena a partir da fala medida. Mostrar código, execução, saída, erro e correção; pergunta final com pausa. Não usar soluções dos desafios."
+    },
+    {
+      "lesson_id": "lesson_9_1",
+      "module": 9,
+      "title": "SQLite e CRUD: dados estruturados que permanecem",
+      "scenes": [
+        {
+          "title": "Ver e guardar são coisas diferentes",
+          "narration": "Um registro apareceu na consulta. Será que ele continuará lá depois que fecharmos o programa? Vamos investigar usando SQLite em um banco temporário, separado de qualquer dado real. Nossa tabela terá salas, com identificador e nome. O objetivo principal é entender a confirmação de uma transação. Não vamos conectar este exemplo ao Firebase, nem usar o banco do aplicativo do curso.",
+          "visual": "Banco temporário laboratorio.db; tabela salas(id,nome); pergunta persistiu?"
+        },
+        {
+          "title": "Inserir e consultar",
+          "narration": "Abrimos uma conexão, criamos a tabela se necessário e iniciamos uma transação explicitamente com BEGIN. Para inserir a sala Azul, usamos um comando SQL com pontos de interrogação e passamos os valores separadamente. Assim, o comando e os dados não são montados por concatenação. Fazemos um SELECT na mesma conexão e vemos a linha. Até aqui sabemos que ela está visível dentro dessa transação.",
+          "visual": "CREATE TABLE salas; BEGIN; INSERT parametrizado id1 Azul; SELECT mostra [(1,'Azul')]."
+        },
+        {
+          "title": "O desaparecimento tem uma causa",
+          "narration": "Agora fechamos a conexão sem confirmar a transação. Reabrimos o banco e repetimos a consulta. A linha não está mais lá. Nossa hipótese é que a alteração ficou pendente. Repetimos a inserção em uma nova transação, mas desta vez chamamos commit antes de fechar. Quando abrimos outra conexão, o registro permanece. A diferença está na confirmação, não na aparência do print anterior.",
+          "visual": "Comparar sem commit [] e com commit [(1,'Azul')]; destacar close e commit."
+        },
+        {
+          "title": "Atualizar e excluir com cuidado",
+          "narration": "Criar, ler, atualizar e excluir formam o CRUD. Já inserimos e consultamos. Agora atualizamos o nome da sala usando o identificador no filtro e passando os valores como parâmetros. Confirmamos e consultamos de novo. Para excluir, fazemos o mesmo cuidado com o filtro: apagar apenas o registro de demonstração. Um comando sem esse filtro poderia atingir mais linhas do que pretendemos. Toda essa execução acontece no banco temporário.",
+          "visual": "UPDATE salas SET nome=? WHERE id=?; commit; SELECT Verde; DELETE WHERE id=?; commit; SELECT []."
+        },
+        {
+          "title": "Uma evidência melhor",
+          "narration": "Nosso exemplo escolheu uma transação explícita para deixar o comportamento visível. Existem outras configurações de transação, por isso é importante entender como a conexão está configurada. Para conferir persistência, encerramos e consultamos por outra conexão. Ver um valor antes de fechar não responde sozinho à pergunta. Agora pense: depois de uma atualização, que sequência de observações mostraria que o novo nome realmente permaneceu salvo?",
+          "visual": "Ciclo conectar/alterar/confirmar/fechar/reabrir; pergunta final."
+        }
+      ],
+      "script": "Um registro apareceu na consulta. Será que ele continuará lá depois que fecharmos o programa? Vamos investigar usando SQLite em um banco temporário, separado de qualquer dado real. Nossa tabela terá salas, com identificador e nome. O objetivo principal é entender a confirmação de uma transação. Não vamos conectar este exemplo ao Firebase, nem usar o banco do aplicativo do curso.\n\nAbrimos uma conexão, criamos a tabela se necessário e iniciamos uma transação explicitamente com BEGIN. Para inserir a sala Azul, usamos um comando SQL com pontos de interrogação e passamos os valores separadamente. Assim, o comando e os dados não são montados por concatenação. Fazemos um SELECT na mesma conexão e vemos a linha. Até aqui sabemos que ela está visível dentro dessa transação.\n\nAgora fechamos a conexão sem confirmar a transação. Reabrimos o banco e repetimos a consulta. A linha não está mais lá. Nossa hipótese é que a alteração ficou pendente. Repetimos a inserção em uma nova transação, mas desta vez chamamos commit antes de fechar. Quando abrimos outra conexão, o registro permanece. A diferença está na confirmação, não na aparência do print anterior.\n\nCriar, ler, atualizar e excluir formam o CRUD. Já inserimos e consultamos. Agora atualizamos o nome da sala usando o identificador no filtro e passando os valores como parâmetros. Confirmamos e consultamos de novo. Para excluir, fazemos o mesmo cuidado com o filtro: apagar apenas o registro de demonstração. Um comando sem esse filtro poderia atingir mais linhas do que pretendemos. Toda essa execução acontece no banco temporário.\n\nNosso exemplo escolheu uma transação explícita para deixar o comportamento visível. Existem outras configurações de transação, por isso é importante entender como a conexão está configurada. Para conferir persistência, encerramos e consultamos por outra conexão. Ver um valor antes de fechar não responde sozinho à pergunta. Agora pense: depois de uma atualização, que sequência de observações mostraria que o novo nome realmente permaneceu salvo?",
+      "chunks": [
+        "Um registro apareceu na consulta. Será que ele continuará lá depois que fecharmos o programa? Vamos investigar usando SQLite em um banco temporário, separado de qualquer dado real. Nossa tabela terá salas, com identificador e nome. O objetivo principal é entender a confirmação de uma transação. Não vamos conectar este exemplo ao Firebase, nem usar o banco do aplicativo do curso.\n\nAbrimos uma conexão, criamos a tabela se necessário e iniciamos uma transação explicitamente com BEGIN. Para inserir a sala Azul, usamos um comando SQL com pontos de interrogação e passamos os valores separadamente. Assim, o comando e os dados não são montados por concatenação. Fazemos um SELECT na mesma conexão e vemos a linha. Até aqui sabemos que ela está visível dentro dessa transação.\n\nAgora fechamos a conexão sem confirmar a transação. Reabrimos o banco e repetimos a consulta. A linha não está mais lá. Nossa hipótese é que a alteração ficou pendente. Repetimos a inserção em uma nova transação, mas desta vez chamamos commit antes de fechar. Quando abrimos outra conexão, o registro permanece. A diferença está na confirmação, não na aparência do print anterior.\n\nCriar, ler, atualizar e excluir formam o CRUD. Já inserimos e consultamos. Agora atualizamos o nome da sala usando o identificador no filtro e passando os valores como parâmetros. Confirmamos e consultamos de novo. Para excluir, fazemos o mesmo cuidado com o filtro: apagar apenas o registro de demonstração. Um comando sem esse filtro poderia atingir mais linhas do que pretendemos. Toda essa execução acontece no banco temporário.",
+        "Nosso exemplo escolheu uma transação explícita para deixar o comportamento visível. Existem outras configurações de transação, por isso é importante entender como a conexão está configurada. Para conferir persistência, encerramos e consultamos por outra conexão. Ver um valor antes de fechar não responde sozinho à pergunta. Agora pense: depois de uma atualização, que sequência de observações mostraria que o novo nome realmente permaneceu salvo?"
+      ],
+      "quotes": [
+        {
+          "cost": {
+            "credits": 10.7,
+            "credits_exact": 10.7
+          }
+        },
+        {
+          "cost": {
+            "credits": 3,
+            "credits_exact": 3
+          }
+        }
+      ],
+      "status": "script_and_storyboard_ready",
+      "duration_actual_seconds": null,
+      "final_video_url": null,
+      "audio_urls": [],
+      "estimated_narration_credits": 13.7,
+      "narration_blocks": [
+        {
+          "order": 1,
+          "text": "Um registro apareceu na consulta. Será que ele continuará lá depois que fecharmos o programa? Vamos investigar usando SQLite em um banco temporário, separado de qualquer dado real. Nossa tabela terá salas, com identificador e nome. O objetivo principal é entender a confirmação de uma transação. Não vamos conectar este exemplo ao Firebase, nem usar o banco do aplicativo do curso.\n\nAbrimos uma conexão, criamos a tabela se necessário e iniciamos uma transação explicitamente com BEGIN. Para inserir a sala Azul, usamos um comando SQL com pontos de interrogação e passamos os valores separadamente. Assim, o comando e os dados não são montados por concatenação. Fazemos um SELECT na mesma conexão e vemos a linha. Até aqui sabemos que ela está visível dentro dessa transação.\n\nAgora fechamos a conexão sem confirmar a transação. Reabrimos o banco e repetimos a consulta. A linha não está mais lá. Nossa hipótese é que a alteração ficou pendente. Repetimos a inserção em uma nova transação, mas desta vez chamamos commit antes de fechar. Quando abrimos outra conexão, o registro permanece. A diferença está na confirmação, não na aparência do print anterior.\n\nCriar, ler, atualizar e excluir formam o CRUD. Já inserimos e consultamos. Agora atualizamos o nome da sala usando o identificador no filtro e passando os valores como parâmetros. Confirmamos e consultamos de novo. Para excluir, fazemos o mesmo cuidado com o filtro: apagar apenas o registro de demonstração. Um comando sem esse filtro poderia atingir mais linhas do que pretendemos. Toda essa execução acontece no banco temporário.",
+          "char_count": 1591,
+          "quote": {
+            "cost": {
+              "credits": 10.7,
+              "credits_exact": 10.7
+            }
+          }
+        },
+        {
+          "order": 2,
+          "text": "Nosso exemplo escolheu uma transação explícita para deixar o comportamento visível. Existem outras configurações de transação, por isso é importante entender como a conexão está configurada. Para conferir persistência, encerramos e consultamos por outra conexão. Ver um valor antes de fechar não responde sozinho à pergunta. Agora pense: depois de uma atualização, que sequência de observações mostraria que o novo nome realmente permaneceu salvo?",
+          "char_count": 447,
+          "quote": {
+            "cost": {
+              "credits": 3,
+              "credits_exact": 3
+            }
+          }
+        }
+      ],
+      "editing_notes": "Montar cada cena a partir da fala medida. Mostrar código, execução, saída, erro e correção; pergunta final com pausa. Não usar soluções dos desafios."
+    },
+    {
+      "lesson_id": "lesson_10_1",
+      "module": 10,
+      "title": "Projetos maiores: estrutura, classes e ambiente",
+      "scenes": [
+        {
+          "title": "Um conceito com estado",
+          "narration": "Pense em dois temporizadores sobre uma mesa. Um começa com trinta segundos, outro com sessenta. Cada um possui um estado e pode avançar. Uma classe pode representar esse conjunto de dados e comportamento. Ela não é obrigatória para todo programa. Aqui faz sentido porque queremos criar objetos parecidos, com valores independentes. Vamos observar essa independência e investigar um erro que impede a mudança de estado.",
+          "visual": "Dois cartões A30 eB60; classe Temporizador."
+        },
+        {
+          "title": "Criar o objeto",
+          "narration": "Na classe Temporizador, o método de inicialização recebe self e segundos. Guardamos o valor em self.segundos_restantes. O self se refere ao objeto que está recebendo aquela chamada. Criamos dois temporizadores e imprimimos seus valores. O primeiro mostra trinta e o segundo sessenta. Eles foram construídos a partir da mesma classe, mas isso não significa que precisam compartilhar o mesmo valor em cada momento.",
+          "visual": "Digitar __init__; a=Temporizador(30); b=Temporizador(60); saída30 60."
+        },
+        {
+          "title": "Um erro que parece funcionar",
+          "narration": "Escrevemos o método avancar, mas guardamos o cálculo apenas em uma variável local chamada segundos_restantes. Chamamos o método no primeiro temporizador e consultamos o estado dele. Continua trinta. O cálculo aconteceu, mas não foi atribuído ao atributo do objeto. Nossa hipótese é essa diferença entre um nome local, usado dentro do método, e o estado que consultamos depois pela referência ao objeto.",
+          "visual": "Método errado segundos_restantes=max(0,self.segundos_restantes-quantidade); a.avancar(5); saída30."
+        },
+        {
+          "title": "Alterar o estado certo",
+          "narration": "Corrigimos o destino da atribuição para self.segundos_restantes. Repetimos a chamada a partir de um objeto novo com trinta segundos. Agora ele mostra vinte e cinco. O segundo permanece com sessenta. O max com zero impede um valor negativo neste exemplo quando avançamos mais que o tempo restante. Definimos esse comportamento de propósito; outra necessidade exigiria outra regra. Não é a classe que decide sozinha como o programa deve funcionar.",
+          "visual": "Método correto; a25 b60; a.avancar(100) mostra0; destacar atributo."
+        },
+        {
+          "title": "Organizar sem complicar",
+          "narration": "Se o projeto crescer, a classe pode ficar em um módulo responsável pelo temporizador, enquanto outro trecho cuida da interface. Separar responsabilidades ajuda a encontrar onde mudar cada comportamento. Um ambiente virtual tem outro papel: isolar dependências do projeto. Não confunda essas duas formas de organização. Hoje o foco foi observar estado e comportamento juntos. Antes de voltar ao app: se criarmos dois objetos independentes, avançar um deles precisa alterar o outro?",
+          "visual": "Mapa simples domínio/interface; nota venv isola dependências; pergunta final."
+        }
+      ],
+      "script": "Pense em dois temporizadores sobre uma mesa. Um começa com trinta segundos, outro com sessenta. Cada um possui um estado e pode avançar. Uma classe pode representar esse conjunto de dados e comportamento. Ela não é obrigatória para todo programa. Aqui faz sentido porque queremos criar objetos parecidos, com valores independentes. Vamos observar essa independência e investigar um erro que impede a mudança de estado.\n\nNa classe Temporizador, o método de inicialização recebe self e segundos. Guardamos o valor em self.segundos_restantes. O self se refere ao objeto que está recebendo aquela chamada. Criamos dois temporizadores e imprimimos seus valores. O primeiro mostra trinta e o segundo sessenta. Eles foram construídos a partir da mesma classe, mas isso não significa que precisam compartilhar o mesmo valor em cada momento.\n\nEscrevemos o método avancar, mas guardamos o cálculo apenas em uma variável local chamada segundos_restantes. Chamamos o método no primeiro temporizador e consultamos o estado dele. Continua trinta. O cálculo aconteceu, mas não foi atribuído ao atributo do objeto. Nossa hipótese é essa diferença entre um nome local, usado dentro do método, e o estado que consultamos depois pela referência ao objeto.\n\nCorrigimos o destino da atribuição para self.segundos_restantes. Repetimos a chamada a partir de um objeto novo com trinta segundos. Agora ele mostra vinte e cinco. O segundo permanece com sessenta. O max com zero impede um valor negativo neste exemplo quando avançamos mais que o tempo restante. Definimos esse comportamento de propósito; outra necessidade exigiria outra regra. Não é a classe que decide sozinha como o programa deve funcionar.\n\nSe o projeto crescer, a classe pode ficar em um módulo responsável pelo temporizador, enquanto outro trecho cuida da interface. Separar responsabilidades ajuda a encontrar onde mudar cada comportamento. Um ambiente virtual tem outro papel: isolar dependências do projeto. Não confunda essas duas formas de organização. Hoje o foco foi observar estado e comportamento juntos. Antes de voltar ao app: se criarmos dois objetos independentes, avançar um deles precisa alterar o outro?",
+      "chunks": [
+        "Pense em dois temporizadores sobre uma mesa. Um começa com trinta segundos, outro com sessenta. Cada um possui um estado e pode avançar. Uma classe pode representar esse conjunto de dados e comportamento. Ela não é obrigatória para todo programa. Aqui faz sentido porque queremos criar objetos parecidos, com valores independentes. Vamos observar essa independência e investigar um erro que impede a mudança de estado.\n\nNa classe Temporizador, o método de inicialização recebe self e segundos. Guardamos o valor em self.segundos_restantes. O self se refere ao objeto que está recebendo aquela chamada. Criamos dois temporizadores e imprimimos seus valores. O primeiro mostra trinta e o segundo sessenta. Eles foram construídos a partir da mesma classe, mas isso não significa que precisam compartilhar o mesmo valor em cada momento.\n\nEscrevemos o método avancar, mas guardamos o cálculo apenas em uma variável local chamada segundos_restantes. Chamamos o método no primeiro temporizador e consultamos o estado dele. Continua trinta. O cálculo aconteceu, mas não foi atribuído ao atributo do objeto. Nossa hipótese é essa diferença entre um nome local, usado dentro do método, e o estado que consultamos depois pela referência ao objeto.\n\nCorrigimos o destino da atribuição para self.segundos_restantes. Repetimos a chamada a partir de um objeto novo com trinta segundos. Agora ele mostra vinte e cinco. O segundo permanece com sessenta. O max com zero impede um valor negativo neste exemplo quando avançamos mais que o tempo restante. Definimos esse comportamento de propósito; outra necessidade exigiria outra regra. Não é a classe que decide sozinha como o programa deve funcionar.",
+        "Se o projeto crescer, a classe pode ficar em um módulo responsável pelo temporizador, enquanto outro trecho cuida da interface. Separar responsabilidades ajuda a encontrar onde mudar cada comportamento. Um ambiente virtual tem outro papel: isolar dependências do projeto. Não confunda essas duas formas de organização. Hoje o foco foi observar estado e comportamento juntos. Antes de voltar ao app: se criarmos dois objetos independentes, avançar um deles precisa alterar o outro?"
+      ],
+      "quotes": [
+        {
+          "cost": {
+            "credits": 11.3,
+            "credits_exact": 11.3
+          }
+        },
+        {
+          "cost": {
+            "credits": 3.2,
+            "credits_exact": 3.2
+          }
+        }
+      ],
+      "status": "script_and_storyboard_ready",
+      "duration_actual_seconds": null,
+      "final_video_url": null,
+      "audio_urls": [],
+      "estimated_narration_credits": 14.5,
+      "narration_blocks": [
+        {
+          "order": 1,
+          "text": "Pense em dois temporizadores sobre uma mesa. Um começa com trinta segundos, outro com sessenta. Cada um possui um estado e pode avançar. Uma classe pode representar esse conjunto de dados e comportamento. Ela não é obrigatória para todo programa. Aqui faz sentido porque queremos criar objetos parecidos, com valores independentes. Vamos observar essa independência e investigar um erro que impede a mudança de estado.\n\nNa classe Temporizador, o método de inicialização recebe self e segundos. Guardamos o valor em self.segundos_restantes. O self se refere ao objeto que está recebendo aquela chamada. Criamos dois temporizadores e imprimimos seus valores. O primeiro mostra trinta e o segundo sessenta. Eles foram construídos a partir da mesma classe, mas isso não significa que precisam compartilhar o mesmo valor em cada momento.\n\nEscrevemos o método avancar, mas guardamos o cálculo apenas em uma variável local chamada segundos_restantes. Chamamos o método no primeiro temporizador e consultamos o estado dele. Continua trinta. O cálculo aconteceu, mas não foi atribuído ao atributo do objeto. Nossa hipótese é essa diferença entre um nome local, usado dentro do método, e o estado que consultamos depois pela referência ao objeto.\n\nCorrigimos o destino da atribuição para self.segundos_restantes. Repetimos a chamada a partir de um objeto novo com trinta segundos. Agora ele mostra vinte e cinco. O segundo permanece com sessenta. O max com zero impede um valor negativo neste exemplo quando avançamos mais que o tempo restante. Definimos esse comportamento de propósito; outra necessidade exigiria outra regra. Não é a classe que decide sozinha como o programa deve funcionar.",
+          "char_count": 1683,
+          "quote": {
+            "cost": {
+              "credits": 11.3,
+              "credits_exact": 11.3
+            }
+          }
+        },
+        {
+          "order": 2,
+          "text": "Se o projeto crescer, a classe pode ficar em um módulo responsável pelo temporizador, enquanto outro trecho cuida da interface. Separar responsabilidades ajuda a encontrar onde mudar cada comportamento. Um ambiente virtual tem outro papel: isolar dependências do projeto. Não confunda essas duas formas de organização. Hoje o foco foi observar estado e comportamento juntos. Antes de voltar ao app: se criarmos dois objetos independentes, avançar um deles precisa alterar o outro?",
+          "char_count": 480,
+          "quote": {
+            "cost": {
+              "credits": 3.2,
+              "credits_exact": 3.2
+            }
+          }
+        }
+      ],
+      "editing_notes": "Montar cada cena a partir da fala medida. Mostrar código, execução, saída, erro e correção; pergunta final com pausa. Não usar soluções dos desafios."
+    },
+    {
+      "lesson_id": "lesson_11_1",
+      "module": 11,
+      "title": "Git e GitHub: histórico para experimentar com segurança",
+      "scenes": [
+        {
+          "title": "O que entra no histórico",
+          "narration": "Você terminou uma alteração e quer registrá-la. Será que tudo que está salvo no editor vai entrar no próximo commit? Vamos descobrir em um repositório local descartável, sem publicar nada em uma conta real. Usaremos apenas aviso.py, com uma mensagem curta. Git registra versões; GitHub é um serviço que pode hospedar repositórios. Para entender a seleção do commit, não precisamos de uma conexão com o GitHub.",
+          "visual": "Repositório temporário; aviso.py; três áreas: trabalho/preparado/histórico."
+        },
+        {
+          "title": "Revisar a mudança",
+          "narration": "Partimos de uma versão já registrada e alteramos a mensagem do arquivo. O git status mostra quais arquivos têm mudanças. O git diff mostra o conteúdo alterado que ainda não foi preparado. Vamos ler a linha removida e a linha adicionada. Não basta reconhecer o nome do arquivo: queremos conferir se a alteração corresponde à intenção. Só depois selecionamos explicitamente aviso.py com git add.",
+          "visual": "Mensagem inicial Olá; editar para Olá, turma; status; diff; git add aviso.py."
+        },
+        {
+          "title": "A seleção é uma fotografia",
+          "narration": "O git add prepara o conteúdo que existe naquele momento. Para revisar essa seleção, usamos git diff com a opção staged. Agora editamos a mensagem outra vez, acrescentando uma palavra, e salvamos no editor. Será que a seleção acompanha automaticamente? Comparamos os dois diffs. O staged mostra a versão preparada antes. O diff comum mostra a mudança posterior, ainda fora daquela seleção.",
+          "visual": "Depois de add alterar para Olá, turma de Python; comparar diff e diff --staged lado a lado."
+        },
+        {
+          "title": "Corrigir antes de registrar",
+          "narration": "Nossa intenção era registrar a mensagem mais recente. Por isso adicionamos aviso.py novamente e revisamos o diff staged outra vez. Só então criamos um commit com uma mensagem que explica a alteração. O histórico passa a registrar aquela versão escolhida. Se nossa intenção fosse separar mudanças, poderíamos manter parte fora do commit. O importante é decidir conscientemente, em vez de assumir que salvar no editor e preparar são a mesma ação.",
+          "visual": "git add aviso.py; git diff --staged; git commit -m 'Melhora saudação do exemplo'; git log --oneline -1."
+        },
+        {
+          "title": "Uma rotina que evita surpresa",
+          "narration": "Uma branch permite desenvolver uma linha de trabalho separada, mas não elimina a necessidade de revisar o conteúdo. Antes de integrar ou publicar, o cuidado com o diff continua valendo. Um README ajuda outra pessoa a entender o projeto e executá-lo. Neste vídeo praticamos apenas a seleção local: observar, preparar, conferir e registrar. Faça uma previsão antes de continuar: editar um arquivo depois de git add atualiza automaticamente a versão preparada para o próximo commit?",
+          "visual": "Mostrar status limpo; nenhuma publicação; pergunta final."
+        }
+      ],
+      "script": "Você terminou uma alteração e quer registrá-la. Será que tudo que está salvo no editor vai entrar no próximo commit? Vamos descobrir em um repositório local descartável, sem publicar nada em uma conta real. Usaremos apenas aviso.py, com uma mensagem curta. Git registra versões; GitHub é um serviço que pode hospedar repositórios. Para entender a seleção do commit, não precisamos de uma conexão com o GitHub.\n\nPartimos de uma versão já registrada e alteramos a mensagem do arquivo. O git status mostra quais arquivos têm mudanças. O git diff mostra o conteúdo alterado que ainda não foi preparado. Vamos ler a linha removida e a linha adicionada. Não basta reconhecer o nome do arquivo: queremos conferir se a alteração corresponde à intenção. Só depois selecionamos explicitamente aviso.py com git add.\n\nO git add prepara o conteúdo que existe naquele momento. Para revisar essa seleção, usamos git diff com a opção staged. Agora editamos a mensagem outra vez, acrescentando uma palavra, e salvamos no editor. Será que a seleção acompanha automaticamente? Comparamos os dois diffs. O staged mostra a versão preparada antes. O diff comum mostra a mudança posterior, ainda fora daquela seleção.\n\nNossa intenção era registrar a mensagem mais recente. Por isso adicionamos aviso.py novamente e revisamos o diff staged outra vez. Só então criamos um commit com uma mensagem que explica a alteração. O histórico passa a registrar aquela versão escolhida. Se nossa intenção fosse separar mudanças, poderíamos manter parte fora do commit. O importante é decidir conscientemente, em vez de assumir que salvar no editor e preparar são a mesma ação.\n\nUma branch permite desenvolver uma linha de trabalho separada, mas não elimina a necessidade de revisar o conteúdo. Antes de integrar ou publicar, o cuidado com o diff continua valendo. Um README ajuda outra pessoa a entender o projeto e executá-lo. Neste vídeo praticamos apenas a seleção local: observar, preparar, conferir e registrar. Faça uma previsão antes de continuar: editar um arquivo depois de git add atualiza automaticamente a versão preparada para o próximo commit?",
+      "chunks": [
+        "Você terminou uma alteração e quer registrá-la. Será que tudo que está salvo no editor vai entrar no próximo commit? Vamos descobrir em um repositório local descartável, sem publicar nada em uma conta real. Usaremos apenas aviso.py, com uma mensagem curta. Git registra versões; GitHub é um serviço que pode hospedar repositórios. Para entender a seleção do commit, não precisamos de uma conexão com o GitHub.\n\nPartimos de uma versão já registrada e alteramos a mensagem do arquivo. O git status mostra quais arquivos têm mudanças. O git diff mostra o conteúdo alterado que ainda não foi preparado. Vamos ler a linha removida e a linha adicionada. Não basta reconhecer o nome do arquivo: queremos conferir se a alteração corresponde à intenção. Só depois selecionamos explicitamente aviso.py com git add.\n\nO git add prepara o conteúdo que existe naquele momento. Para revisar essa seleção, usamos git diff com a opção staged. Agora editamos a mensagem outra vez, acrescentando uma palavra, e salvamos no editor. Será que a seleção acompanha automaticamente? Comparamos os dois diffs. O staged mostra a versão preparada antes. O diff comum mostra a mudança posterior, ainda fora daquela seleção.\n\nNossa intenção era registrar a mensagem mais recente. Por isso adicionamos aviso.py novamente e revisamos o diff staged outra vez. Só então criamos um commit com uma mensagem que explica a alteração. O histórico passa a registrar aquela versão escolhida. Se nossa intenção fosse separar mudanças, poderíamos manter parte fora do commit. O importante é decidir conscientemente, em vez de assumir que salvar no editor e preparar são a mesma ação.",
+        "Uma branch permite desenvolver uma linha de trabalho separada, mas não elimina a necessidade de revisar o conteúdo. Antes de integrar ou publicar, o cuidado com o diff continua valendo. Um README ajuda outra pessoa a entender o projeto e executá-lo. Neste vídeo praticamos apenas a seleção local: observar, preparar, conferir e registrar. Faça uma previsão antes de continuar: editar um arquivo depois de git add atualiza automaticamente a versão preparada para o próximo commit?"
+      ],
+      "quotes": [
+        {
+          "cost": {
+            "credits": 11,
+            "credits_exact": 11
+          }
+        },
+        {
+          "cost": {
+            "credits": 3.2,
+            "credits_exact": 3.2
+          }
+        }
+      ],
+      "status": "script_and_storyboard_ready",
+      "duration_actual_seconds": null,
+      "final_video_url": null,
+      "audio_urls": [],
+      "estimated_narration_credits": 14.2,
+      "narration_blocks": [
+        {
+          "order": 1,
+          "text": "Você terminou uma alteração e quer registrá-la. Será que tudo que está salvo no editor vai entrar no próximo commit? Vamos descobrir em um repositório local descartável, sem publicar nada em uma conta real. Usaremos apenas aviso.py, com uma mensagem curta. Git registra versões; GitHub é um serviço que pode hospedar repositórios. Para entender a seleção do commit, não precisamos de uma conexão com o GitHub.\n\nPartimos de uma versão já registrada e alteramos a mensagem do arquivo. O git status mostra quais arquivos têm mudanças. O git diff mostra o conteúdo alterado que ainda não foi preparado. Vamos ler a linha removida e a linha adicionada. Não basta reconhecer o nome do arquivo: queremos conferir se a alteração corresponde à intenção. Só depois selecionamos explicitamente aviso.py com git add.\n\nO git add prepara o conteúdo que existe naquele momento. Para revisar essa seleção, usamos git diff com a opção staged. Agora editamos a mensagem outra vez, acrescentando uma palavra, e salvamos no editor. Será que a seleção acompanha automaticamente? Comparamos os dois diffs. O staged mostra a versão preparada antes. O diff comum mostra a mudança posterior, ainda fora daquela seleção.\n\nNossa intenção era registrar a mensagem mais recente. Por isso adicionamos aviso.py novamente e revisamos o diff staged outra vez. Só então criamos um commit com uma mensagem que explica a alteração. O histórico passa a registrar aquela versão escolhida. Se nossa intenção fosse separar mudanças, poderíamos manter parte fora do commit. O importante é decidir conscientemente, em vez de assumir que salvar no editor e preparar são a mesma ação.",
+          "char_count": 1640,
+          "quote": {
+            "cost": {
+              "credits": 11,
+              "credits_exact": 11
+            }
+          }
+        },
+        {
+          "order": 2,
+          "text": "Uma branch permite desenvolver uma linha de trabalho separada, mas não elimina a necessidade de revisar o conteúdo. Antes de integrar ou publicar, o cuidado com o diff continua valendo. Um README ajuda outra pessoa a entender o projeto e executá-lo. Neste vídeo praticamos apenas a seleção local: observar, preparar, conferir e registrar. Faça uma previsão antes de continuar: editar um arquivo depois de git add atualiza automaticamente a versão preparada para o próximo commit?",
+          "char_count": 479,
+          "quote": {
+            "cost": {
+              "credits": 3.2,
+              "credits_exact": 3.2
+            }
+          }
+        }
+      ],
+      "editing_notes": "Montar cada cena a partir da fala medida. Mostrar código, execução, saída, erro e correção; pergunta final com pausa. Não usar soluções dos desafios."
+    },
+    {
+      "lesson_id": "lesson_12_1",
+      "module": 12,
+      "title": "Desenvolvimento independente: descobrir, construir e provar",
+      "scenes": [
+        {
+          "title": "Uma dúvida que cabe em um teste",
+          "narration": "Você não precisa conhecer todas as funções para começar a resolver um problema. Precisa transformar a dúvida em algo que consiga investigar. Nosso exemplo é pequeno: recebemos três horários, representados apenas pelas horas como números inteiros. Queremos apresentá-los em ordem crescente e manter a lista original intacta. Esses dois comportamentos podem ser verificados. Já é um começo melhor do que pedir para o programa organizar tudo de algum jeito.",
+          "visual": "Requisitos ordenar e preservar original; entrada[14,9,11]."
+        },
+        {
+          "title": "Pesquisar uma pergunta específica",
+          "narration": "Nossa pergunta é: sorted altera a lista recebida ou devolve uma nova lista? Procuramos essa função na documentação oficial e lemos seu comportamento. Depois montamos um experimento mínimo, sem interface, banco de dados ou outras partes que possam confundir o resultado. Escrevemos a lista original e mostramos seu conteúdo antes da chamada. Assim teremos uma referência para comparar, em vez de confiar apenas na memória.",
+          "visual": "Documentação sorted; editor com horarios=[14,9,11]; print antes."
+        },
+        {
+          "title": "Testar uma suposição errada",
+          "narration": "Vamos assumir, de propósito, que chamar sorted basta para mudar a lista original. Executamos a função e depois imprimimos horarios. A ordem continua quatorze, nove, onze. Isso contradiz nossa suposição. Não significa que a função falhou. Precisamos conferir o que ela promete devolver. Um erro de entendimento pode produzir um programa sem mensagem de exceção e ainda assim dar um resultado diferente do que esperávamos.",
+          "visual": "sorted(horarios); print(horarios) permanece[14,9,11]; comparar esperado/observado."
+        },
+        {
+          "title": "Observar retorno e original",
+          "narration": "Agora guardamos o retorno em ordenados. Imprimimos esse resultado e vemos nove, onze, quatorze. Imprimimos a lista original e ela continua igual. Escrevemos duas verificações: uma para a ordem do resultado, outra para a preservação da entrada. Executamos e vemos ambas passarem. O experimento respondeu uma pergunta específica com evidências. Ainda podemos pensar em outras entradas, como uma lista vazia ou valores repetidos, conforme a necessidade real.",
+          "visual": "ordenados=sorted(horarios); asserts resultado eoriginal; saída verificações passaram."
+        },
+        {
+          "title": "Registrar e continuar",
+          "narration": "Anotamos a dúvida, a fonte consultada, o código executado e o que observamos. Essa anotação ajuda a explicar a decisão e evita repetir a mesma investigação sem necessidade. Depois levamos apenas o comportamento compreendido para a próxima etapa do projeto. Autonomia não é adivinhar tudo nem copiar uma solução inteira. É descobrir o que falta, testar e ajustar o plano. Antes do seu próximo desafio: qual experimento pequeno separaria uma suposição sua de algo que você realmente verificou?",
+          "visual": "Ficha pergunta/fonte/evidência/próximo passo; não apresentar solução do projeto final."
+        }
+      ],
+      "script": "Você não precisa conhecer todas as funções para começar a resolver um problema. Precisa transformar a dúvida em algo que consiga investigar. Nosso exemplo é pequeno: recebemos três horários, representados apenas pelas horas como números inteiros. Queremos apresentá-los em ordem crescente e manter a lista original intacta. Esses dois comportamentos podem ser verificados. Já é um começo melhor do que pedir para o programa organizar tudo de algum jeito.\n\nNossa pergunta é: sorted altera a lista recebida ou devolve uma nova lista? Procuramos essa função na documentação oficial e lemos seu comportamento. Depois montamos um experimento mínimo, sem interface, banco de dados ou outras partes que possam confundir o resultado. Escrevemos a lista original e mostramos seu conteúdo antes da chamada. Assim teremos uma referência para comparar, em vez de confiar apenas na memória.\n\nVamos assumir, de propósito, que chamar sorted basta para mudar a lista original. Executamos a função e depois imprimimos horarios. A ordem continua quatorze, nove, onze. Isso contradiz nossa suposição. Não significa que a função falhou. Precisamos conferir o que ela promete devolver. Um erro de entendimento pode produzir um programa sem mensagem de exceção e ainda assim dar um resultado diferente do que esperávamos.\n\nAgora guardamos o retorno em ordenados. Imprimimos esse resultado e vemos nove, onze, quatorze. Imprimimos a lista original e ela continua igual. Escrevemos duas verificações: uma para a ordem do resultado, outra para a preservação da entrada. Executamos e vemos ambas passarem. O experimento respondeu uma pergunta específica com evidências. Ainda podemos pensar em outras entradas, como uma lista vazia ou valores repetidos, conforme a necessidade real.\n\nAnotamos a dúvida, a fonte consultada, o código executado e o que observamos. Essa anotação ajuda a explicar a decisão e evita repetir a mesma investigação sem necessidade. Depois levamos apenas o comportamento compreendido para a próxima etapa do projeto. Autonomia não é adivinhar tudo nem copiar uma solução inteira. É descobrir o que falta, testar e ajustar o plano. Antes do seu próximo desafio: qual experimento pequeno separaria uma suposição sua de algo que você realmente verificou?",
+      "chunks": [
+        "Você não precisa conhecer todas as funções para começar a resolver um problema. Precisa transformar a dúvida em algo que consiga investigar. Nosso exemplo é pequeno: recebemos três horários, representados apenas pelas horas como números inteiros. Queremos apresentá-los em ordem crescente e manter a lista original intacta. Esses dois comportamentos podem ser verificados. Já é um começo melhor do que pedir para o programa organizar tudo de algum jeito.\n\nNossa pergunta é: sorted altera a lista recebida ou devolve uma nova lista? Procuramos essa função na documentação oficial e lemos seu comportamento. Depois montamos um experimento mínimo, sem interface, banco de dados ou outras partes que possam confundir o resultado. Escrevemos a lista original e mostramos seu conteúdo antes da chamada. Assim teremos uma referência para comparar, em vez de confiar apenas na memória.\n\nVamos assumir, de propósito, que chamar sorted basta para mudar a lista original. Executamos a função e depois imprimimos horarios. A ordem continua quatorze, nove, onze. Isso contradiz nossa suposição. Não significa que a função falhou. Precisamos conferir o que ela promete devolver. Um erro de entendimento pode produzir um programa sem mensagem de exceção e ainda assim dar um resultado diferente do que esperávamos.\n\nAgora guardamos o retorno em ordenados. Imprimimos esse resultado e vemos nove, onze, quatorze. Imprimimos a lista original e ela continua igual. Escrevemos duas verificações: uma para a ordem do resultado, outra para a preservação da entrada. Executamos e vemos ambas passarem. O experimento respondeu uma pergunta específica com evidências. Ainda podemos pensar em outras entradas, como uma lista vazia ou valores repetidos, conforme a necessidade real.",
+        "Anotamos a dúvida, a fonte consultada, o código executado e o que observamos. Essa anotação ajuda a explicar a decisão e evita repetir a mesma investigação sem necessidade. Depois levamos apenas o comportamento compreendido para a próxima etapa do projeto. Autonomia não é adivinhar tudo nem copiar uma solução inteira. É descobrir o que falta, testar e ajustar o plano. Antes do seu próximo desafio: qual experimento pequeno separaria uma suposição sua de algo que você realmente verificou?"
+      ],
+      "quotes": [
+        {
+          "cost": {
+            "credits": 11.8,
+            "credits_exact": 11.8
+          }
+        },
+        {
+          "cost": {
+            "credits": 3.3,
+            "credits_exact": 3.3
+          }
+        }
+      ],
+      "status": "script_and_storyboard_ready",
+      "duration_actual_seconds": null,
+      "final_video_url": null,
+      "audio_urls": [],
+      "estimated_narration_credits": 15.1,
+      "narration_blocks": [
+        {
+          "order": 1,
+          "text": "Você não precisa conhecer todas as funções para começar a resolver um problema. Precisa transformar a dúvida em algo que consiga investigar. Nosso exemplo é pequeno: recebemos três horários, representados apenas pelas horas como números inteiros. Queremos apresentá-los em ordem crescente e manter a lista original intacta. Esses dois comportamentos podem ser verificados. Já é um começo melhor do que pedir para o programa organizar tudo de algum jeito.\n\nNossa pergunta é: sorted altera a lista recebida ou devolve uma nova lista? Procuramos essa função na documentação oficial e lemos seu comportamento. Depois montamos um experimento mínimo, sem interface, banco de dados ou outras partes que possam confundir o resultado. Escrevemos a lista original e mostramos seu conteúdo antes da chamada. Assim teremos uma referência para comparar, em vez de confiar apenas na memória.\n\nVamos assumir, de propósito, que chamar sorted basta para mudar a lista original. Executamos a função e depois imprimimos horarios. A ordem continua quatorze, nove, onze. Isso contradiz nossa suposição. Não significa que a função falhou. Precisamos conferir o que ela promete devolver. Um erro de entendimento pode produzir um programa sem mensagem de exceção e ainda assim dar um resultado diferente do que esperávamos.\n\nAgora guardamos o retorno em ordenados. Imprimimos esse resultado e vemos nove, onze, quatorze. Imprimimos a lista original e ela continua igual. Escrevemos duas verificações: uma para a ordem do resultado, outra para a preservação da entrada. Executamos e vemos ambas passarem. O experimento respondeu uma pergunta específica com evidências. Ainda podemos pensar em outras entradas, como uma lista vazia ou valores repetidos, conforme a necessidade real.",
+          "char_count": 1756,
+          "quote": {
+            "cost": {
+              "credits": 11.8,
+              "credits_exact": 11.8
+            }
+          }
+        },
+        {
+          "order": 2,
+          "text": "Anotamos a dúvida, a fonte consultada, o código executado e o que observamos. Essa anotação ajuda a explicar a decisão e evita repetir a mesma investigação sem necessidade. Depois levamos apenas o comportamento compreendido para a próxima etapa do projeto. Autonomia não é adivinhar tudo nem copiar uma solução inteira. É descobrir o que falta, testar e ajustar o plano. Antes do seu próximo desafio: qual experimento pequeno separaria uma suposição sua de algo que você realmente verificou?",
+          "char_count": 491,
+          "quote": {
+            "cost": {
+              "credits": 3.3,
+              "credits_exact": 3.3
+            }
+          }
+        }
+      ],
+      "editing_notes": "Montar cada cena a partir da fala medida. Mostrar código, execução, saída, erro e correção; pergunta final com pausa. Não usar soluções dos desafios."
+    }
+  ]
+}
