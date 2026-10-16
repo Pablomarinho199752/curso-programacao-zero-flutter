@@ -1,0 +1,227 @@
+{
+  "lesson": "lesson_0_1",
+  "title": "Primeiros passos: pensar, testar e corrigir",
+  "sourceCommit": "c1ef42fe1fdaa17ac747bcb2769960b3e6bb91f8",
+  "status": "rendered_validated_integrated_in_pr",
+  "voice": "Maya",
+  "language": "pt-BR",
+  "speed": 1,
+  "estimatedDurationSeconds": 213,
+  "actualDurationSeconds": 205.636,
+  "tools": {
+    "narration": "Runway",
+    "composition": "Higgsfield Higgsedit",
+    "captions": "faster-whisper + clean burner"
+  },
+  "videoUrl": "https://d2ol7oe51mr4n9.cloudfront.net/user_3Ke119x65sh4FYjNFHHZNJMSh6l/17238b76-e402-475f-8ed5-9a5cb28ca63c.mp4",
+  "oldVideoUrl": "https://share.descript.com/view/zboVy82eLM0",
+  "budget": {
+    "runwayCredits": 62,
+    "characters": 3083,
+    "renderingCost": "Não confirmado; sem compra ou upgrade."
+  },
+  "editingNotes": [
+    "Mesma voz e identidade visual do piloto aprovado.",
+    "Demonstração ilustrada, com saídas executadas em Python.",
+    "Cursor, destaque, erro e correção; pergunta final sem resposta.",
+    "Não inclui soluções dos desafios; reprodução Android/Windows ainda não testada."
+  ],
+  "scenes": [
+    {
+      "title": "Planejar antes de escrever",
+      "visual": "Cartão de tarefa: enviar um aviso. Destacar objetivo e depois passos. Sem robô, jarra ou solução do desafio.",
+      "narration": "Já tentou seguir uma explicação que pulava uma etapa? Você fica sem saber o que fazer. Com o computador, a instrução também precisa estar clara. Nesta aula, vamos escrever um aviso pequeno e acompanhar o que acontece quando ele é executado. Você não precisa decorar comandos nem instalar nada agora. A ideia é aprender um jeito de trabalhar: pensar no resultado, testar e comparar."
+    },
+    {
+      "title": "Do plano ao código",
+      "visual": "Três cartões: plano, código, execução. Uma seta por transição; cursor acompanha.",
+      "narration": "Imagine um aviso para uma sessão de cinema. Primeiro queremos mostrar que a sessão vai começar. Depois, pedir para silenciar o celular. Essa sequência de passos é um algoritmo. Quando escrevemos as instruções em uma linguagem que o computador consegue executar, temos código. Aqui usamos Python. Um programa reúne instruções que podem ser executadas. Comece pequeno: qual mensagem deve aparecer primeiro? Qual vem depois? Ter esse plano ajuda a conferir o resultado."
+    },
+    {
+      "title": "Uma instrução por vez",
+      "visual": "Digitar print(\"A sessão vai começar\"). Realçar print, parênteses e aspas separadamente. Executar Python e mostrar saída em painel separado.",
+      "code": "print(\"A sessão vai começar\")",
+      "narration": "Olhe para esta linha. Print é o nome da função que usamos para mostrar algo na saída. Os parênteses envolvem o que queremos mostrar. Dentro deles, as aspas delimitam o texto da mensagem. Antes de executar, faça uma previsão: o que deve aparecer? Agora vamos executar. A saída mostra: A sessão vai começar. Repare que print, parênteses e aspas fazem parte do código. Eles não aparecem nessa mensagem. É importante separar as duas coisas: o código é a instrução; a saída é o resultado que estamos observando."
+    },
+    {
+      "title": "A ordem aparece na saída",
+      "visual": "Adicionar segunda linha; destacar linha executada e saída correspondente. Inverter as linhas e executar novamente.",
+      "code": "print(\"A sessão vai começar\")\nprint(\"Silencie o celular\")",
+      "narration": "Vamos acrescentar outra instrução, pedindo para silenciar o celular. Agora temos duas linhas de código. Neste exemplo, Python executa a primeira e depois a segunda. Cada chamada de print mostra uma mensagem em uma nova linha. Confira a saída com o nosso plano. E se invertermos as instruções? Pense antes de olhar. Ao executar novamente, o pedido para silenciar aparece primeiro. O computador seguiu a ordem escrita. Ele não reorganizou as mensagens para combinar com a nossa intenção. Por isso prever e comparar é mais útil do que apenas apertar executar."
+    },
+    {
+      "title": "Investigar um erro",
+      "visual": "Mostrar Print(\"Confira seu ingresso\"); executar e destacar NameError e linha 1. Comparar Print/print, corrigir somente P e reexecutar. Não usar o parêntese ausente do exercício.",
+      "code": "Print(\"Confira seu ingresso\")",
+      "fixedCode": "print(\"Confira seu ingresso\")",
+      "narration": "Agora apareceu um erro. Não precisamos apagar tudo. Vamos investigar. Nossa intenção era mostrar outra mensagem, mas a execução parou. A mensagem indica a primeira linha e diz que o nome com P maiúsculo não foi definido. Compare essa escrita com o exemplo que funcionou. Encontrou a diferença? Em Python, maiúsculas e minúsculas importam. Aqui escrevemos Print com P maiúsculo, mas a função usada antes é print com p minúsculo. Nossa hipótese é que esse nome está escrito de forma diferente. Vamos mudar só essa letra e executar novamente. Agora aparece: Confira seu ingresso. O teste confirmou a hipótese. Não basta esconder o erro; queremos entender qual mudança resolveu o problema."
+    },
+    {
+      "title": "Voltar à prática",
+      "visual": "Resumo de quatro passos: prever, executar, comparar, ajustar. Pergunta final: trocar somente o texto entre aspas muda o comando ou a mensagem? Sem resposta.",
+      "narration": "Esse é o ciclo que vamos repetir no curso. Primeiro, pense no resultado. Depois, execute e compare com a previsão. Quando houver um problema, observe a mensagem, examine a linha indicada e teste uma mudança pequena. Você não precisa acertar de primeira para aprender. Agora volte ao aplicativo e faça as atividades com suas próprias escolhas. Antes disso, uma pergunta: se você trocar apenas o texto entre as aspas, o que espera mudar na saída? Faça sua previsão antes de testar."
+    }
+  ],
+  "script": "Já tentou seguir uma explicação que pulava uma etapa? Você fica sem saber o que fazer. Com o computador, a instrução também precisa estar clara. Nesta aula, vamos escrever um aviso pequeno e acompanhar o que acontece quando ele é executado. Você não precisa decorar comandos nem instalar nada agora. A ideia é aprender um jeito de trabalhar: pensar no resultado, testar e comparar.\n\nImagine um aviso para uma sessão de cinema. Primeiro queremos mostrar que a sessão vai começar. Depois, pedir para silenciar o celular. Essa sequência de passos é um algoritmo. Quando escrevemos as instruções em uma linguagem que o computador consegue executar, temos código. Aqui usamos Python. Um programa reúne instruções que podem ser executadas. Comece pequeno: qual mensagem deve aparecer primeiro? Qual vem depois? Ter esse plano ajuda a conferir o resultado.\n\nOlhe para esta linha. Print é o nome da função que usamos para mostrar algo na saída. Os parênteses envolvem o que queremos mostrar. Dentro deles, as aspas delimitam o texto da mensagem. Antes de executar, faça uma previsão: o que deve aparecer? Agora vamos executar. A saída mostra: A sessão vai começar. Repare que print, parênteses e aspas fazem parte do código. Eles não aparecem nessa mensagem. É importante separar as duas coisas: o código é a instrução; a saída é o resultado que estamos observando.\n\nVamos acrescentar outra instrução, pedindo para silenciar o celular. Agora temos duas linhas de código. Neste exemplo, Python executa a primeira e depois a segunda. Cada chamada de print mostra uma mensagem em uma nova linha. Confira a saída com o nosso plano. E se invertermos as instruções? Pense antes de olhar. Ao executar novamente, o pedido para silenciar aparece primeiro. O computador seguiu a ordem escrita. Ele não reorganizou as mensagens para combinar com a nossa intenção. Por isso prever e comparar é mais útil do que apenas apertar executar.\n\nAgora apareceu um erro. Não precisamos apagar tudo. Vamos investigar. Nossa intenção era mostrar outra mensagem, mas a execução parou. A mensagem indica a primeira linha e diz que o nome com P maiúsculo não foi definido. Compare essa escrita com o exemplo que funcionou. Encontrou a diferença? Em Python, maiúsculas e minúsculas importam. Aqui escrevemos Print com P maiúsculo, mas a função usada antes é print com p minúsculo. Nossa hipótese é que esse nome está escrito de forma diferente. Vamos mudar só essa letra e executar novamente. Agora aparece: Confira seu ingresso. O teste confirmou a hipótese. Não basta esconder o erro; queremos entender qual mudança resolveu o problema.\n\nEsse é o ciclo que vamos repetir no curso. Primeiro, pense no resultado. Depois, execute e compare com a previsão. Quando houver um problema, observe a mensagem, examine a linha indicada e teste uma mudança pequena. Você não precisa acertar de primeira para aprender. Agora volte ao aplicativo e faça as atividades com suas próprias escolhas. Antes disso, uma pergunta: se você trocar apenas o texto entre as aspas, o que espera mudar na saída? Faça sua previsão antes de testar.",
+  "module": 0,
+  "states": [
+    [
+      "Já tentou seguir",
+      "Pensar, testar e corrigir",
+      "",
+      "",
+      "Uma ideia por vez.",
+      -1,
+      [
+        "01  Prever o resultado",
+        "02  Executar",
+        "03  Comparar e ajustar"
+      ]
+    ],
+    [
+      "Imagine um aviso",
+      "Do plano ao código",
+      "",
+      "",
+      "A ordem faz parte do plano.",
+      -1,
+      [
+        "PLANO: mostrar dois avisos",
+        "1. A sessão vai começar",
+        "2. Silencie o celular"
+      ]
+    ],
+    [
+      "Olhe para esta linha",
+      "Código e saída são diferentes",
+      "print(\"A sessão vai começar\")",
+      "Faça sua previsão.",
+      "print: mostra uma informação.",
+      0
+    ],
+    [
+      "Os parênteses envolvem",
+      "Observe a estrutura",
+      "print(\"A sessão vai começar\")",
+      "Faça sua previsão.",
+      "Parênteses envolvem; aspas delimitam o texto.",
+      0
+    ],
+    [
+      "Agora vamos executar",
+      "Execute e compare",
+      "print(\"A sessão vai começar\")",
+      "A sessão vai começar",
+      "A saída não mostra aspas nem parênteses.",
+      0
+    ],
+    [
+      "Vamos acrescentar outra",
+      "A ordem das instruções",
+      "print(\"A sessão vai começar\")\nprint(\"Silencie o celular\")",
+      "A sessão vai começar\nSilencie o celular",
+      "Duas instruções, duas mensagens.",
+      1
+    ],
+    [
+      "E se invertermos",
+      "Faça uma previsão",
+      "print(\"Silencie o celular\")\nprint(\"A sessão vai começar\")",
+      "O que vai mudar?",
+      "Siga as linhas de cima para baixo.",
+      0
+    ],
+    [
+      "Ao executar novamente",
+      "A saída acompanha o código",
+      "print(\"Silencie o celular\")\nprint(\"A sessão vai começar\")",
+      "Silencie o celular\nA sessão vai começar",
+      "A ordem escrita determina a execução.",
+      1
+    ],
+    [
+      "Agora apareceu um erro",
+      "Investigue a linha indicada",
+      "Print(\"Confira seu ingresso\")",
+      "NameError: name 'Print' is not defined",
+      "Linha 1: compare Print e print.",
+      0
+    ],
+    [
+      "Nossa hipótese é",
+      "Compare a escrita",
+      "",
+      "",
+      "Python distingue maiúsculas e minúsculas.",
+      -1,
+      [
+        "Print  : nome usado",
+        "print  : função do exemplo",
+        "Hipótese: P precisa ser p"
+      ]
+    ],
+    [
+      "Vamos mudar só",
+      "Teste uma mudança pequena",
+      "print(\"Confira seu ingresso\")",
+      "Executando...",
+      "Uma única letra alterada.",
+      0
+    ],
+    [
+      "Agora aparece Confira",
+      "Confira o resultado",
+      "print(\"Confira seu ingresso\")",
+      "Confira seu ingresso",
+      "O teste confirmou a hipótese.",
+      0
+    ],
+    [
+      "Esse é o ciclo",
+      "Aprender é experimentar",
+      "",
+      "",
+      "Volte ao aplicativo para praticar.",
+      -1,
+      [
+        "Prever",
+        "Executar e comparar",
+        "Ajustar um detalhe e testar"
+      ]
+    ],
+    [
+      "Antes disso uma pergunta",
+      "Sua previsão",
+      "",
+      "",
+      "Não execute antes de pensar.",
+      -1,
+      [
+        "Se mudar apenas o texto entre aspas,",
+        "o que muda na saída?"
+      ]
+    ]
+  ],
+  "voiceSpeed": 1,
+  "narrationTaskId": "33f27849-6c8e-4000-af8f-32f6b4d8dbca",
+  "sourcesUrl": "https://d2ol7oe51mr4n9.cloudfront.net/user_3Ke119x65sh4FYjNFHHZNJMSh6l/3be5566e-12c5-47ac-90c1-3eef65e256f3.zip",
+  "validation": {
+    "durationSeconds": 205.636,
+    "captionWords": 506,
+    "scriptWords": 506,
+    "similarity": 0.9901574803149606,
+    "streamsDurationPassed": true,
+    "sampledFramesSeconds": [
+      8.23,
+      102.32,
+      200.18
+    ],
+    "devicePlayback": "not_tested",
+    "visualSampleReview": "passed",
+    "pythonExamplesExecuted": true
+  },
+  "integration": {
+    "path": "assets/content/video_urls.json",
+    "oldLinkPreserved": true
+  }
+}

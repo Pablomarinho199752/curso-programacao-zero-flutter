@@ -1,0 +1,37 @@
+[
+  {
+    "scene": 1,
+    "visual": "Título: Variáveis: nomes para os dados. Cartão de pedido de lanchonete: Suco / 2 / 4.5. Um dado por vez, sem código ainda.",
+    "voice": "Imagine que você está organizando um pedido numa lanchonete. Você precisa lembrar qual é o produto, quantas unidades foram pedidas e o preço de cada uma. São três informações diferentes. Como dar um nome para cada informação, para o programa conseguir usá-la depois? É isso que vamos descobrir. Nesta aula, o foco é um só: entender a diferença entre o nome de uma variável e o valor associado a ela."
+  },
+  {
+    "scene": 2,
+    "visual": "Editor grande: produto = \"Suco\". Cursor aponta produto; depois =; depois \"Suco\". Diagrama etiqueta produto → valor \"Suco\".",
+    "voice": "Vamos escrever a primeira linha. Produto recebe o texto Suco. À esquerda, produto é o nome que escolhemos. À direita, Suco é o valor. O sinal de igual faz a atribuição: associa o valor da direita ao nome da esquerda. Pense numa etiqueta que permite encontrar uma informação. A etiqueta não é a informação em si. As aspas mostram que Suco é um texto. Elas fazem parte da escrita do código, mas não fazem parte do texto que vamos mostrar."
+  },
+  {
+    "scene": 3,
+    "visual": "Código aparece linha a linha: produto = \"Suco\" / quantidade = 2 / preco = 4.5. Realçar textos ciano e números lilás; não depender só da cor. Rótulos texto / inteiro / decimal.",
+    "voice": "Agora acrescentamos quantidade recebe dois, e preco recebe quatro ponto cinco. Quantidade está associada a um número inteiro. Preco está associado a um número decimal. Em Python, escrevemos esse decimal com ponto. Texto fica entre aspas; nestes exemplos, os números ficam sem aspas. Escolhemos nomes que contam o que o dado representa. Isso ajuda a ler o programa e, mais tarde, a encontrar problemas. Até aqui, demos nomes aos dados. Ainda não pedimos para mostrar nada."
+  },
+  {
+    "scene": 4,
+    "visual": "Acrescentar print(produto), print(quantidade), print(preco). Mostrar clique do cursor em Executar e painel Saída: Suco / 2 / 4.5. Rotular “Demonstração — saída conferida em Python”. Reservar 3s de previsão antes do clique.",
+    "voice": "Para ver os valores, usamos print, que você já conheceu. Dentro dos parênteses, colocamos o nome que queremos consultar. Antes de executar, tente prever: a primeira linha da saída vai mostrar produto ou Suco? Pense por um instante. Agora executamos. Aparece Suco, depois dois, depois quatro ponto cinco. Print consultou cada nome e mostrou o valor associado a ele. Repare na separação: em cima está o código que escrevemos; embaixo está a saída produzida ao executar."
+  },
+  {
+    "scene": 5,
+    "visual": "Editor novo: produto = \"Suco\" / print(\"produto\") / print(produto). Clique Executar, saída produto / Suco. Zoom no par de aspas da segunda linha e comparação lado a lado.",
+    "voice": "Vamos comparar duas linhas quase iguais. Na primeira, print recebe a palavra produto entre aspas. Na segunda, recebe produto sem aspas. Execute e observe: primeiro aparece a palavra produto; depois aparece Suco. Com aspas, pedimos para mostrar aquele texto literalmente. Sem aspas, pedimos para consultar o nome da variável. Um detalhe pequeno muda a instrução. Se a saída não for a que você esperava, conferir essas aspas é um bom começo."
+  },
+  {
+    "scene": 6,
+    "visual": "Editor: produto = \"Suco\" / print(Produto). Clique Executar, mostrar linha 2 e NameError: name 'Produto' is not defined. Pausa 3s; zoom alinhado produto vs Produto; corrigir só P para p, clicar Executar; saída Suco.",
+    "voice": "Agora vou colocar um erro de propósito. Criei produto com p minúsculo, mas escrevi Produto com p maiúsculo dentro do print. Ao executar, aparece NameError: esse nome não foi definido. Não precisamos apagar tudo. Primeiro, olhamos a linha indicada: a linha dois. Depois perguntamos: o nome que estou usando é exatamente igual ao que criei? Compare letra por letra. Aqui está a diferença. Python distingue maiúsculas de minúsculas. Vamos mudar apenas o P para p e executar de novo. Agora aparece Suco. Fizemos uma hipótese, uma mudança pequena e um novo teste para conferir."
+  },
+  {
+    "scene": 7,
+    "visual": "Resumo 3 cartões: nome → valor / print consulta / comparar nomes. Fechar com código quantidade = 2 / quantidade = 5 / print(quantidade), SEM mostrar saída nem responder. Pergunta em tela: Qual valor será mostrado? Volte ao app e teste sua previsão.",
+    "voice": "Guarde estas ideias: o nome permite acessar um valor; a atribuição associa o valor ao nome; print pode consultar esse nome para mostrar o que está associado a ele. E um erro de nome pode ser investigado comparando a escrita, sem adivinhar várias mudanças ao mesmo tempo. Agora é a sua vez. Se quantidade recebe dois e, na linha seguinte, recebe cinco, qual valor será mostrado por print quantidade? Faça sua previsão antes de testar. Volte ao app, siga o exemplo e faça a prática com suas próprias escolhas. O vídeo termina aqui; seu aprendizado continua quando você experimenta."
+  }
+]

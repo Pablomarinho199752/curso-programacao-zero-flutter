@@ -1,0 +1,60 @@
+{
+  "title": "Variáveis: nomes para os dados",
+  "module": "module_1",
+  "lesson": "lesson_1_1",
+  "durationSeconds": 238.084,
+  "language": "pt-BR",
+  "resolution": "1920x1080",
+  "fps": 24,
+  "status": "approved_integrated_in_pr",
+  "videoUrl": "https://d2ol7oe51mr4n9.cloudfront.net/user_3Ke119x65sh4FYjNFHHZNJMSh6l/3625e808-0782-4707-8583-f32a9ec65657.mp4",
+  "sourcesUrl": "https://d2ol7oe51mr4n9.cloudfront.net/user_3Ke119x65sh4FYjNFHHZNJMSh6l/16458efd-0bc7-420c-b110-a757a73f0276.zip",
+  "oldVideoUrl": "https://share.descript.com/view/LYmNVlmGLyW",
+  "baseCommit": "c1ef42fe1fdaa17ac747bcb2769960b3e6bb91f8",
+  "branch": "feat/video-pilot-main-20261015",
+  "preservedBranch": "feat/video-pilot-1-1",
+  "tools": {
+    "narration": "Runway",
+    "voice": "Maya",
+    "voiceSpeed": 1,
+    "narrationTaskId": "e70f57cd-94f2-4575-aba1-788fc0a4b43d",
+    "composition": "Higgsfield Higgsedit",
+    "captions": "faster-whisper + bundled clean caption burner"
+  },
+  "validation": {
+    "scriptWords": 566,
+    "captionWords": 566,
+    "transcriptionSimilarity": 0.9681978798586572,
+    "durationChecks": "passed",
+    "sampledVisualFramesSeconds": [
+      1,
+      109.28,
+      182.14,
+      232.083333
+    ],
+    "actualAndroidWindowsPlayback": "not_tested"
+  },
+  "editingNotes": [
+    "Sem avatar, música ou efeitos sonoros.",
+    "Demonstração ilustrada identificada; saídas conferidas em Python.",
+    "Cursor e realce de código; comparação ampliada produto/Produto.",
+    "Pergunta final sem revelar resposta.",
+    "Legendas gravadas no vídeo.",
+    "Revisão 2 solicitada pelo usuário: voz feminina mais jovem; roteiro e identidade visual preservados."
+  ],
+  "limits": [
+    "Descript: geração bloqueada por créditos insuficientes.",
+    "HeyGen: Starfish incompatível; tentativa Orca terminou em timeout sem áudio retornado.",
+    "Runway: narração concluída; 68 créditos consumidos na geração registrada.",
+    "Nenhum bloqueio impede a entrega deste piloto."
+  ],
+  "integration": "Override lesson_1_1 adicionado em assets/content/video_urls.json; link original preservado no conteúdo e nestes metadados; reprodução em dispositivos ainda não testada.",
+  "revision": 2,
+  "previousVideoUrl": "https://d2ol7oe51mr4n9.cloudfront.net/user_3Ke119x65sh4FYjNFHHZNJMSh6l/704de7de-edc4-45f5-a2e0-3c6785fb31c2.mp4",
+  "previousSourcesUrl": "https://d2ol7oe51mr4n9.cloudfront.net/user_3Ke119x65sh4FYjNFHHZNJMSh6l/3ed97a53-0b89-4868-8271-183f2ed40c2a.zip",
+  "approval": {
+    "date": "2026-10-15",
+    "voice": "Maya",
+    "evidence": "Usuário aprovou a voz e pediu para continuar."
+  }
+}
