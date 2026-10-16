@@ -10,6 +10,7 @@ import 'screens/python_lab_screen.dart';
 import 'services/cloud_sync_service.dart';
 import 'services/progress_store.dart';
 import 'services/python_lab_service.dart';
+import 'services/theme_controller.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -17,7 +18,88 @@ Future<void> main() async {
   await progressStore.initialize();
   final cloudSync = CloudSyncService(progressStore);
   await cloudSync.initialize();
-  runApp(CourseApp(progressStore: progressStore, cloudSync: cloudSync));
+  final themeController = ThemeController();
+  await themeController.initialize();
+  runApp(
+    CourseApp(
+      progressStore: progressStore,
+      cloudSync: cloudSync,
+      themeController: themeController,
+    ),
+  );
+}
+
+ThemeData _courseTheme(Brightness brightness) {
+  const seed = Color(0xFF4F46E5);
+  final dark = brightness == Brightness.dark;
+  final colorScheme = ColorScheme.fromSeed(
+    seedColor: seed,
+    brightness: brightness,
+  );
+
+  return ThemeData(
+    useMaterial3: true,
+    brightness: brightness,
+    colorScheme: colorScheme,
+    scaffoldBackgroundColor:
+        dark ? const Color(0xFF0F1117) : const Color(0xFFF5F6FA),
+    cardColor: dark ? const Color(0xFF171A22) : Colors.white,
+    appBarTheme: AppBarTheme(
+      elevation: 0,
+      scrolledUnderElevation: 0,
+      backgroundColor:
+          dark ? const Color(0xFF0F1117) : const Color(0xFFF5F6FA),
+      centerTitle: false,
+    ),
+    inputDecorationTheme: InputDecorationTheme(
+      filled: true,
+      fillColor: dark ? colorScheme.surfaceContainerHighest : Colors.white,
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(16),
+        borderSide: BorderSide.none,
+      ),
+      enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(16),
+        borderSide: BorderSide(
+          color: colorScheme.outlineVariant.withValues(alpha: 0.75),
+        ),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(16),
+        borderSide: BorderSide(color: colorScheme.primary, width: 1.5),
+      ),
+    ),
+    navigationBarTheme: NavigationBarThemeData(
+      height: 74,
+      backgroundColor: dark ? colorScheme.surfaceContainer : Colors.white,
+      indicatorColor: colorScheme.primaryContainer,
+      labelTextStyle: WidgetStateProperty.resolveWith((states) {
+        final selected = states.contains(WidgetState.selected);
+        return TextStyle(
+          fontWeight: selected ? FontWeight.w700 : FontWeight.w500,
+          color: selected
+              ? colorScheme.primary
+              : colorScheme.onSurfaceVariant,
+        );
+      }),
+    ),
+    filledButtonTheme: FilledButtonThemeData(
+      style: FilledButton.styleFrom(
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16),
+        ),
+      ),
+    ),
+    outlinedButtonTheme: OutlinedButtonThemeData(
+      style: OutlinedButton.styleFrom(
+        padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 15),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16),
+        ),
+      ),
+    ),
+  );
 }
 
 class CourseApp extends StatelessWidget {
@@ -25,83 +107,28 @@ class CourseApp extends StatelessWidget {
     super.key,
     required this.progressStore,
     required this.cloudSync,
+    required this.themeController,
   });
 
   final ProgressStore progressStore;
   final CloudSyncService cloudSync;
+  final ThemeController themeController;
 
   @override
   Widget build(BuildContext context) {
-    const seed = Color(0xFF4F46E5);
-    final colorScheme = ColorScheme.fromSeed(
-      seedColor: seed,
-      brightness: Brightness.light,
-      surface: const Color(0xFFF8F9FD),
-    );
-
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Curso de Programação do Zero',
-      theme: ThemeData(
-        useMaterial3: true,
-        colorScheme: colorScheme,
-        scaffoldBackgroundColor: const Color(0xFFF5F6FA),
-        appBarTheme: const AppBarTheme(
-          elevation: 0,
-          scrolledUnderElevation: 0,
-          backgroundColor: Color(0xFFF5F6FA),
-          centerTitle: false,
+    return AnimatedBuilder(
+      animation: themeController,
+      builder: (context, _) => MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Curso de Programação do Zero',
+        theme: _courseTheme(Brightness.light),
+        darkTheme: _courseTheme(Brightness.dark),
+        themeMode: themeController.themeMode,
+        home: CourseLoader(
+          progressStore: progressStore,
+          cloudSync: cloudSync,
+          themeController: themeController,
         ),
-        inputDecorationTheme: InputDecorationTheme(
-          filled: true,
-          fillColor: Colors.white,
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(16),
-            borderSide: BorderSide.none,
-          ),
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(16),
-            borderSide: BorderSide(color: Colors.black.withValues(alpha: 0.06)),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(16),
-            borderSide: const BorderSide(color: seed, width: 1.5),
-          ),
-        ),
-        navigationBarTheme: NavigationBarThemeData(
-          height: 74,
-          backgroundColor: Colors.white,
-          indicatorColor: colorScheme.primaryContainer,
-          labelTextStyle: WidgetStateProperty.resolveWith((states) {
-            final selected = states.contains(WidgetState.selected);
-            return TextStyle(
-              fontWeight: selected ? FontWeight.w700 : FontWeight.w500,
-              color: selected
-                  ? colorScheme.primary
-                  : colorScheme.onSurfaceVariant,
-            );
-          }),
-        ),
-        filledButtonTheme: FilledButtonThemeData(
-          style: FilledButton.styleFrom(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(16),
-            ),
-          ),
-        ),
-        outlinedButtonTheme: OutlinedButtonThemeData(
-          style: OutlinedButton.styleFrom(
-            padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 15),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(16),
-            ),
-          ),
-        ),
-      ),
-      home: CourseLoader(
-        progressStore: progressStore,
-        cloudSync: cloudSync,
       ),
     );
   }
@@ -112,10 +139,12 @@ class CourseLoader extends StatefulWidget {
     super.key,
     required this.progressStore,
     required this.cloudSync,
+    required this.themeController,
   });
 
   final ProgressStore progressStore;
   final CloudSyncService cloudSync;
+  final ThemeController themeController;
 
   @override
   State<CourseLoader> createState() => _CourseLoaderState();
@@ -169,6 +198,7 @@ class _CourseLoaderState extends State<CourseLoader> {
           modules: snapshot.data!,
           progressStore: widget.progressStore,
           cloudSync: widget.cloudSync,
+          themeController: widget.themeController,
         );
       },
     );
@@ -180,12 +210,14 @@ class CourseShell extends StatefulWidget {
     super.key,
     required this.modules,
     required this.progressStore,
+    required this.themeController,
     this.cloudSync,
   });
 
   final List<CourseModule> modules;
   final ProgressStore progressStore;
   final CloudSyncService? cloudSync;
+  final ThemeController themeController;
 
   @override
   State<CourseShell> createState() => _CourseShellState();
@@ -220,20 +252,18 @@ class _CourseShellState extends State<CourseShell> {
                 : CloudAccountScreen(cloudSync: widget.cloudSync!),
           ];
           final desktop = constraints.maxWidth >= 850;
+          final scheme = Theme.of(context).colorScheme;
 
           if (desktop) {
-            final scheme = Theme.of(context).colorScheme;
             return Scaffold(
               body: Row(
                 children: [
                   Container(
                     width: 230,
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: scheme.surfaceContainer,
                       border: Border(
-                        right: BorderSide(
-                          color: Colors.black.withValues(alpha: 0.06),
-                        ),
+                        right: BorderSide(color: scheme.outlineVariant),
                       ),
                     ),
                     child: NavigationRail(
@@ -272,6 +302,23 @@ class _CourseShellState extends State<CourseShell> {
                               ),
                             ),
                           ],
+                        ),
+                      ),
+                      trailing: Padding(
+                        padding: const EdgeInsets.fromLTRB(8, 20, 8, 12),
+                        child: ListTile(
+                          contentPadding: const EdgeInsets.symmetric(horizontal: 8),
+                          leading: Icon(
+                            widget.themeController.isDark
+                                ? Icons.light_mode_rounded
+                                : Icons.dark_mode_rounded,
+                          ),
+                          title: Text(
+                            widget.themeController.isDark
+                                ? 'Modo claro'
+                                : 'Modo escuro',
+                          ),
+                          onTap: widget.themeController.toggle,
                         ),
                       ),
                       destinations: const [
@@ -313,6 +360,18 @@ class _CourseShellState extends State<CourseShell> {
 
           return Scaffold(
             body: SafeArea(child: pages[_index]),
+            floatingActionButton: FloatingActionButton.small(
+              heroTag: 'theme_toggle',
+              tooltip: widget.themeController.isDark
+                  ? 'Usar modo claro'
+                  : 'Usar modo escuro',
+              onPressed: widget.themeController.toggle,
+              child: Icon(
+                widget.themeController.isDark
+                    ? Icons.light_mode_rounded
+                    : Icons.dark_mode_rounded,
+              ),
+            ),
             bottomNavigationBar: NavigationBar(
               selectedIndex: _index,
               onDestinationSelected: (value) =>
