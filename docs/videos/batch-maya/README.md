@@ -6,7 +6,7 @@ Autorização do usuário: avançar em todas as videoaulas usando o padrão apro
 Saldo inicial Runway: 330. Cinco narrações geradas: módulo 0 (62), 2 (65), 3 (66), 4 (67), 5 (67), total 327. Saldo após geração: 3. Montagem via Higgsedit; não há valor de cobrança confirmado para esse processamento. Não gerar novas vozes sem saldo suficiente; manter Maya, PT-BR, velocidade 1.
 
 ## Produção deste lote
-Piloto 1.1 já aprovado. Aulas 0.1, 2.1, 3.1, 4.1 e 5.1: roteiro e storyboard salvos por aula; montagem e legendas em validação. Não confundir áudio pronto com vídeo entregue.
+Piloto 1.1 já aprovado. Aulas 0.1, 2.1, 3.1, 4.1 e 5.1: roteiro e storyboard salvos por aula; vídeos finais renderizados, legendados, validados e hospedados. Links integrados ao curso no PR #7; os anteriores permanecem nos metadados.
 
 ## Continuidade: módulos 6 a 12
 Os itens abaixo são pautas de produção, não roteiros finais nem vídeos renderizados. Antes da geração, conferir novamente a main e escrever a narração completa; alvo 3–7 minutos, código executado, erro reproduzido, hipótese, correção e pergunta final. Nas aulas de APIs, SQLite, venv e Git, consultar documentação oficial vigente ao detalhar comandos. Preservar os links anteriores até validar os novos.
@@ -69,3 +69,17 @@ Os itens abaixo são pautas de produção, não roteiros finais nem vídeos rend
 
 ## Reprodução do lote
 A composição comum está em edit.jsx. Cada pacote de fontes inclui áudio, roteiro, clock de legendas, SRT, projeto e relatório. Ajuste LESSON_ROOT para a pasta extraída e execute higgsedit build edit.jsx. A duração e os cortes vêm da fala transcrita, não de tempo estimado. Reutilize as fontes Inter e JetBrains Mono. Nenhum arquivo do app além de video_urls.json deve mudar.
+
+## Vídeos entregues
+
+| Aula | Duração | Vídeo | Fontes |
+|---|---|---|---|
+| 0.1 | 3:26 | [MP4](https://d2ol7oe51mr4n9.cloudfront.net/user_3Ke119x65sh4FYjNFHHZNJMSh6l/17238b76-e402-475f-8ed5-9a5cb28ca63c.mp4) | [ZIP](https://d2ol7oe51mr4n9.cloudfront.net/user_3Ke119x65sh4FYjNFHHZNJMSh6l/3be5566e-12c5-47ac-90c1-3eef65e256f3.zip) |
+| 2.1 | 3:47 | [MP4](https://d2ol7oe51mr4n9.cloudfront.net/user_3Ke119x65sh4FYjNFHHZNJMSh6l/4c21fbf3-33ed-4a95-b957-9d6bddcf3304.mp4) | [ZIP](https://d2ol7oe51mr4n9.cloudfront.net/user_3Ke119x65sh4FYjNFHHZNJMSh6l/bc908764-b767-4cea-97f3-26786aa3c733.zip) |
+| 3.1 | 3:39 | [MP4](https://d2ol7oe51mr4n9.cloudfront.net/user_3Ke119x65sh4FYjNFHHZNJMSh6l/8b74769f-4f27-44e4-bdee-33cf5775a81d.mp4) | [ZIP](https://d2ol7oe51mr4n9.cloudfront.net/user_3Ke119x65sh4FYjNFHHZNJMSh6l/e6ba2529-f1fa-4efa-b840-4b442150829a.zip) |
+| 4.1 | 3:54 | [MP4](https://d2ol7oe51mr4n9.cloudfront.net/user_3Ke119x65sh4FYjNFHHZNJMSh6l/60eeb04d-1cf8-4232-bd5f-690604440472.mp4) | [ZIP](https://d2ol7oe51mr4n9.cloudfront.net/user_3Ke119x65sh4FYjNFHHZNJMSh6l/49a1bad3-5145-453f-b712-8eb661f9ef20.zip) |
+| 5.1 | 3:49 | [MP4](https://d2ol7oe51mr4n9.cloudfront.net/user_3Ke119x65sh4FYjNFHHZNJMSh6l/64145054-9e99-4cf1-82de-465d04b77280.mp4) | [ZIP](https://d2ol7oe51mr4n9.cloudfront.net/user_3Ke119x65sh4FYjNFHHZNJMSh6l/e55911aa-c71e-4029-818e-138d3bbd6743.zip) |
+
+Validação: 100% das palavras dos cinco roteiros nas legendas; similaridade de transcrição entre 93,75% e 99,02%; durações de áudio/vídeo compatíveis; quadros com legendas e código inspecionados; indentação visual corrigida; exemplos executados em Python. Todos os MP4 finais responderam HTTP 200, video/mp4, sem login. Teste de reprodução em dispositivos Android/Windows ainda não realizado.
+
+Criados neste lote: 5. Substituições de links neste lote: 5, mais o piloto 1.1 aprovado anteriormente. Total no novo padrão: 6 de 13. Restantes: módulos 6 a 12. O bloqueio é saldo para novas narrações, não autorização do usuário.
