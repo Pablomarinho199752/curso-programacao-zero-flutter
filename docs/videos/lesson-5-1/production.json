@@ -1,0 +1,172 @@
+{
+  "module": 5,
+  "lesson": "lesson_5_1",
+  "title": "Funções: dividir o problema em responsabilidades",
+  "sourceCommit": "c1ef42fe1fdaa17ac747bcb2769960b3e6bb91f8",
+  "scenes": [
+    {
+      "narration": "Imagine converter várias durações de minutos para segundos. Podemos repetir a conta, mas também podemos dar um nome a essa tarefa e reutilizá-la. Esse é o foco de hoje: criar uma função com entrada e resultado, entendendo o caminho que o valor percorre. Uma função pequena deve ter uma responsabilidade que você consegue explicar em uma frase. Nosso exemplo converte minutos para segundos. Ele não precisa pedir dados, montar um menu e salvar arquivos ao mesmo tempo."
+    },
+    {
+      "narration": "Na tela escrevemos def segundos e colocamos minutos entre parênteses. Esse nome é um parâmetro: ele receberá o valor de cada chamada. Os dois pontos iniciam o bloco, e a indentação mostra o corpo da função. Dentro dele, return entrega minutos multiplicado por sessenta. Ao executar apenas essa definição, nenhuma mensagem aparece. O corpo foi preparado, mas ainda não fizemos uma chamada. Essa diferença é importante: escrever a receita não significa que ela já foi usada. Para executar a tarefa, chamamos a função pelo nome e passamos a entrada."
+    },
+    {
+      "narration": "Agora resultado recebe segundos de três. Nessa chamada, o valor três entra no parâmetro minutos. A função multiplica por sessenta e devolve cento e oitenta. Esse retorno fica associado ao nome resultado. Só depois o print mostra o valor na saída. Acompanhe as três partes na tela: entrada, cálculo e retorno. Se chamarmos segundos de cinco, usamos a mesma definição com outra entrada e recebemos trezentos. Não precisamos copiar a conta. Também podemos guardar esse resultado para outra operação, porque a função devolveu um valor ao código que chamou."
+    },
+    {
+      "narration": "Vamos comparar com uma versão que usa print dentro da função no lugar de return. Ao chamar com três, aparece cento e oitenta na saída, mas o valor guardado em resultado é None. Isso indica a ausência de um valor de retorno explícito nesse caso. Mostrar uma informação na tela não é o mesmo que entregá-la para outra parte do programa usar. Se o objetivo é apenas exibir, print pode fazer parte da tarefa. Se precisamos reutilizar o cálculo, o retorno faz essa ligação. Escolha conforme a responsabilidade da função, e não porque os dois parecem produzir o mesmo texto."
+    },
+    {
+      "narration": "Agora cometemos outro erro: chamamos segundos sem passar os minutos. A execução mostra TypeError e informa que falta um argumento obrigatório. Vamos comparar a definição com a chamada. Na definição, minutos precisa receber uma entrada. Na chamada vazia, não fornecemos esse valor. A hipótese é que esquecemos o dado necessário para a conversão. Corrigimos a chamada para passar dois e executamos novamente. O resultado mostrado é cento e vinte. Confira: não alteramos a conta nem escondemos a mensagem de erro. Usamos a definição para descobrir o que a chamada precisava oferecer."
+    },
+    {
+      "narration": "Dar nomes claros ajuda a enxergar o papel de cada parte. Nossa função recebe minutos e devolve segundos. Quem chama decide o que fazer com esse resultado, inclusive mostrar ou usar em outra conta. Essa separação facilita testar com entradas diferentes. Confira, por exemplo, uma entrada zero e uma entrada positiva, comparando com a conta esperada. Agora volte ao aplicativo para escrever suas próprias funções. Antes, pense: se guardarmos o retorno numa variável e não usarmos print em lugar algum, uma mensagem precisa aparecer na tela? Faça sua previsão e explique a diferença entre calcular, devolver e mostrar."
+    }
+  ],
+  "script": "Imagine converter várias durações de minutos para segundos. Podemos repetir a conta, mas também podemos dar um nome a essa tarefa e reutilizá-la. Esse é o foco de hoje: criar uma função com entrada e resultado, entendendo o caminho que o valor percorre. Uma função pequena deve ter uma responsabilidade que você consegue explicar em uma frase. Nosso exemplo converte minutos para segundos. Ele não precisa pedir dados, montar um menu e salvar arquivos ao mesmo tempo.\n\nNa tela escrevemos def segundos e colocamos minutos entre parênteses. Esse nome é um parâmetro: ele receberá o valor de cada chamada. Os dois pontos iniciam o bloco, e a indentação mostra o corpo da função. Dentro dele, return entrega minutos multiplicado por sessenta. Ao executar apenas essa definição, nenhuma mensagem aparece. O corpo foi preparado, mas ainda não fizemos uma chamada. Essa diferença é importante: escrever a receita não significa que ela já foi usada. Para executar a tarefa, chamamos a função pelo nome e passamos a entrada.\n\nAgora resultado recebe segundos de três. Nessa chamada, o valor três entra no parâmetro minutos. A função multiplica por sessenta e devolve cento e oitenta. Esse retorno fica associado ao nome resultado. Só depois o print mostra o valor na saída. Acompanhe as três partes na tela: entrada, cálculo e retorno. Se chamarmos segundos de cinco, usamos a mesma definição com outra entrada e recebemos trezentos. Não precisamos copiar a conta. Também podemos guardar esse resultado para outra operação, porque a função devolveu um valor ao código que chamou.\n\nVamos comparar com uma versão que usa print dentro da função no lugar de return. Ao chamar com três, aparece cento e oitenta na saída, mas o valor guardado em resultado é None. Isso indica a ausência de um valor de retorno explícito nesse caso. Mostrar uma informação na tela não é o mesmo que entregá-la para outra parte do programa usar. Se o objetivo é apenas exibir, print pode fazer parte da tarefa. Se precisamos reutilizar o cálculo, o retorno faz essa ligação. Escolha conforme a responsabilidade da função, e não porque os dois parecem produzir o mesmo texto.\n\nAgora cometemos outro erro: chamamos segundos sem passar os minutos. A execução mostra TypeError e informa que falta um argumento obrigatório. Vamos comparar a definição com a chamada. Na definição, minutos precisa receber uma entrada. Na chamada vazia, não fornecemos esse valor. A hipótese é que esquecemos o dado necessário para a conversão. Corrigimos a chamada para passar dois e executamos novamente. O resultado mostrado é cento e vinte. Confira: não alteramos a conta nem escondemos a mensagem de erro. Usamos a definição para descobrir o que a chamada precisava oferecer.\n\nDar nomes claros ajuda a enxergar o papel de cada parte. Nossa função recebe minutos e devolve segundos. Quem chama decide o que fazer com esse resultado, inclusive mostrar ou usar em outra conta. Essa separação facilita testar com entradas diferentes. Confira, por exemplo, uma entrada zero e uma entrada positiva, comparando com a conta esperada. Agora volte ao aplicativo para escrever suas próprias funções. Antes, pense: se guardarmos o retorno numa variável e não usarmos print em lugar algum, uma mensagem precisa aparecer na tela? Faça sua previsão e explique a diferença entre calcular, devolver e mostrar.",
+  "voice": "Maya",
+  "narrationTaskId": "9ae76fca-3533-4b23-9d0c-8e76dda13e75",
+  "states": [
+    [
+      "Imagine converter",
+      "Uma tarefa com nome",
+      "",
+      "",
+      "Converter minutos para segundos.",
+      -1,
+      [
+        "Entrada: minutos",
+        "Tarefa: multiplicar por 60",
+        "Resultado: segundos"
+      ]
+    ],
+    [
+      "Na tela escrevemos",
+      "Definir não é chamar",
+      "def segundos(minutos):\n    return minutos * 60",
+      "Nenhuma mensagem.",
+      "def prepara a função; minutos é o parâmetro.",
+      0
+    ],
+    [
+      "Dentro dele return",
+      "A função devolve um valor",
+      "def segundos(minutos):\n    return minutos * 60",
+      "Nenhuma mensagem.",
+      "return entrega o resultado a quem chamou.",
+      1
+    ],
+    [
+      "Agora resultado recebe",
+      "Entrada, cálculo e retorno",
+      "def segundos(minutos):\n    return minutos * 60\n\nresultado = segundos(3)\nprint(resultado)",
+      "Acompanhe a chamada.",
+      "3 entra no parâmetro minutos.",
+      3
+    ],
+    [
+      "Só depois o print",
+      "Mostrar o resultado",
+      "def segundos(minutos):\n    return minutos * 60\n\nresultado = segundos(3)\nprint(resultado)",
+      "180",
+      "O retorno foi guardado em resultado.",
+      4
+    ],
+    [
+      "Se chamarmos segundos",
+      "Reutilizar com outra entrada",
+      "def segundos(minutos):\n    return minutos * 60\n\nresultado = segundos(5)\nprint(resultado)",
+      "300",
+      "Mesma função, outra entrada.",
+      3
+    ],
+    [
+      "Vamos comparar",
+      "print não é return",
+      "def segundos(minutos):\n    print(minutos * 60)\n\nresultado = segundos(3)\nprint(resultado)",
+      "180\nNone",
+      "O cálculo foi mostrado, mas não retornado.",
+      1
+    ],
+    [
+      "Mostrar uma informação",
+      "Duas responsabilidades",
+      "",
+      "",
+      "O que o restante do programa precisa?",
+      -1,
+      [
+        "print: mostra na saída",
+        "return: devolve para quem chamou",
+        "O retorno pode ser guardado e reutilizado"
+      ]
+    ],
+    [
+      "Agora cometemos outro erro",
+      "A chamada precisa de entrada",
+      "def segundos(minutos):\n    return minutos * 60\n\nresultado = segundos()\nprint(resultado)",
+      "TypeError: falta o argumento 'minutos'",
+      "Mensagem resumida. Confira a chamada.",
+      3
+    ],
+    [
+      "Na definição minutos",
+      "Compare definição e chamada",
+      "",
+      "",
+      "Hipótese: faltou fornecer o valor.",
+      -1,
+      [
+        "Definição: segundos(minutos)",
+        "Chamada: segundos()",
+        "Qual dado a função precisa receber?"
+      ]
+    ],
+    [
+      "Corrigimos a chamada",
+      "Corrija e execute",
+      "def segundos(minutos):\n    return minutos * 60\n\nresultado = segundos(2)\nprint(resultado)",
+      "120",
+      "A chamada agora fornece a entrada.",
+      3
+    ],
+    [
+      "Dar nomes claros",
+      "Responsabilidade clara",
+      "def segundos(minutos):\n    return minutos * 60\n\nprint(segundos(0))\nprint(segundos(2))",
+      "0\n120",
+      "Duas entradas, resultados conferidos.",
+      1
+    ],
+    [
+      "Antes pense",
+      "Sua previsão",
+      "def segundos(minutos):\n    return minutos * 60\n\nresultado = segundos(3)",
+      "Uma mensagem precisa aparecer?",
+      "Calcular, devolver e mostrar são diferentes.",
+      3
+    ]
+  ],
+  "status": "rendering",
+  "tools": {
+    "narration": "Runway",
+    "composition": "Higgsfield Higgsedit",
+    "captions": "faster-whisper + clean burner"
+  },
+  "language": "pt-BR",
+  "voiceSpeed": 1,
+  "budget": {
+    "runwayCredits": 67,
+    "characters": 3338
+  },
+  "actualDurationSeconds": 228.902313,
+  "oldVideoUrl": "https://d2ol7oe51mr4n9.cloudfront.net/user_3Ke119x65sh4FYjNFHHZNJMSh6l/30266f88-2d33-4450-96d1-e907150cdffa.mp4",
+  "videoUrl": null,
+  "sourcesUrl": null,
+  "editingNotes": [
+    "Mesma voz e identidade visual do piloto aprovado.",
+    "Demonstração ilustrada, com saídas executadas em Python.",
+    "Cursor, destaque, erro e correção; pergunta final sem resposta.",
+    "Não inclui soluções dos desafios; reprodução Android/Windows ainda não testada."
+  ]
+}
