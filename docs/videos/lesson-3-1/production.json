@@ -1,0 +1,188 @@
+{
+  "module": 3,
+  "lesson": "lesson_3_1",
+  "title": "Repetições: automatizar sem perder o controle",
+  "sourceCommit": "c1ef42fe1fdaa17ac747bcb2769960b3e6bb91f8",
+  "scenes": [
+    {
+      "narration": "Imagine imprimir três etiquetas numeradas para organizar caixas. Copiar a mesma instrução várias vezes funciona por um momento, mas fica difícil quando a quantidade muda. Hoje vamos acompanhar uma repetição e responder três perguntas: o que se repete, o que muda e quando termina? A ideia não é decorar um comando. É conseguir seguir cada volta do programa e perceber quando o resultado deixa de combinar com o plano. Vamos usar etiquetas como exemplo, sem resolver o desafio do aplicativo."
+    },
+    {
+      "narration": "Na tela usamos for para percorrer os números produzidos por range de dois até cinco. Atenção: o valor final não entra nessa sequência. Os valores usados são dois, três e quatro. Em cada volta, numero recebe o próximo valor e o print recuado mostra esse valor. Antes de executar, conte quantas linhas você espera na saída. Agora executamos: aparecem dois, três e quatro, uma vez cada. O bloco recuado é a parte que repete. Quando a sequência acaba, o programa segue depois do laço. Essa fronteira final é um detalhe pequeno que vale conferir sempre."
+    },
+    {
+      "narration": "Vamos somar o número de cada etiqueta. Total começa em zero, antes do laço. Na primeira volta, somamos dois e total passa a dois. Na segunda, somamos três ao valor que já estava guardado, chegando a cinco. Na terceira, acrescentamos quatro, chegando a nove. O print final fica fora do bloco e mostra apenas esse total. Veja a tabela: ela registra o valor antes, o número da volta e o valor depois. Esse acompanhamento permite explicar o resultado. Executar sem observar essas mudanças esconderia justamente a parte mais importante da repetição."
+    },
+    {
+      "narration": "Agora movemos total recebe zero para dentro do laço. Execute e compare: aparece quatro, mas esperávamos nove. Python conseguiu executar, então precisamos investigar a lógica. Observe a tabela de novo. Em cada volta, apagamos a soma anterior antes de acrescentar o número atual. Na última volta, zero mais quatro dá quatro. A hipótese é que estamos reiniciando o acumulador no lugar errado. Vamos recolocar a inicialização antes do for e executar novamente. A saída volta a ser nove. Mudamos uma responsabilidade: iniciar acontece uma vez; acumular acontece a cada volta. Esse tipo de erro é mais fácil de ver quando anotamos o estado."
+    },
+    {
+      "narration": "O while usa outra forma de decidir quando continuar: ele testa uma condição antes de cada volta. Neste exemplo, faltam começa em três. Enquanto faltam for maior que zero, mostramos o valor e diminuímos uma unidade. A saída é três, dois e um. Depois, faltam chega a zero, a condição fica falsa e o laço termina. Antes de executar um while, identifique o que aproxima a condição da parada. Se esse valor nunca mudar, podemos ficar presos repetindo. Não vamos executar uma repetição sem fim; primeiro verificamos a mudança no papel e no código."
+    },
+    {
+      "narration": "For combina com uma sequência que você quer percorrer. While combina com uma condição que decide se ainda há trabalho. Nos dois casos, acompanhe o estado e confira o bloco recuado. Você pode usar uma tabela pequena, como fizemos, para encontrar a volta em que o resultado divergiu. Agora é sua vez de praticar no aplicativo. Uma pergunta antes de sair: se o print do total ficar dentro do laço, quantas linhas você espera ver? Pense no que o bloco repete e faça sua previsão antes de testar."
+    }
+  ],
+  "script": "Imagine imprimir três etiquetas numeradas para organizar caixas. Copiar a mesma instrução várias vezes funciona por um momento, mas fica difícil quando a quantidade muda. Hoje vamos acompanhar uma repetição e responder três perguntas: o que se repete, o que muda e quando termina? A ideia não é decorar um comando. É conseguir seguir cada volta do programa e perceber quando o resultado deixa de combinar com o plano. Vamos usar etiquetas como exemplo, sem resolver o desafio do aplicativo.\n\nNa tela usamos for para percorrer os números produzidos por range de dois até cinco. Atenção: o valor final não entra nessa sequência. Os valores usados são dois, três e quatro. Em cada volta, numero recebe o próximo valor e o print recuado mostra esse valor. Antes de executar, conte quantas linhas você espera na saída. Agora executamos: aparecem dois, três e quatro, uma vez cada. O bloco recuado é a parte que repete. Quando a sequência acaba, o programa segue depois do laço. Essa fronteira final é um detalhe pequeno que vale conferir sempre.\n\nVamos somar o número de cada etiqueta. Total começa em zero, antes do laço. Na primeira volta, somamos dois e total passa a dois. Na segunda, somamos três ao valor que já estava guardado, chegando a cinco. Na terceira, acrescentamos quatro, chegando a nove. O print final fica fora do bloco e mostra apenas esse total. Veja a tabela: ela registra o valor antes, o número da volta e o valor depois. Esse acompanhamento permite explicar o resultado. Executar sem observar essas mudanças esconderia justamente a parte mais importante da repetição.\n\nAgora movemos total recebe zero para dentro do laço. Execute e compare: aparece quatro, mas esperávamos nove. Python conseguiu executar, então precisamos investigar a lógica. Observe a tabela de novo. Em cada volta, apagamos a soma anterior antes de acrescentar o número atual. Na última volta, zero mais quatro dá quatro. A hipótese é que estamos reiniciando o acumulador no lugar errado. Vamos recolocar a inicialização antes do for e executar novamente. A saída volta a ser nove. Mudamos uma responsabilidade: iniciar acontece uma vez; acumular acontece a cada volta. Esse tipo de erro é mais fácil de ver quando anotamos o estado.\n\nO while usa outra forma de decidir quando continuar: ele testa uma condição antes de cada volta. Neste exemplo, faltam começa em três. Enquanto faltam for maior que zero, mostramos o valor e diminuímos uma unidade. A saída é três, dois e um. Depois, faltam chega a zero, a condição fica falsa e o laço termina. Antes de executar um while, identifique o que aproxima a condição da parada. Se esse valor nunca mudar, podemos ficar presos repetindo. Não vamos executar uma repetição sem fim; primeiro verificamos a mudança no papel e no código.\n\nFor combina com uma sequência que você quer percorrer. While combina com uma condição que decide se ainda há trabalho. Nos dois casos, acompanhe o estado e confira o bloco recuado. Você pode usar uma tabela pequena, como fizemos, para encontrar a volta em que o resultado divergiu. Agora é sua vez de praticar no aplicativo. Uma pergunta antes de sair: se o print do total ficar dentro do laço, quantas linhas você espera ver? Pense no que o bloco repete e faça sua previsão antes de testar.",
+  "voice": "Maya",
+  "narrationTaskId": "d198b4cb-7642-4731-ba46-af6f45184a73",
+  "states": [
+    [
+      "Imagine imprimir",
+      "Repetir com controle",
+      "",
+      "",
+      "Etiquetas numeradas para organizar caixas.",
+      -1,
+      [
+        "O que se repete?",
+        "O que muda?",
+        "Quando termina?"
+      ]
+    ],
+    [
+      "Na tela usamos",
+      "Percorrer uma sequência",
+      "for numero in range(2, 5):\n    print(numero)",
+      "Qual é sua previsão?",
+      "range(2, 5): inclui 2, exclui 5.",
+      0
+    ],
+    [
+      "Agora executamos",
+      "Três voltas",
+      "for numero in range(2, 5):\n    print(numero)",
+      "2\n3\n4",
+      "O bloco recuado se repete.",
+      1
+    ],
+    [
+      "Vamos somar",
+      "Um valor entre as voltas",
+      "total = 0\nfor numero in range(2, 5):\n    total = total + numero\nprint(total)",
+      "Acompanhe o total.",
+      "Inicialização antes do laço.",
+      0
+    ],
+    [
+      "Na primeira volta",
+      "Rastreie o acumulador",
+      "total = 0\nfor numero in range(2, 5):\n    total = total + numero\nprint(total)",
+      "Antes 0 + número 2 = depois 2",
+      "O total guarda a soma até esta volta.",
+      2
+    ],
+    [
+      "Na segunda",
+      "Rastreie o acumulador",
+      "total = 0\nfor numero in range(2, 5):\n    total = total + numero\nprint(total)",
+      "Antes 2 + número 3 = depois 5",
+      "Somamos ao valor já guardado.",
+      2
+    ],
+    [
+      "Na terceira",
+      "Rastreie o acumulador",
+      "total = 0\nfor numero in range(2, 5):\n    total = total + numero\nprint(total)",
+      "Antes 5 + número 4 = depois 9",
+      "Última volta.",
+      2
+    ],
+    [
+      "O print final",
+      "Resultado depois do laço",
+      "total = 0\nfor numero in range(2, 5):\n    total = total + numero\nprint(total)",
+      "9",
+      "print fora do bloco: uma saída final.",
+      3
+    ],
+    [
+      "Agora movemos",
+      "Um erro de lógica",
+      "for numero in range(2, 5):\n    total = 0\n    total = total + numero\nprint(total)",
+      "4",
+      "Esperávamos 9. O que mudou?",
+      1
+    ],
+    [
+      "Observe a tabela de novo",
+      "A soma foi apagada",
+      "",
+      "",
+      "Hipótese: inicialização no lugar errado.",
+      -1,
+      [
+        "Volta 1: 0 + 2 = 2",
+        "Volta 2: 0 + 3 = 3",
+        "Volta 3: 0 + 4 = 4"
+      ]
+    ],
+    [
+      "Vamos recolocar",
+      "Uma correção, um novo teste",
+      "total = 0\nfor numero in range(2, 5):\n    total = total + numero\nprint(total)",
+      "9",
+      "Iniciar uma vez; acumular a cada volta.",
+      0
+    ],
+    [
+      "O while usa",
+      "Repetir enquanto for verdadeiro",
+      "faltam = 3\nwhile faltam > 0:\n    print(faltam)\n    faltam = faltam - 1",
+      "3\n2\n1",
+      "3 > 0, 2 > 0, 1 > 0: continua.",
+      3
+    ],
+    [
+      "Depois faltam chega",
+      "A condição de parada",
+      "faltam = 3\nwhile faltam > 0:\n    print(faltam)\n    faltam = faltam - 1",
+      "faltam = 0; condição falsa",
+      "Diminuir faltam aproxima a parada.",
+      1
+    ],
+    [
+      "For combina",
+      "Escolha pela tarefa",
+      "",
+      "",
+      "Acompanhe o estado a cada volta.",
+      -1,
+      [
+        "for: percorre uma sequência",
+        "while: testa se deve continuar",
+        "O bloco recuado define o que repete"
+      ]
+    ],
+    [
+      "Uma pergunta antes",
+      "Sua previsão",
+      "total = 0\nfor numero in range(2, 5):\n    total = total + numero\n    print(total)",
+      "Quantas linhas aparecerão?",
+      "Agora print está dentro do laço.",
+      3
+    ]
+  ],
+  "status": "rendering",
+  "tools": {
+    "narration": "Runway",
+    "composition": "Higgsfield Higgsedit",
+    "captions": "faster-whisper + clean burner"
+  },
+  "language": "pt-BR",
+  "voiceSpeed": 1,
+  "budget": {
+    "runwayCredits": 66,
+    "characters": 3258
+  },
+  "actualDurationSeconds": 219.382132,
+  "oldVideoUrl": "https://d2ol7oe51mr4n9.cloudfront.net/user_3Ke119x65sh4FYjNFHHZNJMSh6l/cd7dc083-31f2-45ee-b4a8-3d4bb0ac587b.mp4",
+  "videoUrl": null,
+  "sourcesUrl": null,
+  "editingNotes": [
+    "Mesma voz e identidade visual do piloto aprovado.",
+    "Demonstração ilustrada, com saídas executadas em Python.",
+    "Cursor, destaque, erro e correção; pergunta final sem resposta.",
+    "Não inclui soluções dos desafios; reprodução Android/Windows ainda não testada."
+  ]
+}
