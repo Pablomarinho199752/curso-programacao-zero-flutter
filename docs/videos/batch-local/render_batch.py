@@ -37,7 +37,7 @@ for l in prod['lessons']:
     count+=1;srt.append(f'{count}\n{srt_time(t)} --> {srt_time(t+duration)}\n'+ '\n'.join(lines2)+'\n')
   if j==10:im.save(out/'poster.png')
  concat.append(f"file '{filename}'");(out/'frames.txt').write_text('\n'.join(concat));(out/'legendas.srt').write_text('\n'.join(srt))
- subprocess.run(['ffmpeg','-y','-v','error','-f','concat','-safe','0','-i',str(out/'frames.txt'),'-i',str(out/'narracao.wav'),'-t',str(total),'-r','20','-c:v','libx264','-preset','veryfast','-crf','22','-pix_fmt','yuv420p','-c:a','aac','-movflags','+faststart',str(out/f'aula-{n}.mp4')],check=True)
+ subprocess.run(['ffmpeg','-y','-v','error','-f','concat','-safe','0','-i',str(out/'frames.txt'),'-i',str(out/'narracao.wav'),'-t',str(total),'-r','10','-c:v','libx264','-preset','ultrafast','-threads','2','-crf','22','-pix_fmt','yuv420p','-c:a','aac','-movflags','+faststart',str(out/f'aula-{n}.mp4')],check=True)
  actual=float(subprocess.check_output(['ffprobe','-v','error','-show_entries','format=duration','-of','default=nw=1:nk=1',str(out/f'aula-{n}.mp4')],text=True));assert abs(actual-total)<1,(actual,total)
  (out/'validated.json').write_text(json.dumps({'duration':actual,'voice':'pf_dora','speed':.75,'status':'preview_pending_human_voice_review'}))
  print(f'Aula {n}: render concluído {total:.1f}s',flush=True)
