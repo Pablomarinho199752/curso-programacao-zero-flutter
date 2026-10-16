@@ -1,0 +1,170 @@
+[
+  {
+    "module": 6,
+    "lesson_id": "lesson_6_1",
+    "title": "Persistência e falhas esperadas",
+    "duration_seconds": 227.301,
+    "video_file": "aula-6.mp4",
+    "voice": "Kokoro pf_dora, female, pt-BR",
+    "speed": 0.75,
+    "credits_spent": 0,
+    "status": "complete_preview_pending_voice_review",
+    "final_public_url": null,
+    "validated": [
+      "audio_video_streams",
+      "duration_3_to_7_minutes",
+      "full_file_decode",
+      "full_script_caption_coverage"
+    ],
+    "pending": [
+      "full_listening_review",
+      "new_voice_approval",
+      "app_playback",
+      "public_hosting_and_link_integration"
+    ]
+  },
+  {
+    "module": 7,
+    "lesson_id": "lesson_7_1",
+    "title": "Debugging e testes: transformar erro em evidência",
+    "duration_seconds": 222.209,
+    "video_file": "aula-7.mp4",
+    "voice": "Kokoro pf_dora, female, pt-BR",
+    "speed": 0.75,
+    "credits_spent": 0,
+    "status": "complete_preview_pending_voice_review",
+    "final_public_url": null,
+    "validated": [
+      "audio_video_streams",
+      "duration_3_to_7_minutes",
+      "full_file_decode",
+      "full_script_caption_coverage"
+    ],
+    "pending": [
+      "full_listening_review",
+      "new_voice_approval",
+      "app_playback",
+      "public_hosting_and_link_integration"
+    ]
+  },
+  {
+    "module": 8,
+    "lesson_id": "lesson_8_1",
+    "title": "APIs e JSON: aprender pela documentação",
+    "duration_seconds": 225.682,
+    "video_file": "aula-8.mp4",
+    "voice": "Kokoro pf_dora, female, pt-BR",
+    "speed": 0.75,
+    "credits_spent": 0,
+    "status": "complete_preview_pending_voice_review",
+    "final_public_url": null,
+    "validated": [
+      "audio_video_streams",
+      "duration_3_to_7_minutes",
+      "full_file_decode",
+      "full_script_caption_coverage"
+    ],
+    "pending": [
+      "full_listening_review",
+      "new_voice_approval",
+      "app_playback",
+      "public_hosting_and_link_integration"
+    ]
+  },
+  {
+    "module": 9,
+    "lesson_id": "lesson_9_1",
+    "title": "SQLite e CRUD: dados estruturados que permanecem",
+    "duration_seconds": 220.107,
+    "video_file": "aula-9.mp4",
+    "voice": "Kokoro pf_dora, female, pt-BR",
+    "speed": 0.75,
+    "credits_spent": 0,
+    "status": "complete_preview_pending_voice_review",
+    "final_public_url": null,
+    "validated": [
+      "audio_video_streams",
+      "duration_3_to_7_minutes",
+      "full_file_decode",
+      "full_script_caption_coverage"
+    ],
+    "pending": [
+      "full_listening_review",
+      "new_voice_approval",
+      "app_playback",
+      "public_hosting_and_link_integration"
+    ]
+  },
+  {
+    "module": 10,
+    "lesson_id": "lesson_10_1",
+    "title": "Projetos maiores: estrutura, classes e ambiente",
+    "duration_seconds": 233.891,
+    "video_file": "aula-10.mp4",
+    "voice": "Kokoro pf_dora, female, pt-BR",
+    "speed": 0.75,
+    "credits_spent": 0,
+    "status": "complete_preview_pending_voice_review",
+    "final_public_url": null,
+    "validated": [
+      "audio_video_streams",
+      "duration_3_to_7_minutes",
+      "full_file_decode",
+      "full_script_caption_coverage"
+    ],
+    "pending": [
+      "full_listening_review",
+      "new_voice_approval",
+      "app_playback",
+      "public_hosting_and_link_integration"
+    ]
+  },
+  {
+    "module": 11,
+    "lesson_id": "lesson_11_1",
+    "title": "Git e GitHub: histórico para experimentar com segurança",
+    "duration_seconds": 230.481,
+    "video_file": "aula-11.mp4",
+    "voice": "Kokoro pf_dora, female, pt-BR",
+    "speed": 0.75,
+    "credits_spent": 0,
+    "status": "complete_preview_pending_voice_review",
+    "final_public_url": null,
+    "validated": [
+      "audio_video_streams",
+      "duration_3_to_7_minutes",
+      "full_file_decode",
+      "full_script_caption_coverage"
+    ],
+    "pending": [
+      "full_listening_review",
+      "new_voice_approval",
+      "app_playback",
+      "public_hosting_and_link_integration"
+    ]
+  },
+  {
+    "module": 12,
+    "lesson_id": "lesson_12_1",
+    "title": "Desenvolvimento independente: descobrir, construir e provar",
+    "duration_seconds": 239.43,
+    "video_file": "aula-12.mp4",
+    "voice": "Kokoro pf_dora, female, pt-BR",
+    "speed": 0.75,
+    "credits_spent": 0,
+    "status": "complete_preview_pending_voice_review",
+    "final_public_url": null,
+    "validated": [
+      "audio_video_streams",
+      "duration_3_to_7_minutes",
+      "full_file_decode",
+      "full_script_caption_coverage"
+    ],
+    "pending": [
+      "full_listening_review",
+      "new_voice_approval",
+      "app_playback",
+      "public_hosting_and_link_integration"
+    ]
+  }
+]
