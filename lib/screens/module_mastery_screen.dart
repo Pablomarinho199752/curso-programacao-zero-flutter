@@ -370,12 +370,10 @@ class _MasteryCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: scheme.surfaceContainer,
         borderRadius: BorderRadius.circular(22),
         border: Border.all(
-          color: passed
-              ? Colors.green.withValues(alpha: 0.35)
-              : Colors.black.withValues(alpha: 0.06),
+          color: passed ? scheme.tertiary : scheme.outlineVariant,
         ),
       ),
       child: Column(
@@ -388,11 +386,17 @@ class _MasteryCard extends StatelessWidget {
                 height: 34,
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
-                  color: passed ? Colors.green.shade50 : scheme.primaryContainer,
+                  color: passed
+                      ? scheme.tertiaryContainer
+                      : scheme.primaryContainer,
                   borderRadius: BorderRadius.circular(11),
                 ),
                 child: passed
-                    ? const Icon(Icons.check_rounded, color: Colors.green, size: 20)
+                    ? Icon(
+                        Icons.check_rounded,
+                        color: scheme.onTertiaryContainer,
+                        size: 20,
+                      )
                     : Text(
                         '$number',
                         style: TextStyle(
@@ -437,7 +441,7 @@ class _CodeBox extends StatelessWidget {
       child: Text(
         code,
         style: const TextStyle(
-          color: Colors.white,
+          color: Color(0xFFF5F7FF),
           fontFamily: 'monospace',
           height: 1.5,
         ),
@@ -454,13 +458,14 @@ class _Feedback extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Icon(
           passed ? Icons.check_circle_rounded : Icons.lightbulb_outline_rounded,
           size: 19,
-          color: passed ? Colors.green.shade700 : Colors.orange.shade800,
+          color: passed ? scheme.tertiary : scheme.secondary,
         ),
         const SizedBox(width: 8),
         Expanded(child: Text(text)),
