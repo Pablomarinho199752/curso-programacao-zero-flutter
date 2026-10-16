@@ -114,16 +114,28 @@ class LearningCoachService {
     return _reviewIntervalsDays[index];
   }
 
+  int reviewAnchorMs(LessonProgress progress) {
+    final lastReview = progress.attempts['spaced_review_last_ms'];
+    if (reviewCount(progress) > 0 && lastReview != null && lastReview > 0) {
+      return lastReview;
+    }
+    return progress.updatedAtMs;
+  }
+
   bool reviewDue(LessonProgress progress, {int? nowMs}) {
-    if (progress.completed.length < 8 || progress.updatedAtMs <= 0) return false;
+    if (progress.completed.length < 8) return false;
+    final anchor = reviewAnchorMs(progress);
+    if (anchor <= 0) return false;
     final now = nowMs ?? DateTime.now().millisecondsSinceEpoch;
-    final elapsed = now - progress.updatedAtMs;
+    final elapsed = now - anchor;
     return elapsed >= Duration(days: reviewIntervalDays(progress)).inMilliseconds;
   }
 
   Duration timeUntilReview(LessonProgress progress, {int? nowMs}) {
     final now = nowMs ?? DateTime.now().millisecondsSinceEpoch;
-    final target = progress.updatedAtMs +
+    final anchor = reviewAnchorMs(progress);
+    if (anchor <= 0) return Duration.zero;
+    final target = anchor +
         Duration(days: reviewIntervalDays(progress)).inMilliseconds;
     final remaining = (target - now).clamp(0, 1 << 62).toInt();
     return Duration(milliseconds: remaining);

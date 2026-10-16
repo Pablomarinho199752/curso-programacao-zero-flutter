@@ -53,12 +53,12 @@ class ProgressScreen extends StatelessWidget {
         Container(
           padding: const EdgeInsets.all(22),
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: scheme.surfaceContainer,
             borderRadius: BorderRadius.circular(26),
-            border: Border.all(color: Colors.black.withValues(alpha: 0.06)),
+            border: Border.all(color: scheme.outlineVariant),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withValues(alpha: 0.035),
+                color: scheme.shadow.withValues(alpha: 0.08),
                 blurRadius: 22,
                 offset: const Offset(0, 8),
               ),
@@ -142,9 +142,9 @@ class ProgressScreen extends StatelessWidget {
           return Container(
             margin: const EdgeInsets.only(bottom: 14),
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: scheme.surfaceContainer,
               borderRadius: BorderRadius.circular(22),
-              border: Border.all(color: Colors.black.withValues(alpha: 0.06)),
+              border: Border.all(color: scheme.outlineVariant),
             ),
             child: Material(
               color: Colors.transparent,

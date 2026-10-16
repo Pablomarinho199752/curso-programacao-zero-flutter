@@ -7,6 +7,7 @@ import 'package:curso_programacao_zero/screens/lesson_screen.dart';
 import 'package:curso_programacao_zero/services/basics_lab.dart';
 import 'package:curso_programacao_zero/services/print_lab.dart';
 import 'package:curso_programacao_zero/services/progress_store.dart';
+import 'package:curso_programacao_zero/services/theme_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -184,13 +185,19 @@ void main() {
     addTearDown(() => tester.binding.setSurfaceSize(null));
     final store = ProgressStore();
     await store.initialize();
+    final themeController = ThemeController();
+    await themeController.initialize();
     final modules = (await tester.runAsync(
       () => const CourseRepository().loadModules(),
     ))!;
 
     await tester.pumpWidget(
       MaterialApp(
-        home: CourseShell(modules: modules, progressStore: store),
+        home: CourseShell(
+          modules: modules,
+          progressStore: store,
+          themeController: themeController,
+        ),
       ),
     );
     await tester.pumpAndSettle();
