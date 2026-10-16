@@ -52,9 +52,11 @@ class ModulesScreen extends StatelessWidget {
           return Padding(
             padding: const EdgeInsets.only(bottom: 18),
             child: Material(
-              color: unlocked ? Colors.white : const Color(0xFFF2F3F8),
+              color: unlocked
+                  ? scheme.surfaceContainer
+                  : scheme.surfaceContainerLowest,
               elevation: unlocked ? 2 : 0,
-              shadowColor: Colors.black.withValues(alpha: 0.08),
+              shadowColor: scheme.shadow.withValues(alpha: 0.12),
               borderRadius: BorderRadius.circular(26),
               clipBehavior: Clip.antiAlias,
               child: ExpansionTile(
@@ -76,8 +78,8 @@ class ModulesScreen extends StatelessWidget {
                   child: unlocked
                       ? Text(
                           '${module.number}',
-                          style: const TextStyle(
-                            color: Colors.white,
+                          style: TextStyle(
+                            color: scheme.onPrimary,
                             fontSize: 18,
                             fontWeight: FontWeight.w900,
                           ),
@@ -141,7 +143,7 @@ class ModulesScreen extends StatelessWidget {
                       width: double.infinity,
                       padding: const EdgeInsets.all(16),
                       decoration: BoxDecoration(
-                        color: Colors.white.withValues(alpha: 0.7),
+                        color: scheme.surfaceContainerHighest,
                         borderRadius: BorderRadius.circular(20),
                       ),
                       child: Row(
@@ -214,8 +216,8 @@ class ModulesScreen extends StatelessWidget {
                             module.number == 0
                                 ? 'Faça o desafio de previsão, correção, criação e explicação. Ao passar, o Módulo $nextNumber abre automaticamente.'
                                 : nextNumber == null
-                                    ? 'Reúna evidências de entender, corrigir, criar, explicar e executar em ambiente real para concluir o domínio do curso.'
-                                    : 'Reúna evidências de entender, corrigir, criar, explicar e executar em ambiente real. Ao passar, o Módulo $nextNumber abre automaticamente.',
+                                    ? 'Reúna evidências de entender, corrigir, criar, explicar e executar no Python do próprio curso para concluir o domínio.'
+                                    : 'Reúna evidências de entender, corrigir, criar, explicar e executar no Python do próprio curso. Ao passar, o Módulo $nextNumber abre automaticamente.',
                           ),
                           const SizedBox(height: 14),
                           FilledButton.icon(
@@ -252,16 +254,16 @@ class ModulesScreen extends StatelessWidget {
                       width: double.infinity,
                       padding: const EdgeInsets.all(16),
                       decoration: BoxDecoration(
-                        color: Colors.green.shade50,
+                        color: scheme.tertiaryContainer,
                         borderRadius: BorderRadius.circular(20),
-                        border: Border.all(color: Colors.green.shade200),
+                        border: Border.all(color: scheme.tertiary),
                       ),
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Icon(
                             Icons.verified_rounded,
-                            color: Colors.green.shade700,
+                            color: scheme.onTertiaryContainer,
                           ),
                           const SizedBox(width: 10),
                           Expanded(
@@ -270,7 +272,7 @@ class ModulesScreen extends StatelessWidget {
                                   ? 'Domínio final registrado. Você concluiu a trilha e o projeto final continua aberto para evoluir.'
                                   : 'Domínio comprovado. O Módulo $nextNumber está liberado.',
                               style: TextStyle(
-                                color: Colors.green.shade900,
+                                color: scheme.onTertiaryContainer,
                                 fontWeight: FontWeight.w700,
                               ),
                             ),
@@ -286,7 +288,7 @@ class ModulesScreen extends StatelessWidget {
                       return Padding(
                         padding: const EdgeInsets.only(top: 10),
                         child: Material(
-                          color: const Color(0xFFF8F9FD),
+                          color: scheme.surfaceContainerHighest,
                           borderRadius: BorderRadius.circular(20),
                           clipBehavior: Clip.antiAlias,
                           child: InkWell(
