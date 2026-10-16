@@ -83,8 +83,24 @@ void main() {
     expect(coach.reviewDue(progress, nowMs: now), isTrue);
 
     progress.attempts['spaced_review_count'] = 1;
+    progress.attempts['spaced_review_last_ms'] = now;
     expect(coach.reviewIntervalDays(progress), 3);
     expect(coach.reviewDue(progress, nowMs: now), isFalse);
+  });
+
+  test('edições da aula não deslocam revisões já registradas', () {
+    final progress = LessonProgress()
+      ..completed.addAll(List<int>.generate(8, (index) => index));
+    const lastReview = 20 * Duration.millisecondsPerDay;
+    const now = lastReview + (4 * Duration.millisecondsPerDay);
+
+    progress.attempts['spaced_review_count'] = 1;
+    progress.attempts['spaced_review_last_ms'] = lastReview;
+    progress.updatedAtMs = now;
+
+    expect(coach.reviewAnchorMs(progress), lastReview);
+    expect(coach.reviewIntervalDays(progress), 3);
+    expect(coach.reviewDue(progress, nowMs: now), isTrue);
   });
 
   test('oferece projetos cumulativos apenas nos marcos planejados', () {
