@@ -100,6 +100,9 @@ class _LessonWorkspaceScreenState extends State<LessonWorkspaceScreen> {
     if (_running) return;
     final code = _codeController.text;
     final key = _activeDraftKey;
+    final reviewWasDue =
+        progress.checks.contains('spaced_review_due_verified') ||
+            _coach.reviewDue(progress);
     if (code.trim().isEmpty) {
       setState(() {
         _result = const PythonExecutionResult(
@@ -136,6 +139,9 @@ class _LessonWorkspaceScreenState extends State<LessonWorkspaceScreen> {
         lessonProgress.attempts['${key}_runtime'] = attempt;
         if (result.ok) {
           lessonProgress.checks.add('${key}_runtime_ok');
+          if (reviewWasDue && lessonProgress.completed.length == 8) {
+            lessonProgress.checks.add('spaced_review_due_verified');
+          }
         } else {
           lessonProgress.checks.remove('${key}_runtime_ok');
         }
@@ -172,12 +178,19 @@ class _LessonWorkspaceScreenState extends State<LessonWorkspaceScreen> {
   }
 
   Future<void> _registerReview() async {
-    if (!_coach.reviewDue(progress) || _result?.ok != true) return;
+    final dueVerified =
+        progress.checks.contains('spaced_review_due_verified') ||
+            _coach.reviewDue(progress);
+    if (!dueVerified || _result?.ok != true) return;
+    final now = DateTime.now().millisecondsSinceEpoch;
     await widget.progressStore.update(widget.lesson.id, (lessonProgress) {
       final next =
           (_coach.reviewCount(lessonProgress) + 1).clamp(0, 999).toInt();
       lessonProgress.attempts['spaced_review_count'] = next;
-      lessonProgress.checks.add('spaced_review_$next');
+      lessonProgress.attempts['spaced_review_last_ms'] = now;
+      lessonProgress.checks
+        ..remove('spaced_review_due_verified')
+        ..add('spaced_review_$next');
     });
     if (!mounted) return;
     setState(() {});
@@ -243,7 +256,8 @@ class _LessonWorkspaceScreenState extends State<LessonWorkspaceScreen> {
   Widget _buildWorkspace(BuildContext context) {
     final theme = Theme.of(context);
     final projectPrompt = _coach.cumulativeProjectPrompt(widget.lesson);
-    final reviewDue = _coach.reviewDue(progress);
+    final reviewDue = _coach.reviewDue(progress) ||
+        progress.checks.contains('spaced_review_due_verified');
     final nextReview = _coach.timeUntilReview(progress);
 
     return Material(
