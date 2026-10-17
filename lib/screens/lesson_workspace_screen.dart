@@ -274,9 +274,10 @@ class _LessonWorkspaceScreenState extends State<LessonWorkspaceScreen> {
     return ListView(
       padding: const EdgeInsets.all(20),
       children: [
-        Text('Videoaulas • Aula ${lesson.number}', style: Theme.of(context).textTheme.headlineSmall),
+        Text('Escolha sua videoaula', style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w700)),
+        const SizedBox(height: 8),
+        Text('Mesmo conteúdo, duas apresentações. Seu progresso é mantido.', style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Theme.of(context).colorScheme.onSurfaceVariant)),
         const SizedBox(height: 12),
-        const Text('As versões ensinam o mesmo conteúdo. Escolha a apresentação que preferir; seu progresso continua sendo o da mesma aula.'),
         const SizedBox(height: 18),
         Card(child: ListTile(
           leading: const Icon(Icons.play_circle_outline),
