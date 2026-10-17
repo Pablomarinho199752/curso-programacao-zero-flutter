@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../models/course_models.dart';
 import '../services/learning_coach_service.dart';
@@ -215,7 +216,7 @@ class _LessonWorkspaceScreenState extends State<LessonWorkspaceScreen> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 2,
+      length: 3,
       child: Column(
         children: [
           Material(
@@ -228,6 +229,7 @@ class _LessonWorkspaceScreenState extends State<LessonWorkspaceScreen> {
                     icon: Icon(Icons.school_rounded),
                     text: 'Aula',
                   ),
+                  const Tab(icon: Icon(Icons.video_library_rounded), text: 'Vídeos'),
                   Tab(
                     icon: Icon(
                       progress.checks.contains('${_activeDraftKey}_runtime_ok')
@@ -244,12 +246,57 @@ class _LessonWorkspaceScreenState extends State<LessonWorkspaceScreen> {
             child: TabBarView(
               children: [
                 widget.lessonChild,
+                _buildVideos(context),
                 _buildWorkspace(context),
               ],
             ),
           ),
         ],
       ),
+    );
+  }
+
+  Future<void> _openVideo(String url) async {
+    final uri = Uri.tryParse(url);
+    if (uri == null || !await launchUrl(uri, mode: LaunchMode.externalApplication)) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Não foi possível abrir o vídeo. Confira sua conexão.')),
+        );
+      }
+    }
+  }
+
+  Widget _buildVideos(BuildContext context) {
+    final lesson = widget.lesson;
+    final latest = lesson.newVideoUrl;
+    final hasNew = latest != null && latest.isNotEmpty && latest != lesson.videoUrl;
+    return ListView(
+      padding: const EdgeInsets.all(20),
+      children: [
+        Text('Videoaulas • Aula ${lesson.number}', style: Theme.of(context).textTheme.headlineSmall),
+        const SizedBox(height: 12),
+        const Text('As versões ensinam o mesmo conteúdo. Escolha a apresentação que preferir; seu progresso continua sendo o da mesma aula.'),
+        const SizedBox(height: 18),
+        Card(child: ListTile(
+          leading: const Icon(Icons.play_circle_outline),
+          title: const Text('Versão original'),
+          subtitle: const Text('Vídeo original preservado'),
+          trailing: const Icon(Icons.open_in_new),
+          onTap: lesson.videoUrl.isEmpty ? null : () => _openVideo(lesson.videoUrl),
+        )),
+        if (hasNew) Card(child: ListTile(
+          leading: const Icon(Icons.auto_awesome),
+          title: const Text('Nova versão'),
+          subtitle: const Text('Mesmo conteúdo • produção audiovisual atualizada'),
+          trailing: const Icon(Icons.open_in_new),
+          onTap: () => _openVideo(latest),
+        )),
+        if (!hasNew) const Padding(
+          padding: EdgeInsets.all(12),
+          child: Text('A nova versão desta aula ainda não possui um link diferente cadastrado.'),
+        ),
+      ],
     );
   }
 
