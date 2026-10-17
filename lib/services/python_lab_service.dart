@@ -112,7 +112,11 @@ class PythonLabService {
     try {
       final request = await client.postUrl(_runUri);
       request.headers.contentType = ContentType.json;
-      request.write(jsonEncode({'code': code, 'stdin': stdin}));
+      // The local Python server requires Content-Length. HttpClient.write()
+      // can send chunked requests, which the server rejects as an empty body.
+      final payload = utf8.encode(jsonEncode({'code': code, 'stdin': stdin}));
+      request.contentLength = payload.length;
+      request.add(payload);
       final response = await request.close().timeout(
             const Duration(seconds: 7),
           );
