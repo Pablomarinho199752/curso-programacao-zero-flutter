@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
 import 'data/course_repository.dart';
@@ -15,18 +17,37 @@ import 'services/theme_controller.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final progressStore = ProgressStore();
-  await progressStore.initialize();
-  final cloudSync = CloudSyncService(progressStore);
-  await cloudSync.initialize();
   final themeController = ThemeController();
-  await themeController.initialize();
-  runApp(
-    CourseApp(
-      progressStore: progressStore,
-      cloudSync: cloudSync,
-      themeController: themeController,
-    ),
-  );
+  final cloudSync = CloudSyncService(progressStore);
+
+  // Restore local progress first. Never delete or reset saved lesson data.
+  try {
+    await progressStore.initialize().timeout(const Duration(seconds: 8));
+  } catch (error) {
+    debugPrint('Local progress initialization: $error');
+  }
+  try {
+    await themeController.initialize().timeout(const Duration(seconds: 4));
+  } catch (error) {
+    debugPrint('Theme initialization: $error');
+  }
+
+  // Render the app before cloud authentication/network requests. A stalled
+  // secure-storage or network operation must not hold the native splash screen.
+  runApp(CourseApp(
+    progressStore: progressStore,
+    cloudSync: cloudSync,
+    themeController: themeController,
+  ));
+  unawaited(_initializeCloudInBackground(cloudSync));
+}
+
+Future<void> _initializeCloudInBackground(CloudSyncService cloudSync) async {
+  try {
+    await cloudSync.initialize().timeout(const Duration(seconds: 25));
+  } catch (error) {
+    debugPrint('Cloud initialization deferred: $error');
+  }
 }
 
 ThemeData _courseTheme(Brightness brightness) {
