@@ -268,36 +268,69 @@ class _LessonWorkspaceScreenState extends State<LessonWorkspaceScreen> {
   }
 
   Widget _buildVideos(BuildContext context) {
+    final theme = Theme.of(context);
+    final scheme = theme.colorScheme;
     final lesson = widget.lesson;
     final latest = lesson.newVideoUrl;
     final hasNew = latest != null && latest.isNotEmpty && latest != lesson.videoUrl;
-    return ListView(
-      padding: const EdgeInsets.all(20),
-      children: [
-        Text('Escolha sua videoaula', style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w700)),
-        const SizedBox(height: 8),
-        Text('Mesmo conteúdo, duas apresentações. Seu progresso é mantido.', style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Theme.of(context).colorScheme.onSurfaceVariant)),
-        const SizedBox(height: 12),
-        const SizedBox(height: 18),
-        Card(child: ListTile(
-          leading: const Icon(Icons.play_circle_outline),
-          title: const Text('Versão original'),
-          subtitle: const Text('Vídeo original preservado'),
-          trailing: const Icon(Icons.open_in_new),
-          onTap: lesson.videoUrl.isEmpty ? null : () => _openVideo(lesson.videoUrl),
+
+    Widget videoOption({
+      required String title,
+      required String description,
+      required IconData icon,
+      required VoidCallback? onTap,
+    }) => Card(
+      color: scheme.surfaceContainerLow,
+      elevation: 0,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16),
+        side: BorderSide(color: scheme.outlineVariant),
+      ),
+      child: ListTile(
+        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+        leading: Icon(icon, color: scheme.primary, size: 28),
+        title: Text(title, style: theme.textTheme.titleMedium?.copyWith(
+          color: scheme.onSurface, fontWeight: FontWeight.w700,
         )),
-        if (hasNew) Card(child: ListTile(
-          leading: const Icon(Icons.auto_awesome),
-          title: const Text('Nova versão'),
-          subtitle: const Text('Mesmo conteúdo • produção audiovisual atualizada'),
-          trailing: const Icon(Icons.open_in_new),
-          onTap: () => _openVideo(latest),
+        subtitle: Text(description, style: theme.textTheme.bodyMedium?.copyWith(
+          color: scheme.onSurfaceVariant,
         )),
-        if (!hasNew) const Padding(
-          padding: EdgeInsets.all(12),
-          child: Text('A nova versão desta aula ainda não possui um link diferente cadastrado.'),
-        ),
-      ],
+        trailing: Icon(Icons.open_in_new, color: scheme.primary),
+        onTap: onTap,
+      ),
+    );
+
+    return Material(
+      color: scheme.surface,
+      child: ListView(
+        padding: const EdgeInsets.fromLTRB(20, 24, 20, 32),
+        children: [
+          Text('Escolha sua videoaula', style: theme.textTheme.titleLarge?.copyWith(
+            color: scheme.onSurface, fontWeight: FontWeight.w700,
+          )),
+          const SizedBox(height: 8),
+          Text('Mesmo conteúdo, duas apresentações. Seu progresso é mantido.',
+            style: theme.textTheme.bodyMedium?.copyWith(color: scheme.onSurfaceVariant)),
+          const SizedBox(height: 20),
+          videoOption(
+            title: 'Versão original',
+            description: 'Vídeo original preservado',
+            icon: Icons.play_circle_outline,
+            onTap: lesson.videoUrl.isEmpty ? null : () => _openVideo(lesson.videoUrl),
+          ),
+          if (hasNew) videoOption(
+            title: 'Nova versão',
+            description: 'Mesmo conteúdo • apresentação atualizada',
+            icon: Icons.auto_awesome,
+            onTap: () => _openVideo(latest),
+          ),
+          if (!hasNew) Padding(
+            padding: const EdgeInsets.all(12),
+            child: Text('A nova versão desta aula ainda não está disponível.',
+              style: theme.textTheme.bodyMedium?.copyWith(color: scheme.onSurfaceVariant)),
+          ),
+        ],
+      ),
     );
   }
 
