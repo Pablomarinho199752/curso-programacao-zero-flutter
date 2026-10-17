@@ -68,6 +68,7 @@ class CourseLesson {
     required this.challenge,
     required this.review,
     required this.videoUrl,
+    this.newVideoUrl,
     required this.quiz,
     required this.onboarding,
   });
@@ -83,6 +84,7 @@ class CourseLesson {
   final String challenge;
   final List<String> review;
   final String videoUrl;
+  final String? newVideoUrl;
   final List<QuizQuestion> quiz;
   final Map<String, dynamic> onboarding;
 
@@ -99,6 +101,7 @@ class CourseLesson {
     challenge: json['challenge'] as String,
     review: (json['review'] as List<dynamic>).cast<String>(),
     videoUrl: json['videoUrl'] as String,
+    newVideoUrl: json['newVideoUrl'] as String?,
     quiz: (json['quiz'] as List<dynamic>)
         .map((e) => QuizQuestion.fromJson(e as Map<String, dynamic>))
         .toList(),
