@@ -290,7 +290,7 @@ class _LessonWorkspaceScreenState extends State<LessonWorkspaceScreen> {
           title: const Text('Nova versão'),
           subtitle: const Text('Mesmo conteúdo • produção audiovisual atualizada'),
           trailing: const Icon(Icons.open_in_new),
-          onTap: () => _openVideo(latest),
+          onTap: () => _openVideo(latest!),
         )),
         if (!hasNew) const Padding(
           padding: EdgeInsets.all(12),
