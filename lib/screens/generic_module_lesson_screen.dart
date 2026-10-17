@@ -331,6 +331,10 @@ class _GenericModuleLessonScreenState extends State<GenericModuleLessonScreen> {
             children: [
               Text(lesson.practicePrompt),
               const SizedBox(height: 12),
+              Text('Código para analisar:', style: Theme.of(context).textTheme.titleSmall),
+              const SizedBox(height: 6),
+              _codeBox(lesson.code),
+              const SizedBox(height: 12),
               TextField(
                 controller: _controllers['practice'],
                 decoration: const InputDecoration(labelText: 'Sua previsão'),
