@@ -42,8 +42,10 @@ class _GenericModuleLessonScreenState extends State<GenericModuleLessonScreen> {
   List<String> texts(String key) =>
       ((data[key] as List?) ?? const <dynamic>[]).cast<String>();
 
-  Future<void> update(void Function(LessonProgress) change) =>
-      widget.progressStore.update(widget.lesson.id, change);
+  Future<void> update(void Function(LessonProgress) change) async {
+    await widget.progressStore.update(widget.lesson.id, change);
+    if (mounted) setState(() {});
+  }
 
   @override
   void initState() {
