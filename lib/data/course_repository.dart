@@ -52,7 +52,7 @@ class CourseRepository {
         if (lessonId is! String) continue;
         final stableUrl = videoUrls[lessonId];
         if (stableUrl is String && stableUrl.isNotEmpty) {
-          lesson['videoUrl'] = stableUrl;
+          lesson['newVideoUrl'] = stableUrl;
         }
       }
     }
