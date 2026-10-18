@@ -80,8 +80,14 @@ class _LessonScreenState extends State<LessonScreen> {
       minLines: lines,
       maxLines: lines + 3,
       maxLength: 2000,
-      autocorrect: false,
-      enableSuggestions: false,
+      autocorrect: key == 'reflection',
+      enableSuggestions: key == 'reflection',
+      textCapitalization: key == 'reflection'
+          ? TextCapitalization.sentences
+          : TextCapitalization.none,
+      spellCheckConfiguration: key == 'reflection'
+          ? const SpellCheckConfiguration()
+          : const SpellCheckConfiguration.disabled(),
       decoration: InputDecoration(labelText: label, alignLabelWithHint: true),
       onChanged: (text) {
         _feedback.remove(key);
