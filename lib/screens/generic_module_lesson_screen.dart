@@ -3,6 +3,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 import '../models/course_models.dart';
 import '../services/progress_store.dart';
+import '../services/python_lab_service.dart';
 import '../widgets/section_card.dart';
 
 const _genericSteps = [
@@ -34,6 +35,8 @@ class GenericModuleLessonScreen extends StatefulWidget {
 class _GenericModuleLessonScreenState extends State<GenericModuleLessonScreen> {
   final _controllers = <String, TextEditingController>{};
   final _feedback = <String, String>{};
+  final _python = PythonLabService();
+  bool _checkingCode = false;
 
   LessonProgress get p => widget.progressStore.forLesson(widget.lesson.id);
   Map<String, dynamic> get data => widget.lesson.onboarding;
@@ -77,13 +80,6 @@ class _GenericModuleLessonScreenState extends State<GenericModuleLessonScreen> {
 
   void invalidate(LessonProgress progress, int from) {
     progress.completed.removeWhere((step) => step >= from);
-  }
-
-  bool _containsRequired(String source, String key) {
-    final required = texts(key);
-    if (required.isEmpty) return source.trim().length >= 20;
-    final normalized = source.toLowerCase();
-    return required.every((token) => normalized.contains(token.toLowerCase()));
   }
 
   int _wordCount(String value) => value
@@ -149,24 +145,55 @@ class _GenericModuleLessonScreenState extends State<GenericModuleLessonScreen> {
   }
 
   Future<void> _validateCode(String key, int step, String requiredKey) async {
+    if (_checkingCode) return;
     final source = _controllers[key]!.text;
-    final accepted = _containsRequired(source, requiredKey);
-    await update((progress) {
-      progress.drafts[key] = source;
-      progress.attempts[key] = (progress.attempts[key] ?? 0) + 1;
-      if (accepted) {
-        progress.checks.add('${key}_ok');
-      } else {
-        progress.checks.remove('${key}_ok');
-        invalidate(progress, step);
-      }
-    });
-    if (!mounted) return;
     setState(() {
-      _feedback[key] = accepted
-          ? 'A estrutura pedida está presente. Agora abra a aba “Python na aula”, execute o código e compare o comportamento com o seu plano.'
-          : 'Ainda falta pelo menos um elemento essencial do pedido. Leia o objetivo, confira as pistas e ajuste uma coisa de cada vez.';
+      _checkingCode = true;
+      _feedback.remove(key);
     });
+    try {
+      final check = await _python.check(
+        code: source,
+        requirements: texts(requiredKey),
+      );
+      if (!mounted) return;
+      await update((progress) {
+        progress.drafts[key] = source;
+        progress.attempts[key] = (progress.attempts[key] ?? 0) + 1;
+        if (check.ok) {
+          progress.checks.add('${key}_ok');
+        } else {
+          progress.checks.remove('${key}_ok');
+          invalidate(progress, step);
+        }
+      });
+      if (!mounted) return;
+      setState(() {
+        if (check.ok) {
+          _feedback[key] =
+              'Python válido! Os elementos pedidos foram encontrados. '
+              'Execute também na aba “Python na aula” e teste entradas diferentes.';
+        } else if (check.error != null) {
+          final location =
+              check.errorLine == null ? '' : ' na linha ${check.errorLine}';
+          _feedback[key] =
+              'O Python identificou um problema${location}: ${check.error}';
+        } else {
+          _feedback[key] =
+              'O código tem sintaxe Python válida, mas não encontrei: '
+              '${check.missing.join(', ')}. '
+              'Confira a regra do exercício e tente novamente.';
+        }
+      });
+    } catch (_) {
+      if (mounted) {
+        setState(() => _feedback[key] =
+            'Não consegui iniciar o verificador Python. '
+            'Tente novamente; sua resposta foi preservada.');
+      }
+    } finally {
+      if (mounted) setState(() => _checkingCode = false);
+    }
   }
 
   bool canComplete(int step) => switch (step) {
@@ -337,6 +364,9 @@ class _GenericModuleLessonScreenState extends State<GenericModuleLessonScreen> {
               const SizedBox(height: 12),
               TextField(
                 controller: _controllers['practice'],
+                autocorrect: true,
+                enableSuggestions: true,
+                spellCheckConfiguration: const SpellCheckConfiguration(),
                 decoration: const InputDecoration(labelText: 'Sua previsão'),
                 onChanged: (value) => update((progress) {
                   progress.drafts['practice'] = value;
@@ -384,7 +414,7 @@ class _GenericModuleLessonScreenState extends State<GenericModuleLessonScreen> {
               const SizedBox(height: 12),
               _codeField('challenge', 'Seu código', 4),
               FilledButton.icon(
-                onPressed: () => _validateCode(
+                onPressed: _checkingCode ? null : () => _validateCode(
                   'challenge',
                   4,
                   'challengeRequiredTokens',
@@ -443,7 +473,7 @@ class _GenericModuleLessonScreenState extends State<GenericModuleLessonScreen> {
               _feedbackBox('project'),
               const SizedBox(height: 10),
               const Text(
-                'A validação acima confere a estrutura. Use a aba “Python na aula” para executar o projeto antes de fechar a revisão.',
+                'A validação acima usa a sintaxe real do Python para verificar os requisitos, sem executar o programa. Use a aba “Python na aula” para testá-lo antes de fechar a revisão.',
               ),
             ],
           ),
@@ -522,6 +552,10 @@ class _GenericModuleLessonScreenState extends State<GenericModuleLessonScreen> {
           const SizedBox(height: 10),
           TextField(
             controller: _controllers['reflection'],
+            autocorrect: true,
+            enableSuggestions: true,
+            textCapitalization: TextCapitalization.sentences,
+            spellCheckConfiguration: const SpellCheckConfiguration(),
             minLines: 3,
             maxLines: 7,
             decoration: const InputDecoration(labelText: 'Explique com suas palavras'),
@@ -540,6 +574,10 @@ class _GenericModuleLessonScreenState extends State<GenericModuleLessonScreen> {
           const SizedBox(height: 10),
           TextField(
             controller: _controllers['evidence'],
+            autocorrect: true,
+            enableSuggestions: true,
+            textCapitalization: TextCapitalization.sentences,
+            spellCheckConfiguration: const SpellCheckConfiguration(),
             minLines: 3,
             maxLines: 7,
             decoration: const InputDecoration(
