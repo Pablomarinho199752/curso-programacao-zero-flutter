@@ -8,9 +8,12 @@
           "title": "Decisões: transformar regras em caminhos",
           "objective": "Ao final, você vai transformar regras em condições com if, elif e else, testar casos de limite e corrigir uma decisão que escolhe o caminho errado.",
           "theory": [
-            "Uma condição responde verdadeiro ou falso. O if executa um bloco quando a condição é verdadeira.",
-            "else representa o caminho contrário. elif adiciona outras possibilidades e a ordem das condições importa.",
-            "Comparações como >=, <=, == e != podem ser combinadas com and e or. Antes de codificar, escreva a regra em português e teste valores de limite."
+            "Uma condição responde verdadeiro ou falso. if executa um bloco quando a condição é verdadeira. A indentação (espaços antes de print) indica o que pertence a cada bloco.",
+            "elif significa 'senão, se'. Ele testa outra possibilidade quando o if anterior foi falso; else cuida dos demais casos. O Python executa apenas o primeiro caminho verdadeiro.",
+            "Comparações: >= significa 'maior ou igual'; <= significa 'menor ou igual'; == significa 'igual'; != significa 'diferente'. Escreva a regra em português e teste valores de limite.",
+            "and significa 'e': AS DUAS condições precisam ser verdadeiras. Exemplo: nota >= 7 and frequencia >= 75. Com nota 8 e frequencia 70, a condição é falsa. Com nota 8 e frequencia 80, é verdadeira.",
+            "or significa 'ou': basta UMA das condições ser verdadeira. Exemplo: nota < 5 or frequencia < 75 identifica uma reprovação em qualquer dos dois critérios.",
+            "Antes do mini projeto, leia um exemplo com três caminhos:\nnota = 6\nfrequencia = 80\nif nota >= 7 and frequencia >= 75:\n    print('Aprovado')\nelif nota >= 5 and frequencia >= 75:\n    print('Recuperação')\nelse:\n    print('Reprovado')\nA saída é Recuperação. Troque nota para 8 e depois 4; teste também frequencia = 74."
           ],
           "code": "nota = 8\nif nota >= 7:\n    print(\"Aprovado\")\nelse:\n    print(\"Revisar\")",
           "practicePrompt": "Sem executar: com nota = 6 no exemplo, digite somente a palavra que aparece na saída.",
@@ -24,28 +27,83 @@
           ],
           "videoUrl": "",
           "quiz": [
-            {"question": "Uma regra diz: aprovado com nota maior ou igual a 7. Qual condição representa exatamente a regra?", "options": ["nota > 7", "nota >= 7", "nota == 7"], "correctIndex": 1, "explanation": "Maior ou igual inclui o próprio 7."},
-            {"question": "Por que a ordem dos elif pode causar um bug?", "options": ["Porque Python executa todos os caminhos sempre.", "Porque o primeiro caminho verdadeiro é escolhido e os seguintes não são usados.", "Porque elif só aceita texto."], "correctIndex": 1, "explanation": "Em uma cadeia if/elif/else, o primeiro caminho verdadeiro encerra a escolha."},
-            {"question": "Qual teste é mais útil para idade >= 18?", "options": ["Somente 30", "17, 18 e 19", "Somente 0"], "correctIndex": 1, "explanation": "Valores ao redor do limite revelam erros de comparação."}
+            {
+              "question": "Uma regra diz: aprovado com nota maior ou igual a 7. Qual condição representa exatamente a regra?",
+              "options": [
+                "nota > 7",
+                "nota >= 7",
+                "nota == 7"
+              ],
+              "correctIndex": 1,
+              "explanation": "Maior ou igual inclui o próprio 7."
+            },
+            {
+              "question": "Por que a ordem dos elif pode causar um bug?",
+              "options": [
+                "Porque Python executa todos os caminhos sempre.",
+                "Porque o primeiro caminho verdadeiro é escolhido e os seguintes não são usados.",
+                "Porque elif só aceita texto."
+              ],
+              "correctIndex": 1,
+              "explanation": "Em uma cadeia if/elif/else, o primeiro caminho verdadeiro encerra a escolha."
+            },
+            {
+              "question": "Qual teste é mais útil para idade >= 18?",
+              "options": [
+                "Somente 30",
+                "17, 18 e 19",
+                "Somente 0"
+              ],
+              "correctIndex": 1,
+              "explanation": "Valores ao redor do limite revelam erros de comparação."
+            }
           ],
           "onboarding": {
             "conceptTitle": "Decisões são regras que viram caminhos",
             "videoTitle": "Videoaula — if, elif, else e casos de limite",
             "videoGuide": "Enquanto assiste, observe como uma regra escrita em português vira uma condição e por que testar o valor de limite é obrigatório.",
-            "videoFallback": ["Comece pela regra em português antes do código.", "Use if para o primeiro caminho, elif para alternativas e else para o restante.", "Teste cada caminho e principalmente as bordas entre eles."],
+            "videoFallback": [
+              "if, elif e else escolhem caminhos: o primeiro caso verdadeiro vence; else recebe o restante.",
+              "and liga condições com 'e': nota >= 7 and frequencia >= 75 só é verdadeiro se nota e frequência alcançarem os limites.",
+              "or liga condições com 'ou': nota < 5 or frequencia < 75 será verdadeiro se qualquer uma ocorrer.",
+              "Teste nota 4, 6 e 8, com frequência 74, 75 e 80. Preveja a saída antes de executar."
+            ],
             "videoRenderId": "6b2ed308d1aa30e57515c7e80ed16d03",
             "examplePrompt": "Preveja qual bloco será executado com nota igual a 8.",
             "exampleOutput": "Aprovado",
-            "practiceHints": ["Compare 6 com 7.", "Se a condição do if for falsa, o else é executado."],
-            "challengeRequiredTokens": ["if ", "elif ", "else:", "print("],
-            "challengeHints": ["Escreva primeiro três faixas sem Python.", "Garanta que as condições não deixem uma faixa sem resposta."],
+            "practiceHints": [
+              "Compare 6 com 7.",
+              "Se a condição do if for falsa, o else é executado."
+            ],
+            "challengeRequiredTokens": [
+              "if ",
+              "elif ",
+              "else:",
+              "print("
+            ],
+            "challengeHints": [
+              "Escreva três faixas etárias completas (por exemplo: 0 a 11, 12 a 17 e 18 ou mais) antes de programar.",
+              "Use if/elif/else e teste as idades 11, 12, 17 e 18. A comparação deve incluir exatamente os limites certos."
+            ],
             "brokenCode": "idade = 18\nif idade > 18:\n    print(\"Pode entrar\")\nelse:\n    print(\"Ainda não\")",
             "correctionPrompt": "A regra correta é permitir entrada a partir de 18 anos. Corrija somente o necessário.",
-            "correctionRequiredTokens": ["idade >= 18", "print(\"Pode entrar\")"],
-            "correctionHints": ["O problema está no limite.", "A expressão precisa incluir o valor 18."],
-            "projectPrompt": "Crie um sistema de aprovação com entrada simulada por variáveis: nota e frequencia. Aprovado exige nota >= 7 e frequencia >= 75. Crie também um caminho de recuperação e um de reprovação.",
+            "correctionRequiredTokens": [
+              "idade >= 18",
+              "print(\"Pode entrar\")"
+            ],
+            "correctionHints": [
+              "O problema está no limite.",
+              "A expressão precisa incluir o valor 18."
+            ],
+            "projectPrompt": "Crie um sistema de aprovação com duas variáveis: nota (de 0 a 10) e frequencia (percentual de 0 a 100). As regras deste exercício são: (1) Aprovado: nota >= 7 E frequencia >= 75; (2) Recuperação: 5 <= nota < 7 E frequencia >= 75; (3) Reprovado: os demais casos, inclusive frequencia < 75. Use if, elif, else, print e o operador and ('e'). Antes de conferir, teste mentalmente: (nota 8, frequencia 80) -> Aprovado; (nota 6, frequencia 80) -> Recuperação; (nota 8, frequencia 70) -> Reprovado.",
             "projectStarter": "nota = 0\nfrequencia = 0\n# escreva as regras abaixo",
-            "projectRequiredTokens": ["if ", "and", "elif ", "else:", "print("],
+            "projectRequiredTokens": [
+              "if ",
+              "and",
+              "elif ",
+              "else:",
+              "print("
+            ],
             "reflectionPrompt": "Explique por que testar somente um valor que passa na regra não é suficiente para confiar em uma decisão.",
             "evidencePrompt": "Execute seu sistema com pelo menos três combinações diferentes e descreva quais entradas usou e quais saídas apareceram."
           }
@@ -62,37 +120,99 @@
           "theory": [
             "for é útil para percorrer uma sequência ou repetir uma quantidade conhecida de vezes.",
             "while repete enquanto uma condição for verdadeira. Alguma parte do programa precisa aproximar essa condição do fim.",
-            "Contadores e acumuladores guardam o estado entre as repetições. Para depurar, acompanhe como esses valores mudam a cada volta."
+            "Contadores e acumuladores guardam o estado entre as repetições. Para depurar, acompanhe como esses valores mudam a cada volta.",
+            "Para descobrir se um número é par, o operador % devolve o resto da divisão: numero % 2 == 0. Por exemplo, 4 % 2 é 0, mas 5 % 2 é 1.",
+            "Em um jogo, break termina o laço quando o palpite está certo. Antes de usá-lo, aprenda a verificar a condição com if/elif/else, já vistos no Módulo 2. Exemplo: for n in range(1, 4): print(n) percorre 1, 2 e 3."
           ],
           "code": "total = 0\nfor numero in range(1, 4):\n    total = total + numero\nprint(total)",
           "practicePrompt": "Sem executar: qual número é mostrado ao final do exemplo? Digite somente o número.",
           "practiceAnswer": "6",
           "challenge": "Crie um loop que percorra os números de 1 a 10, some apenas os pares e mostre o total no final.",
-          "review": ["for percorre uma sequência.", "while depende de uma condição de continuidade.", "Um loop infinito normalmente tem condição que nunca muda para falso.", "Acompanhar variáveis por iteração ajuda a localizar erros."],
+          "review": [
+            "for percorre uma sequência.",
+            "while depende de uma condição de continuidade.",
+            "Um loop infinito normalmente tem condição que nunca muda para falso.",
+            "Acompanhar variáveis por iteração ajuda a localizar erros."
+          ],
           "videoUrl": "",
           "quiz": [
-            {"question": "Quando um while tende a ser uma escolha melhor?", "options": ["Quando sabemos exatamente três repetições.", "Quando repetimos até uma condição mudar e não sabemos quantas tentativas serão necessárias.", "Quando não existe condição alguma."], "correctIndex": 1, "explanation": "while combina bem com repetição controlada por condição."},
-            {"question": "Qual sinal de alerta indica risco de loop infinito?", "options": ["A condição depende de uma variável que nunca muda dentro do loop.", "O código tem print.", "O range começa em zero."], "correctIndex": 0, "explanation": "Se nada altera a condição, ela pode permanecer verdadeira para sempre."},
-            {"question": "Para depurar um acumulador incorreto, qual estratégia ajuda mais?", "options": ["Apagar o loop.", "Anotar o valor do acumulador antes e depois de cada iteração.", "Trocar todos os nomes das variáveis."], "correctIndex": 1, "explanation": "Rastrear a evolução mostra em qual volta o valor diverge."}
+            {
+              "question": "Quando um while tende a ser uma escolha melhor?",
+              "options": [
+                "Quando sabemos exatamente três repetições.",
+                "Quando repetimos até uma condição mudar e não sabemos quantas tentativas serão necessárias.",
+                "Quando não existe condição alguma."
+              ],
+              "correctIndex": 1,
+              "explanation": "while combina bem com repetição controlada por condição."
+            },
+            {
+              "question": "Qual sinal de alerta indica risco de loop infinito?",
+              "options": [
+                "A condição depende de uma variável que nunca muda dentro do loop.",
+                "O código tem print.",
+                "O range começa em zero."
+              ],
+              "correctIndex": 0,
+              "explanation": "Se nada altera a condição, ela pode permanecer verdadeira para sempre."
+            },
+            {
+              "question": "Para depurar um acumulador incorreto, qual estratégia ajuda mais?",
+              "options": [
+                "Apagar o loop.",
+                "Anotar o valor do acumulador antes e depois de cada iteração.",
+                "Trocar todos os nomes das variáveis."
+              ],
+              "correctIndex": 1,
+              "explanation": "Rastrear a evolução mostra em qual volta o valor diverge."
+            }
           ],
           "onboarding": {
             "conceptTitle": "Loop é uma regra de repetição com começo, mudança e parada",
             "videoTitle": "Videoaula — for, while e condição de parada",
             "videoGuide": "Procure identificar, em cada exemplo, o que se repete, o que muda e quando a repetição termina.",
-            "videoFallback": ["Use for quando existe uma sequência clara para percorrer.", "Use while quando a repetição depende de uma condição.", "Antes de executar, responda: o que faz este loop parar?"],
+            "videoFallback": [
+              "Use for quando existe uma sequência clara para percorrer.",
+              "Use while quando a repetição depende de uma condição.",
+              "Antes de executar, responda: o que faz este loop parar?"
+            ],
             "videoRenderId": "5c5691069e00098202ff035548281350",
             "examplePrompt": "Acompanhe total: começa em 0 e recebe 1, depois 2 e depois 3.",
             "exampleOutput": "6",
-            "practiceHints": ["range(1, 4) produz 1, 2 e 3.", "Some uma iteração de cada vez."],
-            "challengeRequiredTokens": ["for ", "range(", "% 2", "total", "print("],
-            "challengeHints": ["Use o resto da divisão por 2 para reconhecer pares.", "O print final deve ficar fora do bloco que repete se você quer apenas o total final."],
+            "practiceHints": [
+              "range(1, 4) produz 1, 2 e 3.",
+              "Some uma iteração de cada vez."
+            ],
+            "challengeRequiredTokens": [
+              "for ",
+              "range(",
+              "% 2",
+              "total",
+              "print("
+            ],
+            "challengeHints": [
+              "Use o resto da divisão por 2 para reconhecer pares.",
+              "O print final deve ficar fora do bloco que repete se você quer apenas o total final."
+            ],
             "brokenCode": "contador = 1\nwhile contador <= 5:\n    print(contador)",
             "correctionPrompt": "Este programa nunca termina. Faça contador avançar uma unidade a cada repetição.",
-            "correctionRequiredTokens": ["while contador <= 5", "contador = contador + 1"],
-            "correctionHints": ["A condição olha para contador.", "Alguma linha dentro do while precisa mudar contador."],
+            "correctionRequiredTokens": [
+              "while contador <= 5",
+              "contador = contador + 1"
+            ],
+            "correctionHints": [
+              "A condição olha para contador.",
+              "Alguma linha dentro do while precisa mudar contador."
+            ],
             "projectPrompt": "Crie um jogo de adivinhação simplificado com um numero_secreto e uma sequência de palpites simulada. Percorra os palpites, diga se cada um é maior ou menor e pare quando acertar.",
             "projectStarter": "numero_secreto = 7\npalpites = [3, 9, 7]\n# percorra os palpites",
-            "projectRequiredTokens": ["for ", "if ", "elif ", "break", "print("],
+            "projectRequiredTokens": [
+              "for ",
+              "if ",
+              "elif ",
+              "break",
+              "print("
+            ],
             "reflectionPrompt": "Explique a diferença entre saber quantas vezes repetir e repetir até uma condição acontecer.",
             "evidencePrompt": "Execute seu desafio e o mini projeto. Descreva pelo menos uma alteração que fez depois de observar a saída."
           }
@@ -109,37 +229,100 @@
           "theory": [
             "Lista mantém vários itens em ordem e permite acesso por posição.",
             "Dicionário liga chaves a valores. Ele é útil quando cada informação tem um nome, como nome, idade e cidade.",
-            "A melhor estrutura depende de como você pretende encontrar, alterar e percorrer os dados."
+            "A melhor estrutura depende de como você pretende encontrar, alterar e percorrer os dados.",
+            "Posições em listas começam em zero: em cores = ['azul', 'verde'], cores[0] é 'azul' e cores[1] é 'verde'. cores[2] não existe.",
+            "Para percorrer itens: for produto in produtos: print(produto). Em um dicionário, pessoa['nome'] consulta a chave nome; chaves podem ser escritas com aspas simples ou duplas."
           ],
           "code": "pessoa = {\"nome\": \"Lia\", \"idade\": 22}\nprint(pessoa[\"nome\"])\nprint(pessoa[\"idade\"])",
           "practicePrompt": "Sem executar: qual é a primeira saída do exemplo? Digite somente o texto.",
           "practiceAnswer": "Lia",
           "challenge": "Crie uma lista com pelo menos três produtos e percorra a lista mostrando cada item. Depois crie um dicionário para representar um produto com nome e preco.",
-          "review": ["Listas têm posições e preservam ordem.", "Dicionários usam chaves significativas.", "Um índice ou chave inexistente pode gerar erro.", "Escolha a estrutura pelo problema, não pelo comando mais recente que aprendeu."],
+          "review": [
+            "Listas têm posições e preservam ordem.",
+            "Dicionários usam chaves significativas.",
+            "Um índice ou chave inexistente pode gerar erro.",
+            "Escolha a estrutura pelo problema, não pelo comando mais recente que aprendeu."
+          ],
           "videoUrl": "",
           "quiz": [
-            {"question": "Qual estrutura combina melhor com nome, idade e cidade de uma pessoa?", "options": ["Um dicionário com chaves significativas.", "Três loops infinitos.", "Uma única string obrigatoriamente."], "correctIndex": 0, "explanation": "As chaves nomeiam os campos."},
-            {"question": "Qual é um risco ao usar lista por índice?", "options": ["Pedir uma posição que não existe.", "Usar nomes claros.", "Percorrer os itens."], "correctIndex": 0, "explanation": "Índice fora do intervalo gera erro."},
-            {"question": "O que deve guiar a escolha entre lista e dicionário?", "options": ["A cor do editor.", "Como os dados se relacionam e como serão acessados.", "Sempre escolher dicionário."], "correctIndex": 1, "explanation": "A estrutura serve ao formato e às operações do problema."}
+            {
+              "question": "Qual estrutura combina melhor com nome, idade e cidade de uma pessoa?",
+              "options": [
+                "Um dicionário com chaves significativas.",
+                "Três loops infinitos.",
+                "Uma única string obrigatoriamente."
+              ],
+              "correctIndex": 0,
+              "explanation": "As chaves nomeiam os campos."
+            },
+            {
+              "question": "Qual é um risco ao usar lista por índice?",
+              "options": [
+                "Pedir uma posição que não existe.",
+                "Usar nomes claros.",
+                "Percorrer os itens."
+              ],
+              "correctIndex": 0,
+              "explanation": "Índice fora do intervalo gera erro."
+            },
+            {
+              "question": "O que deve guiar a escolha entre lista e dicionário?",
+              "options": [
+                "A cor do editor.",
+                "Como os dados se relacionam e como serão acessados.",
+                "Sempre escolher dicionário."
+              ],
+              "correctIndex": 1,
+              "explanation": "A estrutura serve ao formato e às operações do problema."
+            }
           ],
           "onboarding": {
             "conceptTitle": "Dados organizados ficam mais fáceis de procurar e alterar",
             "videoTitle": "Videoaula — listas, dicionários e escolha de estrutura",
             "videoGuide": "Observe não apenas a sintaxe, mas por que cada estrutura foi escolhida.",
-            "videoFallback": ["Lista é boa para uma sequência de itens.", "Dicionário é bom para campos nomeados.", "Pergunte como o dado será encontrado e atualizado."],
+            "videoFallback": [
+              "Lista é boa para uma sequência de itens.",
+              "Dicionário é bom para campos nomeados.",
+              "Pergunte como o dado será encontrado e atualizado."
+            ],
             "videoRenderId": "2e7069188e8e387f12566aa85268a00f",
             "examplePrompt": "Qual valor está associado à chave nome?",
             "exampleOutput": "Lia\n22",
-            "practiceHints": ["A chave usada na primeira consulta é nome.", "Leia o valor do lado direito dessa chave."],
-            "challengeRequiredTokens": ["[", "]", "for ", "{", "\"nome\"", "\"preco\""],
-            "challengeHints": ["Faça primeiro a lista e o loop.", "Depois represente apenas um produto com chaves claras."],
+            "practiceHints": [
+              "A chave usada na primeira consulta é nome.",
+              "Leia o valor do lado direito dessa chave."
+            ],
+            "challengeRequiredTokens": [
+              "[",
+              "]",
+              "for ",
+              "{",
+              "\"nome\"",
+              "\"preco\""
+            ],
+            "challengeHints": [
+              "Faça primeiro a lista e o loop.",
+              "Depois represente apenas um produto com chaves claras."
+            ],
             "brokenCode": "cores = [\"azul\", \"verde\"]\nprint(cores[2])",
             "correctionPrompt": "O programa tenta acessar uma posição que não existe. Corrija para mostrar verde.",
-            "correctionRequiredTokens": ["cores[1]"],
-            "correctionHints": ["Listas começam no índice zero.", "Com dois itens, os índices válidos são 0 e 1."],
+            "correctionRequiredTokens": [
+              "cores[1]"
+            ],
+            "correctionHints": [
+              "Listas começam no índice zero.",
+              "Com dois itens, os índices válidos são 0 e 1."
+            ],
             "projectPrompt": "Crie um cadastro em memória: uma lista chamada pessoas contendo pelo menos dois dicionários. Cada pessoa deve ter nome e idade. Percorra e mostre os nomes.",
             "projectStarter": "pessoas = []\n# adicione dicionários e percorra",
-            "projectRequiredTokens": ["pessoas", "{", "\"nome\"", "\"idade\"", "for ", "print("],
+            "projectRequiredTokens": [
+              "pessoas",
+              "{",
+              "\"nome\"",
+              "\"idade\"",
+              "for ",
+              "print("
+            ],
             "reflectionPrompt": "Explique por que uma lista de dicionários pode representar bem vários registros de pessoas.",
             "evidencePrompt": "Execute o cadastro, depois altere um registro e descreva como confirmou que a mudança apareceu."
           }
@@ -153,36 +336,98 @@
           "number": "5.1",
           "title": "Funções: dividir o problema em responsabilidades",
           "objective": "Ao final, você vai criar funções com parâmetros e retorno, diferenciar return de print e reorganizar código repetido.",
-          "theory": ["Função dá um nome a uma tarefa pequena e reutilizável.", "Parâmetros recebem dados de entrada. return entrega um resultado para o restante do programa.", "Uma função clara costuma ter uma responsabilidade que você consegue explicar em uma frase."],
+          "theory": [
+            "Função dá um nome a uma tarefa pequena e reutilizável.",
+            "Parâmetros recebem dados de entrada. return entrega um resultado para o restante do programa.",
+            "Uma função clara costuma ter uma responsabilidade que você consegue explicar em uma frase.",
+            "Para calcular a média de duas notas, some primeiro e divida o total por 2: media = (nota1 + nota2) / 2. Os parênteses garantem que a soma aconteça antes da divisão."
+          ],
           "code": "def dobro(numero):\n    return numero * 2\n\nresultado = dobro(4)\nprint(resultado)",
           "practicePrompt": "Sem executar: qual número aparece na saída do exemplo?",
           "practiceAnswer": "8",
           "challenge": "Crie uma função calcular_media que receba duas notas e retorne a média. Chame a função e mostre o resultado.",
-          "review": ["def cria a função, mas o corpo só roda quando ela é chamada.", "Parâmetros são entradas da função.", "return devolve valor; print apenas mostra na saída.", "Separar responsabilidades reduz repetição e facilita testes."],
+          "review": [
+            "def cria a função, mas o corpo só roda quando ela é chamada.",
+            "Parâmetros são entradas da função.",
+            "return devolve valor; print apenas mostra na saída.",
+            "Separar responsabilidades reduz repetição e facilita testes."
+          ],
           "videoUrl": "",
           "quiz": [
-            {"question": "Qual diferença principal entre return e print?", "options": ["Nenhuma.", "return devolve um valor ao código que chamou; print mostra algo na saída.", "print sempre cria uma variável."], "correctIndex": 1, "explanation": "O valor retornado pode ser reutilizado pelo programa."},
-            {"question": "Qual função tende a ser mais clara?", "options": ["Uma que faz cálculo, salva arquivo, imprime menu e altera dez globais.", "Uma que calcula imposto a partir de um valor e retorna o resultado.", "Uma sem nome."], "correctIndex": 1, "explanation": "Uma responsabilidade bem definida é mais simples de testar e reutilizar."},
-            {"question": "Quando o corpo de uma função definida com def é executado?", "options": ["Sempre no momento do def.", "Quando a função é chamada.", "Somente ao fechar Python."], "correctIndex": 1, "explanation": "Definir prepara a função; chamar executa."}
+            {
+              "question": "Qual diferença principal entre return e print?",
+              "options": [
+                "Nenhuma.",
+                "return devolve um valor ao código que chamou; print mostra algo na saída.",
+                "print sempre cria uma variável."
+              ],
+              "correctIndex": 1,
+              "explanation": "O valor retornado pode ser reutilizado pelo programa."
+            },
+            {
+              "question": "Qual função tende a ser mais clara?",
+              "options": [
+                "Uma que faz cálculo, salva arquivo, imprime menu e altera dez globais.",
+                "Uma que calcula imposto a partir de um valor e retorna o resultado.",
+                "Uma sem nome."
+              ],
+              "correctIndex": 1,
+              "explanation": "Uma responsabilidade bem definida é mais simples de testar e reutilizar."
+            },
+            {
+              "question": "Quando o corpo de uma função definida com def é executado?",
+              "options": [
+                "Sempre no momento do def.",
+                "Quando a função é chamada.",
+                "Somente ao fechar Python."
+              ],
+              "correctIndex": 1,
+              "explanation": "Definir prepara a função; chamar executa."
+            }
           ],
           "onboarding": {
             "conceptTitle": "Função é uma responsabilidade com nome",
             "videoTitle": "Videoaula — parâmetros, return e decomposição",
             "videoGuide": "Observe quando um valor entra na função, quando é transformado e quando volta para quem chamou.",
-            "videoFallback": ["Dê à função um nome que descreva o que ela faz.", "Use parâmetros para receber dados.", "Use return quando outra parte do programa precisa do resultado."],
+            "videoFallback": [
+              "Dê à função um nome que descreva o que ela faz.",
+              "Use parâmetros para receber dados.",
+              "Use return quando outra parte do programa precisa do resultado."
+            ],
             "videoRenderId": "f0cd62b2ca92c9df5596fb17209cf9bf",
             "examplePrompt": "dobro recebe 4, multiplica por 2 e devolve o resultado.",
             "exampleOutput": "8",
-            "practiceHints": ["A função retorna numero * 2.", "A chamada usa 4 como numero."],
-            "challengeRequiredTokens": ["def calcular_media", "return", "print("],
-            "challengeHints": ["A média de duas notas é a soma dividida por 2.", "Evite colocar o cálculo diretamente no print; use o retorno."],
+            "practiceHints": [
+              "A função retorna numero * 2.",
+              "A chamada usa 4 como numero."
+            ],
+            "challengeRequiredTokens": [
+              "def calcular_media",
+              "return",
+              "print("
+            ],
+            "challengeHints": [
+              "A média de duas notas é a soma dividida por 2.",
+              "Evite colocar o cálculo diretamente no print; use o retorno."
+            ],
             "brokenCode": "def soma(a, b):\n    print(a + b)\n\nresultado = soma(2, 3)\nprint(resultado * 2)",
             "correctionPrompt": "O programa precisa reutilizar o resultado da soma em outra conta. Troque o print dentro da função por um retorno.",
-            "correctionRequiredTokens": ["def soma", "return a + b", "resultado = soma"],
-            "correctionHints": ["A função atual não devolve o valor calculado.", "Use return dentro da função."],
+            "correctionRequiredTokens": [
+              "def soma",
+              "return a + b",
+              "resultado = soma"
+            ],
+            "correctionHints": [
+              "A função atual não devolve o valor calculado.",
+              "Use return dentro da função."
+            ],
             "projectPrompt": "Crie um pequeno aplicativo dividido em pelo menos três funções: uma para validar um valor, uma para calcular algo e uma para formatar uma mensagem final.",
             "projectStarter": "# planeje três responsabilidades antes de escrever as funções",
-            "projectRequiredTokens": ["def ", "return", "print("],
+            "projectRequiredTokens": [
+              "def ",
+              "return",
+              "print("
+            ],
             "reflectionPrompt": "Explique como você decide se um trecho merece virar uma função separada.",
             "evidencePrompt": "Execute o projeto e descreva uma função que você conseguiu alterar sem precisar reescrever as outras."
           }
@@ -196,36 +441,100 @@
           "number": "6.1",
           "title": "Persistência e falhas esperadas",
           "objective": "Ao final, você vai salvar e ler dados de arquivo, tratar uma falha específica com try/except e separar código em módulos.",
-          "theory": ["Arquivos permitem persistir dados entre execuções.", "try/except trata falhas que você conhece e consegue responder; capturar tudo sem entender esconde bugs.", "Imports permitem reutilizar código de outros módulos e organizar responsabilidades."],
+          "theory": [
+            "Arquivos permitem persistir dados entre execuções.",
+            "try/except trata falhas que você conhece e consegue responder; capturar tudo sem entender esconde bugs.",
+            "Imports permitem reutilizar código de outros módulos e organizar responsabilidades.",
+            "Na escrita de arquivos, with open('notas.txt', 'w', encoding='utf-8') as arquivo: abre para escrever; arquivo.write('linha\\n') grava texto. Na leitura, modo 'r' lê o arquivo. Use 'a' para acrescentar sem apagar.",
+            "FileNotFoundError significa que o arquivo procurado não existe. Um except FileNotFoundError pode avisar o aluno ou começar com uma lista vazia. Nunca esconda todos os erros com except: pass."
+          ],
           "code": "try:\n    with open(\"tarefas.txt\", \"r\", encoding=\"utf-8\") as arquivo:\n        print(arquivo.read())\nexcept FileNotFoundError:\n    print(\"Ainda não há tarefas salvas\")",
           "practicePrompt": "Se tarefas.txt não existir, qual frase o exemplo mostra?",
           "practiceAnswer": "Ainda não há tarefas salvas",
           "challenge": "Escreva código que salve duas linhas em notas.txt usando with open e depois leia o arquivo. Trate especificamente FileNotFoundError na leitura.",
-          "review": ["Modo de abertura define como o arquivo será usado.", "with fecha o arquivo automaticamente ao sair do bloco.", "Capture exceções específicas que você sabe tratar.", "Módulos separam responsabilidades e facilitam reutilização."],
+          "review": [
+            "Modo de abertura define como o arquivo será usado.",
+            "with fecha o arquivo automaticamente ao sair do bloco.",
+            "Capture exceções específicas que você sabe tratar.",
+            "Módulos separam responsabilidades e facilitam reutilização."
+          ],
           "videoUrl": "",
           "quiz": [
-            {"question": "Por que except Exception em todo lugar pode ser ruim?", "options": ["Porque esconde causas diferentes e pode mascarar bugs.", "Porque Python não aceita except.", "Porque só funciona com números."], "correctIndex": 0, "explanation": "Tratamento genérico demais dificulta diagnóstico."},
-            {"question": "Qual vantagem do with open?", "options": ["Ele fecha o arquivo ao sair do bloco.", "Ele impede qualquer erro.", "Ele transforma arquivo em banco SQL."], "correctIndex": 0, "explanation": "O contexto gerencia fechamento mesmo quando há saída do bloco."},
-            {"question": "O que um import ajuda a fazer?", "options": ["Reutilizar código organizado em outro módulo.", "Apagar todos os arquivos.", "Substituir testes."], "correctIndex": 0, "explanation": "Imports conectam módulos."}
+            {
+              "question": "Por que except Exception em todo lugar pode ser ruim?",
+              "options": [
+                "Porque esconde causas diferentes e pode mascarar bugs.",
+                "Porque Python não aceita except.",
+                "Porque só funciona com números."
+              ],
+              "correctIndex": 0,
+              "explanation": "Tratamento genérico demais dificulta diagnóstico."
+            },
+            {
+              "question": "Qual vantagem do with open?",
+              "options": [
+                "Ele fecha o arquivo ao sair do bloco.",
+                "Ele impede qualquer erro.",
+                "Ele transforma arquivo em banco SQL."
+              ],
+              "correctIndex": 0,
+              "explanation": "O contexto gerencia fechamento mesmo quando há saída do bloco."
+            },
+            {
+              "question": "O que um import ajuda a fazer?",
+              "options": [
+                "Reutilizar código organizado em outro módulo.",
+                "Apagar todos os arquivos.",
+                "Substituir testes."
+              ],
+              "correctIndex": 0,
+              "explanation": "Imports conectam módulos."
+            }
           ],
           "onboarding": {
             "conceptTitle": "Um programa útil precisa guardar dados e lidar com falhas",
             "videoTitle": "Videoaula — arquivos, try/except e módulos",
             "videoGuide": "Observe a diferença entre uma falha esperada, que o programa sabe tratar, e um bug que deve aparecer para ser corrigido.",
-            "videoFallback": ["Arquivo persiste dados no disco.", "Trate exceções específicas.", "Separe partes reutilizáveis em módulos."],
+            "videoFallback": [
+              "Arquivo persiste dados no disco.",
+              "Trate exceções específicas.",
+              "Separe partes reutilizáveis em módulos."
+            ],
             "videoRenderId": "27912784275958e5a92d1abd9db1c841",
             "examplePrompt": "Imagine que o arquivo ainda não existe. Qual bloco será executado?",
             "exampleOutput": "Ainda não há tarefas salvas",
-            "practiceHints": ["O open em modo r tenta ler.", "A ausência do arquivo gera FileNotFoundError."],
-            "challengeRequiredTokens": ["with open(", "\"w\"", "\"r\"", "FileNotFoundError"],
-            "challengeHints": ["Escreva primeiro, depois abra novamente para leitura.", "Use uma exceção específica ao ler."],
+            "practiceHints": [
+              "O open em modo r tenta ler.",
+              "A ausência do arquivo gera FileNotFoundError."
+            ],
+            "challengeRequiredTokens": [
+              "with open(",
+              "\"w\"",
+              "\"r\"",
+              "FileNotFoundError"
+            ],
+            "challengeHints": [
+              "Escreva primeiro, depois abra novamente para leitura.",
+              "Use uma exceção específica ao ler."
+            ],
             "brokenCode": "try:\n    numero = int(\"abc\")\nexcept:\n    pass",
             "correctionPrompt": "Melhore o tratamento: capture apenas ValueError e mostre uma mensagem que explique o dado inválido.",
-            "correctionRequiredTokens": ["except ValueError", "print("],
-            "correctionHints": ["int de um texto não numérico gera ValueError.", "Evite pass porque ele esconde o que aconteceu."],
+            "correctionRequiredTokens": [
+              "except ValueError",
+              "print("
+            ],
+            "correctionHints": [
+              "int de um texto não numérico gera ValueError.",
+              "Evite pass porque ele esconde o que aconteceu."
+            ],
             "projectPrompt": "Crie a base de um gerenciador de tarefas que salva uma lista em tarefas.txt, carrega ao iniciar e trata a ausência do arquivo na primeira execução.",
             "projectStarter": "tarefas = []\n# carregar, alterar e salvar",
-            "projectRequiredTokens": ["with open(", "FileNotFoundError", "tarefas", "def "],
+            "projectRequiredTokens": [
+              "with open(",
+              "FileNotFoundError",
+              "tarefas",
+              "def "
+            ],
             "reflectionPrompt": "Explique quando você deve tratar uma exceção e quando é melhor deixar o erro aparecer durante o desenvolvimento.",
             "evidencePrompt": "Execute o projeto duas vezes: primeiro sem arquivo e depois com dados salvos. Descreva o comportamento observado."
           }
@@ -239,36 +548,97 @@
           "number": "7.1",
           "title": "Debugging e testes: transformar erro em evidência",
           "objective": "Ao final, você vai reproduzir um bug, formular uma hipótese, criar testes simples e refatorar somente depois de proteger o comportamento.",
-          "theory": ["Debugging começa reproduzindo o problema de forma confiável.", "Um teste compara comportamento esperado e real e pode ser repetido depois de cada mudança.", "Refatorar melhora a estrutura sem mudar o comportamento protegido pelos testes."],
+          "theory": [
+            "Debugging começa reproduzindo o problema de forma confiável.",
+            "Um teste compara comportamento esperado e real e pode ser repetido depois de cada mudança.",
+            "Refatorar melhora a estrutura sem mudar o comportamento protegido pelos testes.",
+            "assert verifica uma expectativa: assert dobro(3) == 6 passa silenciosamente; assert dobro(3) == 7 gera AssertionError. Escreva testes para casos normais, extremos e zero."
+          ],
           "code": "def eh_par(numero):\n    return numero % 2 == 0\n\nassert eh_par(4) == True\nassert eh_par(5) == False\nprint(\"testes passaram\")",
           "practicePrompt": "Se a função estiver correta, qual frase aparece depois dos dois asserts?",
           "practiceAnswer": "testes passaram",
           "challenge": "Crie uma função desconto(preco, percentual) e pelo menos três asserts, incluindo percentual zero e um caso normal.",
-          "review": ["Reproduza antes de corrigir.", "Mude uma hipótese de cada vez.", "Teste casos normais, limites e entradas problemáticas.", "Refatore depois que os testes protegem o comportamento."],
+          "review": [
+            "Reproduza antes de corrigir.",
+            "Mude uma hipótese de cada vez.",
+            "Teste casos normais, limites e entradas problemáticas.",
+            "Refatore depois que os testes protegem o comportamento."
+          ],
           "videoUrl": "",
           "quiz": [
-            {"question": "Qual é o primeiro passo útil ao receber um bug?", "options": ["Reescrever tudo.", "Reproduzir o comportamento e registrar o esperado versus o observado.", "Adicionar try/except em todas as linhas."], "correctIndex": 1, "explanation": "Sem reprodução confiável, fica difícil saber se a correção funcionou."},
-            {"question": "Qual papel de um teste depois da correção?", "options": ["Provar que pelo menos aquele comportamento esperado continua funcionando.", "Garantir que nunca haverá bug.", "Substituir a leitura do código."], "correctIndex": 0, "explanation": "Teste é evidência repetível, não garantia absoluta."},
-            {"question": "Quando refatorar?", "options": ["De preferência com comportamento já coberto por testes.", "Sempre antes de entender o bug.", "Nunca."], "correctIndex": 0, "explanation": "Testes reduzem o risco de mudar comportamento sem perceber."}
+            {
+              "question": "Qual é o primeiro passo útil ao receber um bug?",
+              "options": [
+                "Reescrever tudo.",
+                "Reproduzir o comportamento e registrar o esperado versus o observado.",
+                "Adicionar try/except em todas as linhas."
+              ],
+              "correctIndex": 1,
+              "explanation": "Sem reprodução confiável, fica difícil saber se a correção funcionou."
+            },
+            {
+              "question": "Qual papel de um teste depois da correção?",
+              "options": [
+                "Provar que pelo menos aquele comportamento esperado continua funcionando.",
+                "Garantir que nunca haverá bug.",
+                "Substituir a leitura do código."
+              ],
+              "correctIndex": 0,
+              "explanation": "Teste é evidência repetível, não garantia absoluta."
+            },
+            {
+              "question": "Quando refatorar?",
+              "options": [
+                "De preferência com comportamento já coberto por testes.",
+                "Sempre antes de entender o bug.",
+                "Nunca."
+              ],
+              "correctIndex": 0,
+              "explanation": "Testes reduzem o risco de mudar comportamento sem perceber."
+            }
           ],
           "onboarding": {
             "conceptTitle": "Erro deixa de ser mistério quando você coleta evidências",
             "videoTitle": "Videoaula — reproduzir, testar e refatorar",
             "videoGuide": "Acompanhe o ciclo: reproduzir, criar hipótese, testar mudança e confirmar com evidência.",
-            "videoFallback": ["Escreva o esperado e o observado.", "Crie o menor caso que reproduz a falha.", "Só refatore depois de recuperar o comportamento correto."],
+            "videoFallback": [
+              "Escreva o esperado e o observado.",
+              "Crie o menor caso que reproduz a falha.",
+              "Só refatore depois de recuperar o comportamento correto."
+            ],
             "videoRenderId": "3bcb4152c303baeed81d80b95c60cd56",
             "examplePrompt": "Os asserts validam um par e um ímpar antes da mensagem final.",
             "exampleOutput": "testes passaram",
-            "practiceHints": ["assert só interrompe se a condição for falsa.", "Com os dois resultados corretos, o print é alcançado."],
-            "challengeRequiredTokens": ["def desconto", "assert", "return"],
-            "challengeHints": ["Comece pela fórmula e depois pense em entradas diferentes.", "Um teste de percentual zero deve devolver o preço original."],
+            "practiceHints": [
+              "assert só interrompe se a condição for falsa.",
+              "Com os dois resultados corretos, o print é alcançado."
+            ],
+            "challengeRequiredTokens": [
+              "def desconto",
+              "assert",
+              "return"
+            ],
+            "challengeHints": [
+              "Comece pela fórmula e depois pense em entradas diferentes.",
+              "Um teste de percentual zero deve devolver o preço original."
+            ],
             "brokenCode": "def maior(a, b):\n    if a > b:\n        return a\n    return a",
             "correctionPrompt": "A função deveria devolver o maior valor. Corrija o segundo retorno e adicione dois asserts que cubram ordens diferentes.",
-            "correctionRequiredTokens": ["return b", "assert maior("],
-            "correctionHints": ["O caminho em que a não é maior está devolvendo a variável errada.", "Teste uma vez com a maior e outra com b maior."],
+            "correctionRequiredTokens": [
+              "return b",
+              "assert maior("
+            ],
+            "correctionHints": [
+              "O caminho em que a não é maior está devolvendo a variável errada.",
+              "Teste uma vez com a maior e outra com b maior."
+            ],
             "projectPrompt": "Monte um hospital de código: escolha duas funções pequenas, adicione testes, introduza ou identifique um bug, corrija e depois melhore nomes ou repetição sem quebrar os testes.",
             "projectStarter": "# função 1\n# testes\n# função 2\n# testes",
-            "projectRequiredTokens": ["def ", "assert", "return"],
+            "projectRequiredTokens": [
+              "def ",
+              "assert",
+              "return"
+            ],
             "reflectionPrompt": "Explique a diferença entre adivinhar uma correção e testar uma hipótese durante o debugging.",
             "evidencePrompt": "Descreva um teste que falhou antes da correção e passou depois. Inclua a entrada usada e o resultado esperado."
           }
@@ -282,36 +652,101 @@
           "number": "8.1",
           "title": "APIs e JSON: aprender pela documentação",
           "objective": "Ao final, você vai interpretar uma requisição HTTP, navegar por JSON e usar documentação para descobrir como integrar um serviço novo.",
-          "theory": ["Uma API expõe operações e dados por uma interface documentada.", "JSON costuma virar dicionários e listas em Python.", "Status HTTP e documentação ajudam a separar sucesso, erro do cliente e falha do serviço."],
+          "theory": [
+            "Uma API expõe operações e dados por uma interface documentada.",
+            "JSON costuma virar dicionários e listas em Python.",
+            "Status HTTP e documentação ajudam a separar sucesso, erro do cliente e falha do serviço.",
+            "Uma resposta HTTP costuma ter status: 200 indica sucesso. O conteúdo JSON pode virar dicionário com json.loads(texto). Antes de usar uma API real, teste com um exemplo local sem depender de internet.",
+            "timeout é o tempo máximo de espera por uma resposta. O endereço (URL) e os campos da resposta vêm da documentação da API, não de suposições. No laboratório, serviços externos podem depender de rede e bibliotecas disponíveis."
+          ],
           "code": "import requests\nresposta = requests.get(\"https://example.com/api/status\", timeout=10)\nprint(resposta.status_code)",
           "practicePrompt": "Uma documentação diz que status 200 significa sucesso. Se a resposta tiver status_code 200, digite a palavra que melhor descreve o resultado: sucesso ou erro.",
           "practiceAnswer": "sucesso",
           "challenge": "Escreva uma função buscar_dados(url) que use requests.get com timeout, verifique status 200 e retorne resposta.json().",
-          "review": ["Leia a documentação antes de adivinhar endpoints.", "JSON normalmente combina dicionários e listas.", "Status code descreve o resultado da requisição.", "Rede pode falhar; trate o que faz sentido para a experiência do usuário."],
+          "review": [
+            "Leia a documentação antes de adivinhar endpoints.",
+            "JSON normalmente combina dicionários e listas.",
+            "Status code descreve o resultado da requisição.",
+            "Rede pode falhar; trate o que faz sentido para a experiência do usuário."
+          ],
           "videoUrl": "",
           "quiz": [
-            {"question": "Qual é a melhor fonte para descobrir parâmetros de uma API?", "options": ["A documentação oficial do endpoint.", "Adivinhar nomes até funcionar.", "A cor do site."], "correctIndex": 0, "explanation": "Documentação define contrato, parâmetros e exemplos."},
-            {"question": "Um JSON com uma lista de usuários e campos nome e id se parece com quais estruturas Python?", "options": ["Lista contendo dicionários.", "Somente números.", "Apenas funções."], "correctIndex": 0, "explanation": "Array JSON vira lista e objetos viram dicionários."},
-            {"question": "Por que definir timeout em uma requisição?", "options": ["Para evitar esperar indefinidamente por uma resposta.", "Para acelerar qualquer servidor magicamente.", "Para converter JSON."], "correctIndex": 0, "explanation": "Timeout limita quanto o programa aguarda."}
+            {
+              "question": "Qual é a melhor fonte para descobrir parâmetros de uma API?",
+              "options": [
+                "A documentação oficial do endpoint.",
+                "Adivinhar nomes até funcionar.",
+                "A cor do site."
+              ],
+              "correctIndex": 0,
+              "explanation": "Documentação define contrato, parâmetros e exemplos."
+            },
+            {
+              "question": "Um JSON com uma lista de usuários e campos nome e id se parece com quais estruturas Python?",
+              "options": [
+                "Lista contendo dicionários.",
+                "Somente números.",
+                "Apenas funções."
+              ],
+              "correctIndex": 0,
+              "explanation": "Array JSON vira lista e objetos viram dicionários."
+            },
+            {
+              "question": "Por que definir timeout em uma requisição?",
+              "options": [
+                "Para evitar esperar indefinidamente por uma resposta.",
+                "Para acelerar qualquer servidor magicamente.",
+                "Para converter JSON."
+              ],
+              "correctIndex": 0,
+              "explanation": "Timeout limita quanto o programa aguarda."
+            }
           ],
           "onboarding": {
             "conceptTitle": "Documentação é parte da ferramenta",
             "videoTitle": "Videoaula — requisições, JSON e leitura de docs",
             "videoGuide": "Observe como descobrir endpoint, parâmetros, formato da resposta e erros sem decorar uma API específica.",
-            "videoFallback": ["Leia o contrato do endpoint.", "Inspecione o JSON real antes de acessar chaves.", "Verifique status e trate falhas de rede."],
+            "videoFallback": [
+              "Leia o contrato do endpoint.",
+              "Inspecione o JSON real antes de acessar chaves.",
+              "Verifique status e trate falhas de rede."
+            ],
             "videoRenderId": "9c9126cba89555b4f3b032c0ce70ea9c",
             "examplePrompt": "O exemplo mostra a estrutura mínima de uma requisição com timeout.",
             "exampleOutput": "O valor depende do serviço; o ponto é observar status_code.",
-            "practiceHints": ["A própria pergunta define o significado de 200.", "Não é necessário executar uma chamada real nesta previsão."],
-            "challengeRequiredTokens": ["def buscar_dados", "requests.get", "timeout=", "status_code", ".json()"],
-            "challengeHints": ["Receba a URL como parâmetro.", "Só trate o JSON depois de verificar a resposta."],
+            "practiceHints": [
+              "A própria pergunta define o significado de 200.",
+              "Não é necessário executar uma chamada real nesta previsão."
+            ],
+            "challengeRequiredTokens": [
+              "def buscar_dados",
+              "requests.get",
+              "timeout=",
+              "status_code",
+              ".json()"
+            ],
+            "challengeHints": [
+              "Receba a URL como parâmetro.",
+              "Só trate o JSON depois de verificar a resposta."
+            ],
             "brokenCode": "dados = {\"usuarios\": [{\"nome\": \"Ana\"}]}\nprint(dados[\"nome\"])",
             "correctionPrompt": "O nome está dentro da lista usuarios. Corrija o acesso para mostrar Ana.",
-            "correctionRequiredTokens": ["dados[\"usuarios\"][0][\"nome\"]"],
-            "correctionHints": ["A primeira chave disponível no dicionário externo é usuarios.", "usuarios contém uma lista; depois escolha o primeiro item e então a chave nome."],
+            "correctionRequiredTokens": [
+              "dados[\"usuarios\"][0][\"nome\"]"
+            ],
+            "correctionHints": [
+              "A primeira chave disponível no dicionário externo é usuarios.",
+              "usuarios contém uma lista; depois escolha o primeiro item e então a chave nome."
+            ],
             "projectPrompt": "Planeje um app que consulta uma API pública: escreva a função de consulta, uma função que transforma o JSON em uma mensagem e tratamento para pelo menos uma falha de rede ou status inesperado.",
             "projectStarter": "import requests\n\ndef consultar():\n    pass",
-            "projectRequiredTokens": ["requests.get", "timeout=", "def ", "try:", "except"],
+            "projectRequiredTokens": [
+              "requests.get",
+              "timeout=",
+              "def ",
+              "try:",
+              "except"
+            ],
             "reflectionPrompt": "Explique como você começaria a usar uma API que nunca viu antes sem pedir o código pronto.",
             "evidencePrompt": "Use uma API pública de sua escolha em um ambiente real e registre endpoint, status recebido e um campo do JSON que conseguiu extrair."
           }
@@ -325,36 +760,103 @@
           "number": "9.1",
           "title": "SQLite e CRUD: dados estruturados que permanecem",
           "objective": "Ao final, você vai criar uma tabela, executar operações CRUD e consultar SQLite usando parâmetros em vez de montar SQL com texto do usuário.",
-          "theory": ["Tabela organiza registros em linhas e campos em colunas.", "CRUD significa criar, ler, atualizar e excluir.", "Consultas parametrizadas separam comando SQL dos valores e evitam vários erros e riscos."],
+          "theory": [
+            "Tabela organiza registros em linhas e campos em colunas.",
+            "CRUD significa criar, ler, atualizar e excluir.",
+            "Consultas parametrizadas separam comando SQL dos valores e evitam vários erros e riscos.",
+            "Uma operação SQL com dados do usuário usa ? para valores: cur.execute('INSERT INTO tarefas (titulo) VALUES (?)', ('Estudar',)). O valor fica separado do texto do comando SQL.",
+            "Depois de alterar dados, con.commit() confirma as mudanças. Para conferir, cur.execute('SELECT * FROM tarefas') e cur.fetchall() devolvem registros. Feche a conexão ao terminar."
+          ],
           "code": "import sqlite3\ncon = sqlite3.connect(\"app.db\")\ncur = con.cursor()\ncur.execute(\"CREATE TABLE IF NOT EXISTS tarefas (id INTEGER PRIMARY KEY, titulo TEXT)\")\ncon.commit()\ncon.close()",
           "practicePrompt": "Qual palavra da sigla CRUD representa atualizar um registro: create, read, update ou delete?",
           "practiceAnswer": "update",
           "challenge": "Escreva código que conecte a app.db, insira uma tarefa usando ? como parâmetro e faça SELECT para listar registros.",
-          "review": ["Modele os dados antes das consultas.", "CRUD cobre as quatro operações básicas.", "Use parâmetros para valores recebidos externamente.", "commit confirma alterações; SELECT apenas consulta."],
+          "review": [
+            "Modele os dados antes das consultas.",
+            "CRUD cobre as quatro operações básicas.",
+            "Use parâmetros para valores recebidos externamente.",
+            "commit confirma alterações; SELECT apenas consulta."
+          ],
           "videoUrl": "",
           "quiz": [
-            {"question": "Qual operação CRUD altera um registro existente?", "options": ["Create", "Update", "Read"], "correctIndex": 1, "explanation": "Update modifica dados já existentes."},
-            {"question": "Por que usar ? com parâmetros no execute?", "options": ["Para separar os valores do texto SQL e evitar concatenação insegura.", "Para comentar a consulta.", "Para fechar o banco."], "correctIndex": 0, "explanation": "Parâmetros deixam o driver tratar valores corretamente."},
-            {"question": "Quando commit é importante?", "options": ["Após operações que alteram dados quando queremos persistir a transação.", "Depois de todo print.", "Somente antes de conectar."], "correctIndex": 0, "explanation": "Alterações precisam ser confirmadas conforme a transação usada."}
+            {
+              "question": "Qual operação CRUD altera um registro existente?",
+              "options": [
+                "Create",
+                "Update",
+                "Read"
+              ],
+              "correctIndex": 1,
+              "explanation": "Update modifica dados já existentes."
+            },
+            {
+              "question": "Por que usar ? com parâmetros no execute?",
+              "options": [
+                "Para separar os valores do texto SQL e evitar concatenação insegura.",
+                "Para comentar a consulta.",
+                "Para fechar o banco."
+              ],
+              "correctIndex": 0,
+              "explanation": "Parâmetros deixam o driver tratar valores corretamente."
+            },
+            {
+              "question": "Quando commit é importante?",
+              "options": [
+                "Após operações que alteram dados quando queremos persistir a transação.",
+                "Depois de todo print.",
+                "Somente antes de conectar."
+              ],
+              "correctIndex": 0,
+              "explanation": "Alterações precisam ser confirmadas conforme a transação usada."
+            }
           ],
           "onboarding": {
             "conceptTitle": "Banco de dados é uma estrutura para consultar e alterar registros",
             "videoTitle": "Videoaula — SQLite, tabelas e CRUD",
             "videoGuide": "Observe o ciclo completo: conectar, executar, confirmar quando necessário, consultar e fechar.",
-            "videoFallback": ["Tabela define campos e registros.", "CRUD organiza as operações essenciais.", "Use parâmetros em consultas com valores externos."],
+            "videoFallback": [
+              "Tabela define campos e registros.",
+              "CRUD organiza as operações essenciais.",
+              "Use parâmetros em consultas com valores externos."
+            ],
             "videoRenderId": "e3d93c7fb93ec7efa517a70a8c2b9bb9",
             "examplePrompt": "O exemplo cria a tabela somente se ela ainda não existir.",
             "exampleOutput": "Nenhuma saída obrigatória; a tabela tarefas passa a existir no arquivo app.db.",
-            "practiceHints": ["U vem de Update.", "Pense no verbo atualizar."],
-            "challengeRequiredTokens": ["sqlite3.connect", "INSERT INTO", "VALUES (?)", "SELECT", "execute("],
-            "challengeHints": ["Passe os valores em uma tupla separada do SQL.", "Depois do INSERT, confirme a alteração antes de encerrar."],
+            "practiceHints": [
+              "U vem de Update.",
+              "Pense no verbo atualizar."
+            ],
+            "challengeRequiredTokens": [
+              "sqlite3.connect",
+              "INSERT INTO",
+              "VALUES (?)",
+              "SELECT",
+              "execute("
+            ],
+            "challengeHints": [
+              "Passe os valores em uma tupla separada do SQL.",
+              "Depois do INSERT, confirme a alteração antes de encerrar."
+            ],
             "brokenCode": "titulo = \"Comprar pão\"\ncur.execute(\"INSERT INTO tarefas (titulo) VALUES ('\" + titulo + \"')\")",
             "correctionPrompt": "Substitua a concatenação por uma consulta parametrizada com ?.",
-            "correctionRequiredTokens": ["VALUES (?)", "titulo"],
-            "correctionHints": ["O texto SQL deve conter o marcador ?.", "Passe o valor separadamente ao execute."],
+            "correctionRequiredTokens": [
+              "VALUES (?)",
+              "titulo"
+            ],
+            "correctionHints": [
+              "O texto SQL deve conter o marcador ?.",
+              "Passe o valor separadamente ao execute."
+            ],
             "projectPrompt": "Crie a base de um controle de estoque ou finanças com tabela própria e funções para inserir, listar, atualizar e excluir registros.",
             "projectStarter": "import sqlite3\n# modele a tabela e as quatro operações",
-            "projectRequiredTokens": ["CREATE TABLE", "INSERT INTO", "SELECT", "UPDATE", "DELETE", "commit"],
+            "projectRequiredTokens": [
+              "CREATE TABLE",
+              "INSERT INTO",
+              "SELECT",
+              "UPDATE",
+              "DELETE",
+              "commit"
+            ],
             "reflectionPrompt": "Explique por que um banco de dados é mais adequado que uma lista em memória quando os dados precisam permanecer entre execuções e ser consultados de várias formas.",
             "evidencePrompt": "Execute o CRUD em um banco real e descreva um registro antes e depois de uma atualização."
           }
@@ -368,36 +870,100 @@
           "number": "10.1",
           "title": "Projetos maiores: estrutura, classes e ambiente",
           "objective": "Ao final, você vai separar responsabilidades em módulos, reconhecer quando uma classe ajuda e reproduzir dependências em um ambiente virtual.",
-          "theory": ["Projetos maiores precisam de estrutura baseada em responsabilidades, não em quantidade aleatória de pastas.", "Classes são úteis quando dados e comportamentos pertencem ao mesmo conceito; nem todo problema precisa de OOP.", "Ambiente virtual isola dependências e um arquivo de requisitos ajuda a reproduzir o projeto."],
+          "theory": [
+            "Projetos maiores precisam de estrutura baseada em responsabilidades, não em quantidade aleatória de pastas.",
+            "Classes são úteis quando dados e comportamentos pertencem ao mesmo conceito; nem todo problema precisa de OOP.",
+            "Ambiente virtual isola dependências e um arquivo de requisitos ajuda a reproduzir o projeto.",
+            "Em class Produto, __init__ é executado ao criar um objeto. O parâmetro self representa o próprio objeto; self.nome = nome guarda nele a informação recebida.",
+            "Um método é uma função dentro da classe. Para conferir desconto: produto.preco = produto.preco * (1 - percentual/100). Teste 0%, 10% e um preço conhecido."
+          ],
           "code": "class Tarefa:\n    def __init__(self, titulo):\n        self.titulo = titulo\n        self.concluida = False\n\n    def concluir(self):\n        self.concluida = True",
           "practicePrompt": "Depois de tarefa = Tarefa(\"Estudar\") e tarefa.concluir(), qual valor booleano fica em tarefa.concluida? Digite True ou False.",
           "practiceAnswer": "True",
           "challenge": "Crie uma classe Produto com nome e preco no __init__ e um método aplicar_desconto que reduza o preço por percentual.",
-          "review": ["Organize por responsabilidade.", "Classe combina estado e comportamento quando isso melhora clareza.", "venv isola dependências de um projeto.", "Registre dependências para outra máquina conseguir reconstruir o ambiente."],
+          "review": [
+            "Organize por responsabilidade.",
+            "Classe combina estado e comportamento quando isso melhora clareza.",
+            "venv isola dependências de um projeto.",
+            "Registre dependências para outra máquina conseguir reconstruir o ambiente."
+          ],
           "videoUrl": "",
           "quiz": [
-            {"question": "Quando uma classe tende a ajudar?", "options": ["Quando existe um conceito com dados e comportamentos relacionados.", "Sempre, até para print simples.", "Somente se houver internet."], "correctIndex": 0, "explanation": "OOP deve servir à clareza do modelo."},
-            {"question": "Qual objetivo principal de um ambiente virtual?", "options": ["Isolar dependências do projeto.", "Substituir Git.", "Editar imagens."], "correctIndex": 0, "explanation": "Cada projeto pode manter seu conjunto de bibliotecas."},
-            {"question": "Uma boa estrutura de pastas deve seguir o quê?", "options": ["Responsabilidades e necessidades do projeto.", "Uma regra fixa de cem pastas.", "A ordem alfabética das funções."], "correctIndex": 0, "explanation": "Estrutura existe para tornar o projeto compreensível e sustentável."}
+            {
+              "question": "Quando uma classe tende a ajudar?",
+              "options": [
+                "Quando existe um conceito com dados e comportamentos relacionados.",
+                "Sempre, até para print simples.",
+                "Somente se houver internet."
+              ],
+              "correctIndex": 0,
+              "explanation": "OOP deve servir à clareza do modelo."
+            },
+            {
+              "question": "Qual objetivo principal de um ambiente virtual?",
+              "options": [
+                "Isolar dependências do projeto.",
+                "Substituir Git.",
+                "Editar imagens."
+              ],
+              "correctIndex": 0,
+              "explanation": "Cada projeto pode manter seu conjunto de bibliotecas."
+            },
+            {
+              "question": "Uma boa estrutura de pastas deve seguir o quê?",
+              "options": [
+                "Responsabilidades e necessidades do projeto.",
+                "Uma regra fixa de cem pastas.",
+                "A ordem alfabética das funções."
+              ],
+              "correctIndex": 0,
+              "explanation": "Estrutura existe para tornar o projeto compreensível e sustentável."
+            }
           ],
           "onboarding": {
             "conceptTitle": "Arquitetura é organizar decisões para o projeto continuar compreensível",
             "videoTitle": "Videoaula — módulos, classes e ambientes virtuais",
             "videoGuide": "Compare sempre duas perguntas: esta abstração simplifica o problema? outra pessoa conseguiria encontrar onde mudar cada responsabilidade?",
-            "videoFallback": ["Separe responsabilidades em módulos quando o projeto crescer.", "Use classe quando estado e comportamento formam um conceito claro.", "Isole e registre dependências."],
+            "videoFallback": [
+              "Separe responsabilidades em módulos quando o projeto crescer.",
+              "Use classe quando estado e comportamento formam um conceito claro.",
+              "Isole e registre dependências."
+            ],
             "videoRenderId": "1188d7f4439b0f1a1b7530f7f7bd90ce",
             "examplePrompt": "O método concluir altera o estado interna da tarefa.",
             "exampleOutput": "True",
-            "practiceHints": ["O objeto começa com concluida = False.", "concluir atribui True."],
-            "challengeRequiredTokens": ["class Produto", "__init__", "self.nome", "self.preco", "def aplicar_desconto"],
-            "challengeHints": ["Comece pelo estado mínimo do produto.", "O método deve alterar ou devolver o preço descontado de forma clara."],
+            "practiceHints": [
+              "O objeto começa com concluida = False.",
+              "concluir atribui True."
+            ],
+            "challengeRequiredTokens": [
+              "class Produto",
+              "__init__",
+              "self.nome",
+              "self.preco",
+              "def aplicar_desconto"
+            ],
+            "challengeHints": [
+              "Comece pelo estado mínimo do produto.",
+              "O método deve alterar ou devolver o preço descontado de forma clara."
+            ],
             "brokenCode": "class Usuario:\n    def __init__(nome):\n        nome = nome",
             "correctionPrompt": "Corrija o construtor para receber self e guardar nome no objeto.",
-            "correctionRequiredTokens": ["def __init__(self, nome)", "self.nome = nome"],
-            "correctionHints": ["Métodos de instância recebem self.", "O atributo pertence ao objeto, por isso use self.nome."],
+            "correctionRequiredTokens": [
+              "def __init__(self, nome)",
+              "self.nome = nome"
+            ],
+            "correctionHints": [
+              "Métodos de instância recebem self.",
+              "O atributo pertence ao objeto, por isso use self.nome."
+            ],
             "projectPrompt": "Organize um aplicativo em pelo menos três responsabilidades. Inclua uma classe somente onde ela ajudar, descreva os módulos planejados e registre as dependências externas necessárias.",
             "projectStarter": "# dominio.py\n# servicos.py\n# main.py\n# requirements.txt",
-            "projectRequiredTokens": ["class ", "def ", "import"],
+            "projectRequiredTokens": [
+              "class ",
+              "def ",
+              "import"
+            ],
             "reflectionPrompt": "Explique um caso em que usar uma classe melhora a clareza e um caso em que funções simples seriam suficientes.",
             "evidencePrompt": "Crie um venv para um projeto real, instale uma dependência, gere a lista de requisitos e descreva como você confirmou que o projeto ainda executa."
           }
@@ -411,36 +977,100 @@
           "number": "11.1",
           "title": "Git e GitHub: histórico para experimentar com segurança",
           "objective": "Ao final, você vai interpretar status e diff, criar commits com intenção, trabalhar em branch e publicar um projeto documentado.",
-          "theory": ["Git registra mudanças em um repositório local por commits.", "Branches isolam uma linha de trabalho antes de integrar mudanças.", "GitHub hospeda o repositório e pull requests tornam diferenças e revisão explícitas."],
+          "theory": [
+            "Git registra mudanças em um repositório local por commits.",
+            "Branches isolam uma linha de trabalho antes de integrar mudanças.",
+            "GitHub hospeda o repositório e pull requests tornam diferenças e revisão explícitas.",
+            "Os comandos git são para o terminal do computador, NÃO para o interpretador Python. Rode git status para ver alterações, git diff para ler diferenças e git add arquivo.py para preparar o commit.",
+            "Para criar e entrar numa branch nova: git switch -c feat/calculadora. Também existe git checkout -b feat/calculadora. Em seguida, após verificar o diff: git add . e git commit -m 'feat: criar calculadora'."
+          ],
           "code": "git status\ngit add .\ngit commit -m \"feat: adicionar validação de entrada\"\ngit log --oneline",
           "practicePrompt": "Qual comando mostra arquivos modificados e o estado atual do repositório? Digite somente o comando.",
           "practiceAnswer": "git status",
           "challenge": "Escreva a sequência de comandos para criar uma branch chamada feat/calculadora, mudar para ela, adicionar alterações e criar um commit.",
-          "review": ["status mostra o estado do trabalho.", "diff permite revisar alterações antes do commit.", "Commit deve representar uma mudança coerente.", "Branch permite experimentar antes de integrar."],
+          "review": [
+            "status mostra o estado do trabalho.",
+            "diff permite revisar alterações antes do commit.",
+            "Commit deve representar uma mudança coerente.",
+            "Branch permite experimentar antes de integrar."
+          ],
           "videoUrl": "",
           "quiz": [
-            {"question": "O que revisar antes de um commit?", "options": ["As alterações com status/diff.", "Somente a hora do sistema.", "Nada."], "correctIndex": 0, "explanation": "Revisar evita registrar alterações acidentais."},
-            {"question": "Para que serve uma branch?", "options": ["Isolar uma linha de trabalho.", "Apagar o histórico.", "Executar Python mais rápido."], "correctIndex": 0, "explanation": "Branches permitem desenvolver mudanças separadamente."},
-            {"question": "O que um README útil deve permitir?", "options": ["Entender o propósito e como executar o projeto.", "Esconder dependências.", "Substituir todo o código."], "correctIndex": 0, "explanation": "Documentação ajuda outra pessoa e seu eu futuro a usar o projeto."}
+            {
+              "question": "O que revisar antes de um commit?",
+              "options": [
+                "As alterações com status/diff.",
+                "Somente a hora do sistema.",
+                "Nada."
+              ],
+              "correctIndex": 0,
+              "explanation": "Revisar evita registrar alterações acidentais."
+            },
+            {
+              "question": "Para que serve uma branch?",
+              "options": [
+                "Isolar uma linha de trabalho.",
+                "Apagar o histórico.",
+                "Executar Python mais rápido."
+              ],
+              "correctIndex": 0,
+              "explanation": "Branches permitem desenvolver mudanças separadamente."
+            },
+            {
+              "question": "O que um README útil deve permitir?",
+              "options": [
+                "Entender o propósito e como executar o projeto.",
+                "Esconder dependências.",
+                "Substituir todo o código."
+              ],
+              "correctIndex": 0,
+              "explanation": "Documentação ajuda outra pessoa e seu eu futuro a usar o projeto."
+            }
           ],
           "onboarding": {
             "conceptTitle": "Versionamento registra decisões, não apenas arquivos",
             "videoTitle": "Videoaula — commits, branches, GitHub e pull requests",
             "videoGuide": "Observe a rotina: ver o que mudou, escolher o que registrar, criar commit pequeno e comparar antes de integrar.",
-            "videoFallback": ["Use status e diff antes de commitar.", "Faça commits coerentes e com mensagem clara.", "Use branch para desenvolver uma mudança isolada."],
+            "videoFallback": [
+              "Use status e diff antes de commitar.",
+              "Faça commits coerentes e com mensagem clara.",
+              "Use branch para desenvolver uma mudança isolada."
+            ],
             "videoRenderId": "e52e100a1279e81f19bbc33aca2c2e1a",
             "examplePrompt": "A sequência adiciona mudanças, cria um commit e depois mostra o histórico resumido.",
             "exampleOutput": "O log passa a mostrar o novo commit com a mensagem feat: adicionar validação de entrada.",
-            "practiceHints": ["O comando começa com git.", "A palavra que descreve o estado é status."],
-            "challengeRequiredTokens": ["git switch -c feat/calculadora", "git add", "git commit"],
-            "challengeHints": ["Crie e entre na branch antes do commit.", "Revise com git status antes de registrar."],
+            "practiceHints": [
+              "O comando começa com git.",
+              "A palavra que descreve o estado é status."
+            ],
+            "challengeRequiredTokens": [
+              "git switch -c feat/calculadora",
+              "git add",
+              "git commit"
+            ],
+            "challengeHints": [
+              "Crie e entre na branch antes do commit.",
+              "Revise com git status antes de registrar."
+            ],
             "brokenCode": "git add .\ngit commit -m \"mudancas\"\n# nenhum git status ou diff foi conferido",
             "correctionPrompt": "Melhore o fluxo incluindo inspeção antes do commit e use uma mensagem que descreva a intenção.",
-            "correctionRequiredTokens": ["git status", "git diff", "git commit -m"],
-            "correctionHints": ["Veja arquivos e conteúdo alterado antes do add/commit.", "Mensagem deve explicar o que a mudança entrega."],
+            "correctionRequiredTokens": [
+              "git status",
+              "git diff",
+              "git commit -m"
+            ],
+            "correctionHints": [
+              "Veja arquivos e conteúdo alterado antes do add/commit.",
+              "Mensagem deve explicar o que a mudança entrega."
+            ],
             "projectPrompt": "Publique um projeto completo: README com objetivo e execução, histórico com commits coerentes, uma funcionalidade feita em branch e integração revisada por diff.",
             "projectStarter": "# planeje: README, commits, branch e revisão",
-            "projectRequiredTokens": ["git status", "git switch", "git commit", "git push"],
+            "projectRequiredTokens": [
+              "git status",
+              "git switch",
+              "git commit",
+              "git push"
+            ],
             "reflectionPrompt": "Explique como Git muda sua forma de experimentar e corrigir sem medo de perder uma versão que funcionava.",
             "evidencePrompt": "Em um repositório real, crie uma branch, faça um commit e descreva o diff que você revisou antes de integrar."
           }
@@ -454,36 +1084,99 @@
           "number": "12.1",
           "title": "Desenvolvimento independente: descobrir, construir e provar",
           "objective": "Ao final, você vai transformar uma ideia aberta em requisitos, pesquisar tecnologia desconhecida, construir em pequenas versões e explicar suas decisões.",
-          "theory": ["Uma ideia vaga precisa virar requisitos observáveis antes do código.", "Pesquisa técnica começa com uma pergunta específica, documentação confiável e um experimento pequeno.", "Autonomia não significa saber tudo; significa saber planejar, descobrir, testar e corrigir o que ainda não sabe."],
+          "theory": [
+            "Uma ideia vaga precisa virar requisitos observáveis antes do código.",
+            "Pesquisa técnica começa com uma pergunta específica, documentação confiável e um experimento pequeno.",
+            "Autonomia não significa saber tudo; significa saber planejar, descobrir, testar e corrigir o que ainda não sabe.",
+            "Neste módulo, os campos de desafio e correção são para escrever um plano em português, NÃO código Python. Uma resposta válida descreve requisitos verificáveis, pergunta de pesquisa, teste e evidência observada."
+          ],
           "code": "# Exemplo de plano antes do código\n# 1. requisito mínimo verificável\n# 2. menor experimento técnico\n# 3. implementar\n# 4. testar\n# 5. registrar decisão e próximo passo",
           "practicePrompt": "Complete com uma palavra: antes de pesquisar uma tecnologia nova, é melhor formular uma ______ específica do que procurar 'como fazer tudo'.",
           "practiceAnswer": "pergunta",
           "challenge": "Escolha uma ideia pequena que você nunca implementou. Escreva três requisitos verificáveis, uma dúvida técnica real e como você testaria a primeira versão.",
-          "review": ["Quebre objetivo em requisitos verificáveis.", "Pesquise perguntas pequenas e use documentação.", "Faça experimento mínimo antes de integrar tecnologia nova.", "Teste, registre decisões e ajuste o plano com evidências."],
+          "review": [
+            "Quebre objetivo em requisitos verificáveis.",
+            "Pesquise perguntas pequenas e use documentação.",
+            "Faça experimento mínimo antes de integrar tecnologia nova.",
+            "Teste, registre decisões e ajuste o plano com evidências."
+          ],
           "videoUrl": "",
           "quiz": [
-            {"question": "Qual requisito é mais verificável?", "options": ["O app deve ser legal.", "Ao adicionar uma tarefa, ela deve aparecer na lista e permanecer após reiniciar.", "Faça um app perfeito."], "correctIndex": 1, "explanation": "Esse comportamento pode ser testado objetivamente."},
-            {"question": "Você precisa usar uma biblioteca que nunca viu. Qual primeiro passo é mais forte?", "options": ["Copiar um projeto inteiro aleatório.", "Definir a menor coisa que precisa descobrir e ler a documentação correspondente.", "Desistir porque ainda não sabe."], "correctIndex": 1, "explanation": "Pergunta pequena + docs + experimento cria aprendizado transferível."},
-            {"question": "O que melhor representa autonomia?", "options": ["Nunca precisar pesquisar.", "Saber descobrir o que falta, testar e explicar a solução.", "Decorar toda a linguagem."], "correctIndex": 1, "explanation": "Desenvolvimento real exige aprender continuamente."}
+            {
+              "question": "Qual requisito é mais verificável?",
+              "options": [
+                "O app deve ser legal.",
+                "Ao adicionar uma tarefa, ela deve aparecer na lista e permanecer após reiniciar.",
+                "Faça um app perfeito."
+              ],
+              "correctIndex": 1,
+              "explanation": "Esse comportamento pode ser testado objetivamente."
+            },
+            {
+              "question": "Você precisa usar uma biblioteca que nunca viu. Qual primeiro passo é mais forte?",
+              "options": [
+                "Copiar um projeto inteiro aleatório.",
+                "Definir a menor coisa que precisa descobrir e ler a documentação correspondente.",
+                "Desistir porque ainda não sabe."
+              ],
+              "correctIndex": 1,
+              "explanation": "Pergunta pequena + docs + experimento cria aprendizado transferível."
+            },
+            {
+              "question": "O que melhor representa autonomia?",
+              "options": [
+                "Nunca precisar pesquisar.",
+                "Saber descobrir o que falta, testar e explicar a solução.",
+                "Decorar toda a linguagem."
+              ],
+              "correctIndex": 1,
+              "explanation": "Desenvolvimento real exige aprender continuamente."
+            }
           ],
           "onboarding": {
             "conceptTitle": "Seu método passa a ser mais importante que uma receita",
             "videoTitle": "Videoaula — transformar o desconhecido em próximos passos",
             "videoGuide": "Observe como um objetivo aberto vira requisitos, perguntas de pesquisa, experimentos e testes.",
-            "videoFallback": ["Defina o resultado mínimo antes de escolher tecnologia.", "Pesquise uma dúvida específica de cada vez.", "Construa, teste, registre o que descobriu e avance."],
+            "videoFallback": [
+              "Defina o resultado mínimo antes de escolher tecnologia.",
+              "Pesquise uma dúvida específica de cada vez.",
+              "Construa, teste, registre o que descobriu e avance."
+            ],
             "videoRenderId": "9590722ae35591925245d7c7c7e2818d",
             "examplePrompt": "O exemplo não entrega código: ele mostra a sequência mental que vem antes de programar.",
             "exampleOutput": "Plano → experimento → implementação → teste → decisão.",
-            "practiceHints": ["O que você escreve na busca ou na documentação normalmente começa por uma dúvida.", "A palavra está no texto da teoria."],
-            "challengeRequiredTokens": ["requisito", "test", "?"],
-            "challengeHints": ["Um requisito deve permitir responder passou ou não passou.", "Sua dúvida técnica deve ser pequena o bastante para testar isoladamente."],
+            "practiceHints": [
+              "O que você escreve na busca ou na documentação normalmente começa por uma dúvida.",
+              "A palavra está no texto da teoria."
+            ],
+            "challengeRequiredTokens": [
+              "requisito",
+              "teste"
+            ],
+            "challengeHints": [
+              "Um requisito deve permitir responder passou ou não passou.",
+              "Sua dúvida técnica deve ser pequena o bastante para testar isoladamente."
+            ],
             "brokenCode": "# objetivo: criar um app completo\n# plano: pesquisar na internet e copiar o primeiro código que aparecer",
             "correctionPrompt": "Substitua esse plano por etapas que incluam requisito mínimo, documentação, experimento pequeno e teste.",
-            "correctionRequiredTokens": ["requisito", "document", "experimento", "test"],
-            "correctionHints": ["Antes da implementação, torne o objetivo observável.", "Aprenda a menor parte desconhecida em um experimento separado."],
+            "correctionRequiredTokens": [
+              "requisito",
+              "document",
+              "experimento",
+              "test"
+            ],
+            "correctionHints": [
+              "Antes da implementação, torne o objetivo observável.",
+              "Aprenda a menor parte desconhecida em um experimento separado."
+            ],
             "projectPrompt": "Projeto final: escolha algo que tenha valor para você. Escreva requisitos, riscos, tecnologias desconhecidas, estratégia de pesquisa, plano de testes e depois implemente uma primeira versão funcional. O curso não fornece o código final.",
             "projectStarter": "# PROJETO FINAL\n# problema:\n# requisitos:\n# riscos:\n# pesquisa necessária:\n# testes:\n# primeira versão:",
-            "projectRequiredTokens": ["problema", "requisito", "pesquisa", "test"],
+            "projectRequiredTokens": [
+              "problema",
+              "requisito",
+              "pesquisa",
+              "teste"
+            ],
             "reflectionPrompt": "Explique o que você faz quando recebe uma tarefa que ainda não sabe implementar.",
             "evidencePrompt": "Mostre evidência da sua primeira versão: o que funciona, qual teste você executou, um problema que encontrou e como descobriu o próximo passo."
           }
