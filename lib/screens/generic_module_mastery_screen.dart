@@ -411,7 +411,7 @@ class _GenericModuleMasteryScreenState
                 ?.copyWith(fontWeight: FontWeight.w900),
           ),
           const SizedBox(height: 8),
-          const Text(
+          Text(
             widget.module.number == 11
                 ? 'Nesta unidade, os comandos Git são executados no terminal do computador, não no Python. Registre o comando usado e o resultado observado.'
                 : widget.module.number == 12
