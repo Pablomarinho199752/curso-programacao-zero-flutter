@@ -45,7 +45,7 @@ class _GenericModuleLessonScreenState extends State<GenericModuleLessonScreen> {
   Map<String, dynamic> get data => widget.lesson.onboarding;
 
   int get _moduleNumber =>
-      int.tryParse(RegExp(r'^lesson_(\\d+)_')
+      int.tryParse(RegExp(r'^lesson_(\d+)_')
               .firstMatch(widget.lesson.id)
               ?.group(1) ??
           '') ??
