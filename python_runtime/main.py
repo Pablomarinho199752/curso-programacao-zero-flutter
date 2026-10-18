@@ -228,7 +228,7 @@ def _has_required_element(tree: ast.AST, source: str, requirement: str) -> bool:
         pass
     if token.startswith("return "):
         try:
-            wrapper = ast.parse("def _test():\\n    " + token)
+            wrapper = ast.parse("def _test():\n    " + token)
             candidates.append(wrapper.body[0].body[0])
         except SyntaxError:
             pass
@@ -239,8 +239,8 @@ def _has_required_element(tree: ast.AST, source: str, requirement: str) -> bool:
 
     # Legacy curriculum fragments (SQL and incomplete expressions) cannot
     # always be parsed independently; ignore formatting without changing code.
-    condensed_source = re.sub(r"\\s+", "", source).lower()
-    condensed_token = re.sub(r"\\s+", "", token).lower()
+    condensed_source = re.sub(r"\s+", "", source).lower()
+    condensed_token = re.sub(r"\s+", "", token).lower()
     return condensed_token in condensed_source
 
 
