@@ -110,8 +110,8 @@ def lab_open(path, mode="r", encoding="utf-8"):
         os.path.basename(path) != path
         or path in (".", "..")
         or "/" in path
-        or "\\\\" in path
-        or "\\x00" in path
+        or "\\" in path
+        or "\x00" in path
         or len(path) > 100
     ):
         raise ValueError("Use apenas um nome simples de arquivo, sem pastas.")
