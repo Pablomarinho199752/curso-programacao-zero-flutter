@@ -133,6 +133,10 @@ class _PythonLabScreenState extends State<PythonLabScreen> {
         const SizedBox(height: 12),
         TextField(
           controller: _stdinController,
+          autocorrect: true,
+          enableSuggestions: true,
+          textCapitalization: TextCapitalization.sentences,
+          spellCheckConfiguration: const SpellCheckConfiguration(),
           minLines: 2,
           maxLines: 6,
           decoration: const InputDecoration(
