@@ -1,6 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+
+import '../widgets/spelling_configuration.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../models/course_models.dart';
@@ -395,7 +397,7 @@ class _LessonWorkspaceScreenState extends State<LessonWorkspaceScreen> {
                   autocorrect: true,
                   enableSuggestions: true,
                   textCapitalization: TextCapitalization.sentences,
-                  spellCheckConfiguration: const SpellCheckConfiguration(),
+                  spellCheckConfiguration: writingSpellCheckConfiguration,
                   minLines: 2,
                   maxLines: 6,
                   decoration: const InputDecoration(
