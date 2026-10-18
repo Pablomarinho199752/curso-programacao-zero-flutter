@@ -122,7 +122,7 @@ class _GenericModuleMasteryScreenState
   String _codeCheckFeedback(PythonCodeCheck check) {
     if (check.error != null) {
       final line = check.errorLine == null ? '' : ' (linha ${check.errorLine})';
-      return 'Erro de Python${line}: ${check.error}';
+      return 'Erro de Python$line: ${check.error}';
     }
     if (check.missing.isNotEmpty) {
       return 'A sintaxe Python está correta, mas ainda falta: '
@@ -155,8 +155,10 @@ class _GenericModuleMasteryScreenState
         _debugMessage = _codeCheckFeedback(check);
       });
     } catch (_) {
-      if (mounted) setState(() =>
-          _debugMessage = 'Não consegui acessar o Python local. Tente novamente.');
+      if (mounted) {
+        setState(() => _debugMessage =
+            'Não consegui acessar o Python local. Tente novamente.');
+      }
     }
   }
 
@@ -188,8 +190,10 @@ class _GenericModuleMasteryScreenState
             : _codeCheckFeedback(check);
       });
     } catch (_) {
-      if (mounted) setState(() =>
-          _createMessage = 'Não consegui acessar o Python local. Tente novamente.');
+      if (mounted) {
+        setState(() => _createMessage =
+            'Não consegui acessar o Python local. Tente novamente.');
+      }
     }
   }
 
