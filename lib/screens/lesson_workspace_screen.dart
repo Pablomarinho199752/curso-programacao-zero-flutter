@@ -46,7 +46,9 @@ class _LessonWorkspaceScreenState extends State<LessonWorkspaceScreen> {
 
   String get _activeDraftKey => _cumulativeMode
       ? _coach.cumulativeProjectKey(widget.lesson)
-      : _coach.draftKey(currentStep);
+      : _coach.moduleNumber(widget.lesson) == 12
+          ? 'final_project_python'
+          : _coach.draftKey(currentStep);
 
   @override
   void initState() {
@@ -82,6 +84,12 @@ class _LessonWorkspaceScreenState extends State<LessonWorkspaceScreen> {
       final saved = progress.drafts[_coach.cumulativeProjectKey(widget.lesson)];
       _codeController.text = saved ??
           '# Projeto cumulativo\n# Comece pequeno. Escreva uma parte, execute e só depois avance.\n';
+      return;
+    }
+    if (_coach.moduleNumber(widget.lesson) == 12) {
+      _codeController.text =
+          progress.drafts['final_project_python'] ??
+              'print("Primeiro teste do meu projeto")';
       return;
     }
     _codeController.text =
@@ -238,7 +246,11 @@ class _LessonWorkspaceScreenState extends State<LessonWorkspaceScreen> {
                           ? Icons.check_circle_rounded
                           : Icons.terminal_rounded,
                     ),
-                    text: 'Python na aula',
+                    text: _coach.moduleNumber(widget.lesson) == 11
+                        ? 'Terminal Git'
+                        : _coach.moduleNumber(widget.lesson) == 12
+                            ? 'Python do projeto'
+                            : 'Python na aula',
                   ),
                 ],
               ),
@@ -337,6 +349,9 @@ class _LessonWorkspaceScreenState extends State<LessonWorkspaceScreen> {
   }
 
   Widget _buildWorkspace(BuildContext context) {
+    if (_coach.moduleNumber(widget.lesson) == 11) {
+      return _buildGitGuide(context);
+    }
     final theme = Theme.of(context);
     final projectPrompt = _coach.cumulativeProjectPrompt(widget.lesson);
     final reviewDue = _coach.reviewDue(progress) ||
@@ -353,7 +368,9 @@ class _LessonWorkspaceScreenState extends State<LessonWorkspaceScreen> {
             Text(
               _cumulativeMode
                   ? 'Projeto cumulativo'
-                  : '${_coach.stageName(currentStep)} • Python real',
+                  : _coach.moduleNumber(widget.lesson) == 12
+                      ? 'Experimento Python do projeto final'
+                      : '${_coach.stageName(currentStep)} • Python real',
               style: theme.textTheme.headlineSmall?.copyWith(
                 fontWeight: FontWeight.w800,
               ),
@@ -367,7 +384,9 @@ class _LessonWorkspaceScreenState extends State<LessonWorkspaceScreen> {
             ),
             const SizedBox(height: 10),
             Text(
-              'O executor faz parte desta aula. Ele não aprova o desafio sozinho: primeiro execute, observe o comportamento e depois volte à etapa da aula para conferir os requisitos.',
+              _coach.moduleNumber(widget.lesson) == 12
+                  ? 'O planejamento é escrito na aba Aula. Use este laboratório apenas para executar o código Python do seu protótipo. A execução não comprova domínio sozinha.'
+                  : 'O executor faz parte desta aula. Ele não aprova o desafio sozinho: primeiro execute, observe o comportamento e depois volte à etapa da aula para conferir os requisitos.',
               style: theme.textTheme.bodyMedium,
             ),
             const SizedBox(height: 18),
@@ -521,6 +540,43 @@ class _LessonWorkspaceScreenState extends State<LessonWorkspaceScreen> {
             ],
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _buildGitGuide(BuildContext context) {
+    final theme = Theme.of(context);
+    return Material(
+      color: theme.colorScheme.surface,
+      child: ListView(
+        padding: const EdgeInsets.all(20),
+        children: [
+          Text(
+            'Prática com Git: use o terminal do computador',
+            style: theme.textTheme.titleLarge?.copyWith(
+              fontWeight: FontWeight.w800,
+            ),
+          ),
+          const SizedBox(height: 12),
+          const Text(
+            'Git usa comandos do terminal, não linguagem Python. '
+            'O interpretador Python do aplicativo não executa git status, '
+            'git commit ou git push. A validação da aba Aula apenas verifica '
+            'uma parte da estrutura: você precisa testar os comandos em um '
+            'repositório real e conferir a saída.',
+          ),
+          const SizedBox(height: 16),
+          SelectableText(
+            widget.lesson.code,
+            style: const TextStyle(fontFamily: 'monospace'),
+          ),
+          const SizedBox(height: 16),
+          const Text(
+            'No computador, abra um terminal na pasta do projeto e execute '
+            'os comandos apropriados. Antes do commit, confira git status '
+            'e git diff; registre na revisão o que realmente aconteceu.',
+          ),
+        ],
       ),
     );
   }
