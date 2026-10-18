@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../widgets/spelling_configuration.dart';
+
 import '../services/mastery_gate.dart';
 import '../services/progress_store.dart';
 
@@ -305,6 +307,10 @@ class _Module0MasteryScreenState extends State<Module0MasteryScreen> {
                 TextField(
                   key: const ValueKey('mastery_explain'),
                   controller: _explainController,
+                  autocorrect: true,
+                  enableSuggestions: true,
+                  textCapitalization: TextCapitalization.sentences,
+                  spellCheckConfiguration: writingSpellCheckConfiguration,
                   minLines: 3,
                   maxLines: 6,
                   decoration: const InputDecoration(

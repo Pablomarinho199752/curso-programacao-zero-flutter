@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+
+import '../widgets/spelling_configuration.dart';
 import 'package:flutter/services.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../models/course_models.dart';
@@ -80,8 +82,14 @@ class _LessonScreenState extends State<LessonScreen> {
       minLines: lines,
       maxLines: lines + 3,
       maxLength: 2000,
-      autocorrect: false,
-      enableSuggestions: false,
+      autocorrect: key == 'reflection',
+      enableSuggestions: key == 'reflection',
+      textCapitalization: key == 'reflection'
+          ? TextCapitalization.sentences
+          : TextCapitalization.none,
+      spellCheckConfiguration: key == 'reflection'
+          ? writingSpellCheckConfiguration
+          : null,
       decoration: InputDecoration(labelText: label, alignLabelWithHint: true),
       onChanged: (text) {
         _feedback.remove(key);

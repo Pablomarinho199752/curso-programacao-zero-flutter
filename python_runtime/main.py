@@ -3,6 +3,7 @@ import builtins
 import contextlib
 import io
 import json
+import re
 import sys
 import time
 import traceback
@@ -165,6 +166,118 @@ def safe_builtins(input_values):
     return result
 
 
+
+def _has_required_element(tree: ast.AST, source: str, requirement: str) -> bool:
+    """Inspect Python syntax instead of depending on exact spacing or quotes."""
+    token = requirement.strip()
+    simple = token.lower()
+    nodes = list(ast.walk(tree))
+
+    if simple == "if":
+        return any(isinstance(node, ast.If) for node in nodes)
+    if simple == "elif":
+        return any(
+            isinstance(child, ast.If)
+            for node in nodes if isinstance(node, ast.If)
+            for child in node.orelse
+        )
+    if simple == "else:":
+        return any(
+            isinstance(node, ast.If)
+            and bool(node.orelse)
+            and not isinstance(node.orelse[0], ast.If)
+            for node in nodes
+        )
+    if simple == "print(":
+        return any(
+            isinstance(node, ast.Call)
+            and isinstance(node.func, ast.Name)
+            and node.func.id == "print"
+            for node in nodes
+        )
+    if simple == "def":
+        return any(isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)) for node in nodes)
+    if simple.startswith("def ") and "(" not in token:
+        function_name = token[4:].strip()
+        return any(
+            isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef))
+            and node.name.lower() == function_name
+            for node in nodes
+        )
+    if simple == "return":
+        return any(isinstance(node, ast.Return) for node in nodes)
+    if simple == "assert":
+        return any(isinstance(node, ast.Assert) for node in nodes)
+    if simple == "and":
+        return any(
+            isinstance(node, ast.BoolOp) and isinstance(node.op, ast.And)
+            for node in nodes
+        )
+    if simple == "=":
+        return any(isinstance(node, (ast.Assign, ast.AnnAssign, ast.AugAssign)) for node in nodes)
+    if simple == "try:":
+        return any(isinstance(node, ast.Try) for node in nodes)
+    if simple == "except":
+        return any(isinstance(node, ast.ExceptHandler) for node in nodes)
+
+    # Compare whole expressions as trees, independent of legal formatting.
+    candidates = []
+    try:
+        candidates.append(ast.parse(token, mode="eval").body)
+    except SyntaxError:
+        pass
+    if token.startswith("return "):
+        try:
+            wrapper = ast.parse("def _test():\n    " + token)
+            candidates.append(wrapper.body[0].body[0])
+        except SyntaxError:
+            pass
+    for candidate in candidates:
+        expected = ast.dump(candidate, include_attributes=False)
+        if any(ast.dump(node, include_attributes=False) == expected for node in nodes):
+            return True
+
+    # Legacy curriculum fragments (SQL and incomplete expressions) cannot
+    # always be parsed independently; ignore formatting without changing code.
+    condensed_source = re.sub(r"\s+", "", source).lower()
+    condensed_token = re.sub(r"\s+", "", token).lower()
+    return condensed_token in condensed_source
+
+
+def check_code(source: str, requirements: list[str] | None = None) -> dict:
+    """Validate real Python syntax plus the teaching goal, without executing it."""
+    try:
+        tree = validate_source(source)
+    except SyntaxError as exc:
+        return {
+            "ok": False,
+            "error": exc.msg,
+            "errorType": "SyntaxError",
+            "errorLine": exc.lineno,
+            "missing": [],
+        }
+    except LabValidationError as exc:
+        return {
+            "ok": False,
+            "error": str(exc),
+            "errorType": "ValidationError",
+            "errorLine": None,
+            "missing": [],
+        }
+
+    missing = [
+        item for item in (requirements or [])
+        if not _has_required_element(tree, source, item)
+    ]
+    return {
+        "ok": not missing,
+        "error": None,
+        "errorType": None,
+        "errorLine": None,
+        "missing": missing,
+    }
+
+
 def execute_code(source: str, stdin_text: str):
     stdout = io.StringIO()
     stderr = io.StringIO()
@@ -246,7 +359,7 @@ class Handler(BaseHTTPRequestHandler):
             self._send(404, {"ok": False, "error": "Rota não encontrada."})
 
     def do_POST(self):
-        if self.path != "/run":
+        if self.path not in ("/run", "/check"):
             self._send(404, {"ok": False, "error": "Rota não encontrada."})
             return
         try:
@@ -258,8 +371,16 @@ class Handler(BaseHTTPRequestHandler):
             stdin_text = payload.get("stdin", "")
             if not isinstance(source, str) or not isinstance(stdin_text, str):
                 raise LabValidationError("Código e entrada precisam ser texto.")
-            result = execute_code(source, stdin_text)
-            self._send(200, result)
+            if self.path == "/check":
+                requirements = payload.get("requirements", [])
+                if not isinstance(requirements, list) or any(
+                    not isinstance(item, str) for item in requirements
+                ):
+                    raise LabValidationError("Requisitos inválidos.")
+                self._send(200, check_code(source, requirements))
+            else:
+                result = execute_code(source, stdin_text)
+                self._send(200, result)
         except LabValidationError as exc:
             self._send(
                 200,

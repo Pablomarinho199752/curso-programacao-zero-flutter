@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 
+import '../widgets/spelling_configuration.dart';
+
 import '../models/course_models.dart';
 import '../services/progress_store.dart';
+import '../services/python_lab_service.dart';
 import 'lesson_destination.dart';
 
 class GenericModuleMasteryScreen extends StatefulWidget {
@@ -24,6 +27,7 @@ class GenericModuleMasteryScreen extends StatefulWidget {
 class _GenericModuleMasteryScreenState
     extends State<GenericModuleMasteryScreen> {
   late final CourseLesson lesson;
+  final _python = PythonLabService();
   late final TextEditingController _debugController;
   late final TextEditingController _createController;
   late final TextEditingController _explainController;
@@ -79,12 +83,6 @@ class _GenericModuleMasteryScreenState
       .where((word) => word.isNotEmpty)
       .length;
 
-  bool _containsRequired(String source, List<String> required) {
-    if (required.isEmpty) return source.trim().length >= 20;
-    final normalized = source.toLowerCase();
-    return required.every((token) => normalized.contains(token.toLowerCase()));
-  }
-
   List<String> get _debugRequirements {
     final fixed = text('fixedCode');
     if (fixed.isNotEmpty) {
@@ -123,49 +121,82 @@ class _GenericModuleMasteryScreenState
     });
   }
 
+  String _codeCheckFeedback(PythonCodeCheck check) {
+    if (check.error != null) {
+      final line = check.errorLine == null ? '' : ' (linha ${check.errorLine})';
+      return 'Erro de Python$line: ${check.error}';
+    }
+    if (check.missing.isNotEmpty) {
+      return 'A sintaxe Python está correta, mas ainda falta: '
+          '${check.missing.join(', ')}.';
+    }
+    return 'Sintaxe e requisitos encontrados. '
+        'Agora execute na aula e confirme o comportamento.';
+  }
+
   Future<void> _checkDebug() async {
     final source = _debugController.text;
-    final passed = _containsRequired(source, _debugRequirements);
-    await widget.progressStore.update(_progressId, (progress) {
-      progress.drafts['debug'] = source;
-      progress.attempts['debug'] = (progress.attempts['debug'] ?? 0) + 1;
-      if (passed) {
-        progress.checks.add('debug_ok');
-      } else {
-        progress.checks.remove('debug_ok');
+    try {
+      final check = await _python.check(
+        code: source,
+        requirements: _debugRequirements,
+      );
+      if (!mounted) return;
+      await widget.progressStore.update(_progressId, (progress) {
+        progress.drafts['debug'] = source;
+        progress.attempts['debug'] = (progress.attempts['debug'] ?? 0) + 1;
+        if (check.ok) {
+          progress.checks.add('debug_ok');
+        } else {
+          progress.checks.remove('debug_ok');
+        }
+      });
+      if (!mounted) return;
+      setState(() {
+        _debugPassed = check.ok;
+        _debugMessage = _codeCheckFeedback(check);
+      });
+    } catch (_) {
+      if (mounted) {
+        setState(() => _debugMessage =
+            'Não consegui acessar o Python local. Tente novamente.');
       }
-    });
-    if (!mounted) return;
-    setState(() {
-      _debugPassed = passed;
-      _debugMessage = passed
-          ? 'A correção contém os elementos essenciais. Compare agora com a causa do erro, não só com a aparência do código.'
-          : 'Ainda falta corrigir um elemento essencial. Use a mensagem, a regra e as pistas da aula para localizar a causa.';
-    });
+    }
   }
 
   Future<void> _checkCreate() async {
     final source = _createController.text;
     final starter = text('projectStarter').trim();
-    final passed = source.trim() != starter &&
-        _containsRequired(source, _createRequirements) &&
-        source.trim().length >= 35;
-    await widget.progressStore.update(_progressId, (progress) {
-      progress.drafts['create'] = source;
-      progress.attempts['create'] = (progress.attempts['create'] ?? 0) + 1;
-      if (passed) {
-        progress.checks.add('create_ok');
-      } else {
-        progress.checks.remove('create_ok');
+    try {
+      final check = await _python.check(
+        code: source,
+        requirements: _createRequirements,
+      );
+      if (!mounted) return;
+      final ownSolution = source.trim() != starter && source.trim().length >= 35;
+      final passed = check.ok && ownSolution;
+      await widget.progressStore.update(_progressId, (progress) {
+        progress.drafts['create'] = source;
+        progress.attempts['create'] = (progress.attempts['create'] ?? 0) + 1;
+        if (passed) {
+          progress.checks.add('create_ok');
+        } else {
+          progress.checks.remove('create_ok');
+        }
+      });
+      if (!mounted) return;
+      setState(() {
+        _createPassed = passed;
+        _createMessage = check.ok && !ownSolution
+            ? 'Escreva uma solução sua, diferente do código inicial.'
+            : _codeCheckFeedback(check);
+      });
+    } catch (_) {
+      if (mounted) {
+        setState(() => _createMessage =
+            'Não consegui acessar o Python local. Tente novamente.');
       }
-    });
-    if (!mounted) return;
-    setState(() {
-      _createPassed = passed;
-      _createMessage = passed
-          ? 'A solução é sua e contém a estrutura necessária. Agora prove o comportamento no Python da própria aula.'
-          : 'Ainda não há evidência suficiente de criação própria. Não copie o starter: construa uma solução que atenda ao pedido.';
-    });
+    }
   }
 
   Future<void> _checkExplain() async {
@@ -444,6 +475,10 @@ class _GenericModuleMasteryScreenState
                 const SizedBox(height: 10),
                 TextField(
                   controller: _explainController,
+                  autocorrect: true,
+                  enableSuggestions: true,
+                  textCapitalization: TextCapitalization.sentences,
+                  spellCheckConfiguration: writingSpellCheckConfiguration,
                   minLines: 4,
                   maxLines: 8,
                   decoration: const InputDecoration(
@@ -484,6 +519,10 @@ class _GenericModuleMasteryScreenState
                 const SizedBox(height: 10),
                 TextField(
                   controller: _evidenceController,
+                  autocorrect: true,
+                  enableSuggestions: true,
+                  textCapitalization: TextCapitalization.sentences,
+                  spellCheckConfiguration: writingSpellCheckConfiguration,
                   minLines: 4,
                   maxLines: 8,
                   decoration: const InputDecoration(

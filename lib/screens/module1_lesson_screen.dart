@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+
+import '../widgets/spelling_configuration.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../models/course_models.dart';
@@ -533,6 +535,10 @@ class _Module1LessonScreenState extends State<Module1LessonScreen> {
           TextField(
             key: const ValueKey('reflection'),
             controller: _controllers['reflection'],
+            autocorrect: true,
+            enableSuggestions: true,
+            textCapitalization: TextCapitalization.sentences,
+            spellCheckConfiguration: writingSpellCheckConfiguration,
             minLines: 3,
             maxLines: 6,
             decoration: const InputDecoration(labelText: 'Sua explicação'),
