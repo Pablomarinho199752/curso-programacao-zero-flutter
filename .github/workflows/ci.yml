@@ -27,7 +27,7 @@ jobs:
         run: python scripts/prepare_native_platforms.py
       - run: flutter pub get
       - name: Testar núcleo do laboratório Python
-        run: python -m unittest python_runtime/test_runtime.py
+        run: python -m unittest discover -s python_runtime -p "test_*.py"
       - name: Configurar Python embarcado
         run: |
           echo "SERIOUS_PYTHON_VERSION=3.13" >> "$GITHUB_ENV"

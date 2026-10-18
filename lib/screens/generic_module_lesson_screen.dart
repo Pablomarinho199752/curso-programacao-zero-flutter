@@ -6,6 +6,7 @@ import 'package:url_launcher/url_launcher.dart';
 import '../models/course_models.dart';
 import '../services/progress_store.dart';
 import '../services/python_lab_service.dart';
+import '../services/non_python_activity_check.dart';
 import '../widgets/section_card.dart';
 
 const _genericSteps = [
@@ -42,6 +43,13 @@ class _GenericModuleLessonScreenState extends State<GenericModuleLessonScreen> {
 
   LessonProgress get p => widget.progressStore.forLesson(widget.lesson.id);
   Map<String, dynamic> get data => widget.lesson.onboarding;
+
+  int get _moduleNumber =>
+      int.tryParse(RegExp(r'^lesson_(\d+)_')
+              .firstMatch(widget.lesson.id)
+              ?.group(1) ??
+          '') ??
+      0;
 
   String text(String key) => (data[key] as String?) ?? '';
   List<String> texts(String key) =>
@@ -115,8 +123,11 @@ class _GenericModuleLessonScreenState extends State<GenericModuleLessonScreen> {
         minLines: lines,
         maxLines: lines + 8,
         maxLength: 6000,
-        autocorrect: false,
-        enableSuggestions: false,
+        autocorrect: _moduleNumber == 12,
+        enableSuggestions: _moduleNumber == 12,
+        textCapitalization: _moduleNumber == 12
+            ? TextCapitalization.sentences
+            : TextCapitalization.none,
         style: const TextStyle(fontFamily: 'monospace'),
         decoration: InputDecoration(labelText: label, alignLabelWithHint: true),
         onChanged: (value) {
@@ -147,6 +158,10 @@ class _GenericModuleLessonScreenState extends State<GenericModuleLessonScreen> {
   }
 
   Future<void> _validateCode(String key, int step, String requiredKey) async {
+    if (_moduleNumber == 11 || _moduleNumber == 12) {
+      await _validateNonPython(key, step);
+      return;
+    }
     if (_checkingCode) return;
     final source = _controllers[key]!.text;
     setState(() {
@@ -193,6 +208,55 @@ class _GenericModuleLessonScreenState extends State<GenericModuleLessonScreen> {
             'Não consegui iniciar o verificador Python. '
             'Tente novamente; sua resposta foi preservada.');
       }
+    } finally {
+      if (mounted) setState(() => _checkingCode = false);
+    }
+  }
+
+  Future<void> _validateNonPython(String key, int step) async {
+    if (_checkingCode) return;
+    final source = _controllers[key]!.text;
+    final check = checkNonPythonActivity(
+      module: _moduleNumber,
+      step: key,
+      source: source,
+    );
+    final starter = key == 'correction'
+        ? text('brokenCode')
+        : key == 'project'
+            ? text('projectStarter')
+            : '';
+    final unchanged = starter.trim().isNotEmpty &&
+        source.trim() == starter.trim();
+    final accepted = check.passed && !unchanged;
+    setState(() => _checkingCode = true);
+    try {
+      await update((progress) {
+        progress.drafts[key] = source;
+        progress.attempts[key] = (progress.attempts[key] ?? 0) + 1;
+        if (accepted) {
+          progress.checks.add('${key}_ok');
+        } else {
+          progress.checks.remove('${key}_ok');
+          invalidate(progress, step);
+        }
+      });
+      if (!mounted) return;
+      setState(() {
+        if (unchanged) {
+          _feedback[key] = 'Modifique o exemplo inicial com uma resposta sua.';
+        } else if (!check.passed) {
+          _feedback[key] = check.missing.join(' • ');
+        } else {
+          _feedback[key] = _moduleNumber == 11
+              ? 'A sequência contém os comandos pedidos. '
+                'Comandos Git devem ser testados no terminal, não no Python. '
+                'Isso não garante que o commit funcionou.'
+              : 'Seu plano foi registrado para autoavaliação. '
+                'Confira os requisitos, a pesquisa e os testes descritos; '
+                'essa verificação não certifica a qualidade do projeto.';
+        }
+      });
     } finally {
       if (mounted) setState(() => _checkingCode = false);
     }
@@ -414,7 +478,7 @@ class _GenericModuleLessonScreenState extends State<GenericModuleLessonScreen> {
             children: [
               Text(lesson.challenge),
               const SizedBox(height: 12),
-              _codeField('challenge', 'Seu código', 4),
+              _codeField('challenge', _moduleNumber == 12 ? 'Seu plano' : _moduleNumber == 11 ? 'Seus comandos Git' : 'Seu código', 4),
               FilledButton.icon(
                 onPressed: _checkingCode ? null : () => _validateCode(
                   'challenge',
@@ -438,7 +502,7 @@ class _GenericModuleLessonScreenState extends State<GenericModuleLessonScreen> {
             children: [
               Text(text('correctionPrompt')),
               const SizedBox(height: 12),
-              _codeField('correction', 'Código para corrigir', 5),
+              _codeField('correction', _moduleNumber == 12 ? 'Plano para melhorar' : _moduleNumber == 11 ? 'Comandos para corrigir' : 'Código para corrigir', 5),
               FilledButton.icon(
                 onPressed: () => _validateCode(
                   'correction',
@@ -462,7 +526,7 @@ class _GenericModuleLessonScreenState extends State<GenericModuleLessonScreen> {
             children: [
               Text(text('projectPrompt')),
               const SizedBox(height: 12),
-              _codeField('project', 'Seu projeto', 6, lines: 10),
+              _codeField('project', _moduleNumber == 12 ? 'Plano do projeto final' : _moduleNumber == 11 ? 'Comandos e plano Git' : 'Seu projeto', 6, lines: 10),
               FilledButton.icon(
                 onPressed: () => _validateCode(
                   'project',

@@ -3,8 +3,10 @@ import builtins
 import contextlib
 import io
 import json
+import os
 import re
 import sys
+import tempfile
 import time
 import traceback
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
@@ -95,6 +97,33 @@ def guarded_import(name, globals=None, locals=None, fromlist=(), level=0):
     return builtins.__import__(name, globals, locals, fromlist, level)
 
 
+def lab_open(path, mode="r", encoding="utf-8"):
+    """Open only small local text files in the course's private scratch space.
+
+    Files remain available between executions while the OS preserves app cache.
+    Absolute/traversal paths, binary access and arbitrary device files are
+    rejected. This is intentionally *not* unrestricted filesystem access.
+    """
+    if not isinstance(path, str) or not path:
+        raise ValueError("Informe um nome de arquivo, como notas.txt.")
+    if (
+        os.path.basename(path) != path
+        or path in (".", "..")
+        or "/" in path
+        or "\\" in path
+        or "\x00" in path
+        or len(path) > 100
+    ):
+        raise ValueError("Use apenas um nome simples de arquivo, sem pastas.")
+    if not path.lower().endswith((".txt", ".json", ".csv")):
+        raise ValueError("O laboratório aceita arquivos .txt, .json ou .csv.")
+    if mode not in ("r", "w", "a", "x", "r+", "w+", "a+"):
+        raise ValueError("Use modo texto: r, w, a, x ou suas variantes +.")
+    home = os.path.join(tempfile.gettempdir(), "curso_zero_python_files")
+    os.makedirs(home, exist_ok=True)
+    return builtins.open(os.path.join(home, path), mode, encoding=encoding)
+
+
 def safe_builtins(input_values):
     values = iter(input_values)
 
@@ -149,6 +178,8 @@ def safe_builtins(input_values):
         "type",
         "zip",
         "Exception",
+        "FileNotFoundError",
+        "OSError",
         "ArithmeticError",
         "AssertionError",
         "IndexError",
@@ -161,6 +192,7 @@ def safe_builtins(input_values):
     ]
     result = {name: getattr(builtins, name) for name in allowed_names}
     result["input"] = lab_input
+    result["open"] = lab_open
     result["__import__"] = guarded_import
     result["__build_class__"] = builtins.__build_class__
     return result

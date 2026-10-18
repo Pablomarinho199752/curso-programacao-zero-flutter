@@ -5,6 +5,7 @@ import '../widgets/spelling_configuration.dart';
 import '../models/course_models.dart';
 import '../services/progress_store.dart';
 import '../services/python_lab_service.dart';
+import '../services/non_python_activity_check.dart';
 import 'lesson_destination.dart';
 
 class GenericModuleMasteryScreen extends StatefulWidget {
@@ -28,6 +29,7 @@ class _GenericModuleMasteryScreenState
     extends State<GenericModuleMasteryScreen> {
   late final CourseLesson lesson;
   final _python = PythonLabService();
+  bool get _isNonPython => widget.module.number >= 11;
   late final TextEditingController _debugController;
   late final TextEditingController _createController;
   late final TextEditingController _explainController;
@@ -137,15 +139,22 @@ class _GenericModuleMasteryScreenState
   Future<void> _checkDebug() async {
     final source = _debugController.text;
     try {
-      final check = await _python.check(
-        code: source,
-        requirements: _debugRequirements,
-      );
+      final python = _isNonPython
+          ? null
+          : await _python.check(code: source, requirements: _debugRequirements);
+      final written = _isNonPython
+          ? checkNonPythonActivity(
+              module: widget.module.number,
+              step: 'correction',
+              source: source,
+            )
+          : null;
       if (!mounted) return;
+      final passed = python?.ok ?? written!.passed;
       await widget.progressStore.update(_progressId, (progress) {
         progress.drafts['debug'] = source;
         progress.attempts['debug'] = (progress.attempts['debug'] ?? 0) + 1;
-        if (check.ok) {
+        if (passed) {
           progress.checks.add('debug_ok');
         } else {
           progress.checks.remove('debug_ok');
@@ -153,13 +162,17 @@ class _GenericModuleMasteryScreenState
       });
       if (!mounted) return;
       setState(() {
-        _debugPassed = check.ok;
-        _debugMessage = _codeCheckFeedback(check);
+        _debugPassed = passed;
+        _debugMessage = python != null
+            ? _codeCheckFeedback(python)
+            : written!.passed
+                ? 'Estrutura registrada; confira o resultado real do exercício.'
+                : written.missing.join(' • ');
       });
     } catch (_) {
       if (mounted) {
         setState(() => _debugMessage =
-            'Não consegui acessar o Python local. Tente novamente.');
+            'Não consegui conferir. Seu texto foi preservado; tente novamente.');
       }
     }
   }
@@ -168,13 +181,20 @@ class _GenericModuleMasteryScreenState
     final source = _createController.text;
     final starter = text('projectStarter').trim();
     try {
-      final check = await _python.check(
-        code: source,
-        requirements: _createRequirements,
-      );
+      final python = _isNonPython
+          ? null
+          : await _python.check(code: source, requirements: _createRequirements);
+      final written = _isNonPython
+          ? checkNonPythonActivity(
+              module: widget.module.number,
+              step: 'project',
+              source: source,
+            )
+          : null;
       if (!mounted) return;
-      final ownSolution = source.trim() != starter && source.trim().length >= 35;
-      final passed = check.ok && ownSolution;
+      final ownSolution =
+          source.trim() != starter && source.trim().length >= 35;
+      final passed = (python?.ok ?? written!.passed) && ownSolution;
       await widget.progressStore.update(_progressId, (progress) {
         progress.drafts['create'] = source;
         progress.attempts['create'] = (progress.attempts['create'] ?? 0) + 1;
@@ -187,14 +207,21 @@ class _GenericModuleMasteryScreenState
       if (!mounted) return;
       setState(() {
         _createPassed = passed;
-        _createMessage = check.ok && !ownSolution
-            ? 'Escreva uma solução sua, diferente do código inicial.'
-            : _codeCheckFeedback(check);
+        if (!ownSolution) {
+          _createMessage = 'Escreva sua própria solução, diferente do modelo.';
+        } else if (python != null) {
+          _createMessage = _codeCheckFeedback(python);
+        } else {
+          _createMessage = written!.passed
+              ? 'Estrutura registrada para revisão. '
+                'Confirme na prática antes de considerar o projeto concluído.'
+              : written.missing.join(' • ');
+        }
       });
     } catch (_) {
       if (mounted) {
         setState(() => _createMessage =
-            'Não consegui acessar o Python local. Tente novamente.');
+            'Não consegui conferir. Seu texto foi preservado; tente novamente.');
       }
     }
   }
@@ -240,8 +267,12 @@ class _GenericModuleMasteryScreenState
     setState(() {
       _evidencePassed = passed;
       _evidenceMessage = passed
-          ? 'Evidência registrada. Confira se o que você descreveu corresponde ao resultado visto no Python da aula.'
-          : 'Abra o Python da aula, execute seu código e registre aqui a entrada usada e a saída, resultado ou erro observado.';
+          ? _isNonPython && widget.module.number == 11
+              ? 'Evidência registrada. Confira se descreveu um resultado realmente observado no Git.'
+              : 'Evidência registrada. Compare seu relato com o teste realizado.'
+          : _isNonPython && widget.module.number == 11
+              ? 'Execute os comandos no Git instalado no computador e registre status, diff ou commit observado.'
+              : 'Abra o Python da aula, execute seu código e registre aqui a entrada usada e a saída, resultado ou erro observado.';
     });
   }
 
@@ -264,7 +295,9 @@ class _GenericModuleMasteryScreenState
         content: Text(
           widget.nextModuleNumber == null
               ? 'Você apresentou evidências de entender, corrigir, criar, explicar e testar. O projeto final continua sendo algo vivo: agora você já tem um método para descobrir o próximo passo.'
-              : 'Você apresentou cinco evidências: entender, corrigir, criar, explicar e testar no Python do curso. O próximo módulo foi liberado neste aparelho.',
+              : widget.module.number == 11
+                  ? 'Você registrou cinco etapas de domínio em Git. Confirme sempre os comandos no terminal antes de depender deles. O próximo módulo foi liberado.'
+                  : 'Você registrou cinco etapas de domínio. O próximo módulo foi liberado neste aparelho.',
         ),
         actions: [
           FilledButton(
@@ -378,8 +411,12 @@ class _GenericModuleMasteryScreenState
                 ?.copyWith(fontWeight: FontWeight.w900),
           ),
           const SizedBox(height: 8),
-          const Text(
-            'Agora reúna evidências diferentes. A validação estrutural ajuda, mas no item 5 você precisa executar o código no Python real integrado à própria aula e registrar o que observou.',
+          Text(
+            widget.module.number == 11
+                ? 'Nesta unidade, os comandos Git são executados no terminal do computador, não no Python. Registre o comando usado e o resultado observado.'
+                : widget.module.number == 12
+                    ? 'Nesta unidade, seus planos são avaliados como texto. Execute um protótipo e registre resultados reais; palavras-chave não demonstram domínio.'
+                    : 'Reúna evidências diferentes. A estrutura ajuda, mas execute o código no Python real e registre o que observou.',
           ),
           const SizedBox(height: 18),
           _card(
@@ -497,7 +534,9 @@ class _GenericModuleMasteryScreenState
           ),
           _card(
             number: 5,
-            title: 'Provar com o Python da aula',
+            title: widget.module.number == 11
+                ? 'Provar no terminal Git'
+                : 'Evidência do projeto',
             passed: _evidencePassed,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -514,7 +553,9 @@ class _GenericModuleMasteryScreenState
                     ),
                   ),
                   icon: const Icon(Icons.play_circle_outline_rounded),
-                  label: const Text('Abrir aula e executar no Python'),
+                  label: Text(widget.module.number == 11
+                        ? 'Abrir aula e revisar comandos Git'
+                        : 'Abrir aula e executar no Python'),
                 ),
                 const SizedBox(height: 10),
                 TextField(
