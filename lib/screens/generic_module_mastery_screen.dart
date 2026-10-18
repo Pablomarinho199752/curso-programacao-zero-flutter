@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../widgets/spelling_configuration.dart';
+
 import '../models/course_models.dart';
 import '../services/progress_store.dart';
 import '../services/python_lab_service.dart';
@@ -476,7 +478,7 @@ class _GenericModuleMasteryScreenState
                   autocorrect: true,
                   enableSuggestions: true,
                   textCapitalization: TextCapitalization.sentences,
-                  spellCheckConfiguration: const SpellCheckConfiguration(),
+                  spellCheckConfiguration: writingSpellCheckConfiguration,
                   minLines: 4,
                   maxLines: 8,
                   decoration: const InputDecoration(
@@ -520,7 +522,7 @@ class _GenericModuleMasteryScreenState
                   autocorrect: true,
                   enableSuggestions: true,
                   textCapitalization: TextCapitalization.sentences,
-                  spellCheckConfiguration: const SpellCheckConfiguration(),
+                  spellCheckConfiguration: writingSpellCheckConfiguration,
                   minLines: 4,
                   maxLines: 8,
                   decoration: const InputDecoration(
