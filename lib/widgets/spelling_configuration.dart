@@ -1,12 +1,7 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 
-/// Spell checking is supported by native mobile text input. Desktop and
-/// headless widget tests may not have a platform spell-checking service.
-SpellCheckConfiguration? get writingSpellCheckConfiguration {
-  return switch (defaultTargetPlatform) {
-    TargetPlatform.android || TargetPlatform.iOS =>
-      const SpellCheckConfiguration(),
-    _ => null,
-  };
-}
+/// Predictive suggestions and autocorrection are supplied by the user's
+/// installed Android keyboard via TextField's autocorrect/enableSuggestions.
+/// An explicit Flutter spell-check service is not required and can fail in
+/// headless widget tests or on platforms without a spell-check provider.
+SpellCheckConfiguration? get writingSpellCheckConfiguration => null;
