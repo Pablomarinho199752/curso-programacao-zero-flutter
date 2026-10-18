@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+
+import '../widgets/spelling_configuration.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../models/course_models.dart';
@@ -366,7 +368,7 @@ class _GenericModuleLessonScreenState extends State<GenericModuleLessonScreen> {
                 controller: _controllers['practice'],
                 autocorrect: true,
                 enableSuggestions: true,
-                spellCheckConfiguration: const SpellCheckConfiguration(),
+                spellCheckConfiguration: writingSpellCheckConfiguration,
                 decoration: const InputDecoration(labelText: 'Sua previsão'),
                 onChanged: (value) => update((progress) {
                   progress.drafts['practice'] = value;
@@ -555,7 +557,7 @@ class _GenericModuleLessonScreenState extends State<GenericModuleLessonScreen> {
             autocorrect: true,
             enableSuggestions: true,
             textCapitalization: TextCapitalization.sentences,
-            spellCheckConfiguration: const SpellCheckConfiguration(),
+            spellCheckConfiguration: writingSpellCheckConfiguration,
             minLines: 3,
             maxLines: 7,
             decoration: const InputDecoration(labelText: 'Explique com suas palavras'),
@@ -577,7 +579,7 @@ class _GenericModuleLessonScreenState extends State<GenericModuleLessonScreen> {
             autocorrect: true,
             enableSuggestions: true,
             textCapitalization: TextCapitalization.sentences,
-            spellCheckConfiguration: const SpellCheckConfiguration(),
+            spellCheckConfiguration: writingSpellCheckConfiguration,
             minLines: 3,
             maxLines: 7,
             decoration: const InputDecoration(
