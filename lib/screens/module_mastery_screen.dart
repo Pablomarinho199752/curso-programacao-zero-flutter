@@ -305,6 +305,10 @@ class _Module0MasteryScreenState extends State<Module0MasteryScreen> {
                 TextField(
                   key: const ValueKey('mastery_explain'),
                   controller: _explainController,
+                  autocorrect: true,
+                  enableSuggestions: true,
+                  textCapitalization: TextCapitalization.sentences,
+                  spellCheckConfiguration: const SpellCheckConfiguration(),
                   minLines: 3,
                   maxLines: 6,
                   decoration: const InputDecoration(
