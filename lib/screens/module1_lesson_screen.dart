@@ -533,6 +533,10 @@ class _Module1LessonScreenState extends State<Module1LessonScreen> {
           TextField(
             key: const ValueKey('reflection'),
             controller: _controllers['reflection'],
+            autocorrect: true,
+            enableSuggestions: true,
+            textCapitalization: TextCapitalization.sentences,
+            spellCheckConfiguration: const SpellCheckConfiguration(),
             minLines: 3,
             maxLines: 6,
             decoration: const InputDecoration(labelText: 'Sua explicação'),
