@@ -177,7 +177,7 @@ class _GenericModuleLessonScreenState extends State<GenericModuleLessonScreen> {
           final location =
               check.errorLine == null ? '' : ' na linha ${check.errorLine}';
           _feedback[key] =
-              'O Python identificou um problema${location}: ${check.error}';
+              'O Python identificou um problema$location: ${check.error}';
         } else {
           _feedback[key] =
               'O código tem sintaxe Python válida, mas não encontrei: '
