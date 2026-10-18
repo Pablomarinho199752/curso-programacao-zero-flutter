@@ -44,12 +44,12 @@ class RuntimeTests(unittest.TestCase):
 
     def test_check_accepts_valid_age_ranges_with_whitespace(self):
         source = (
-            'idade = 18\\n'
-            'if idade >=18:\\n'
-            '    print ("adulto")\\n'
-            'elif 12<= idade <=17:\\n'
-            '    print ("adolescente")\\n'
-            'else:\\n'
+            'idade = 18\n'
+            'if idade >=18:\n'
+            '    print ("adulto")\n'
+            'elif 12<= idade <=17:\n'
+            '    print ("adolescente")\n'
+            'else:\n'
             '    print ("criança")'
         )
         check = runtime.check_code(source, ['if ', 'elif ', 'else:', 'print('])
@@ -57,7 +57,7 @@ class RuntimeTests(unittest.TestCase):
         self.assertEqual(check['missing'], [])
 
     def test_check_uses_ast_to_accept_whitespace_and_quote_styles(self):
-        source = 'idade=18\\nif idade>=18:\\n    print (\'Pode entrar\')'
+        source = 'idade=18\nif idade>=18:\n    print (\'Pode entrar\')'
         check = runtime.check_code(
             source, ['idade >= 18', 'print("Pode entrar")']
         )
@@ -65,7 +65,7 @@ class RuntimeTests(unittest.TestCase):
 
     def test_check_reports_missing_requirements_without_hiding_syntax(self):
         check = runtime.check_code(
-            'idade = 18\\nif idade >= 18:\\n    print("adulto")',
+            'idade = 18\nif idade >= 18:\n    print("adulto")',
             ['if ', 'elif ', 'else:', 'print('],
         )
         self.assertFalse(check['ok'])
@@ -73,14 +73,14 @@ class RuntimeTests(unittest.TestCase):
         self.assertIsNone(check['error'])
 
     def test_check_reports_real_python_syntax_error_and_line(self):
-        check = runtime.check_code('idade = 18\\nif idade >= 18\\n    print("adulto")', ['if '])
+        check = runtime.check_code('idade = 18\nif idade >= 18\n    print("adulto")', ['if '])
         self.assertFalse(check['ok'])
         self.assertEqual(check['errorType'], 'SyntaxError')
         self.assertEqual(check['errorLine'], 2)
 
     def test_check_return_and_function_name(self):
         check = runtime.check_code(
-            'def desconto(valor):\\n    return valor',
+            'def desconto(valor):\n    return valor',
             ['def desconto', 'return'],
         )
         self.assertTrue(check['ok'], check)
