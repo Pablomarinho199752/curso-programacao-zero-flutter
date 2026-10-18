@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../widgets/spelling_configuration.dart';
+
 import '../services/python_lab_service.dart';
 
 class PythonLabScreen extends StatefulWidget {
@@ -136,7 +138,7 @@ class _PythonLabScreenState extends State<PythonLabScreen> {
           autocorrect: true,
           enableSuggestions: true,
           textCapitalization: TextCapitalization.sentences,
-          spellCheckConfiguration: const SpellCheckConfiguration(),
+          spellCheckConfiguration: writingSpellCheckConfiguration,
           minLines: 2,
           maxLines: 6,
           decoration: const InputDecoration(
